@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/index.js",
-    "build": "npm run type-check && babel src --out-dir dist --extensions \".js,.ts\"",
+    "start": "cross-env NODE_ENV=development APP_PHASE=local webpack serve --config webpack.dev.js",
+    "build:staging": "cross-env NODE_ENV=production APP_PHASE=staging webpack --config webpack.prod.js",
+    "build:production": "cross-env NODE_ENV=production APP_PHASE=production webpack --config webpack.prod.js",
     "type-check": "tsc -p ./tsconfig.build.json"
   },
   "keywords": [],
@@ -27,8 +28,25 @@
     "@babel/preset-react": "^7.28.5",
     "@babel/preset-typescript": "^7.28.5",
     "@babel/runtime-corejs3": "^7.29.2",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.6.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "typescript": "^6.0.3"
+    "@types/webpack-env": "^1.18.8",
+    "babel-loader": "^10.1.1",
+    "cross-env": "^10.1.0",
+    "css-loader": "^7.1.4",
+    "dotenv-webpack": "^9.0.0",
+    "fork-ts-checker-webpack-plugin": "^9.1.0",
+    "html-loader": "^5.1.0",
+    "html-webpack-plugin": "^5.6.7",
+    "mini-css-extract-plugin": "^2.10.2",
+    "react-refresh": "^0.18.0",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.7",
+    "typescript": "^6.0.3",
+    "webpack": "^5.106.2",
+    "webpack-cli": "^7.0.2",
+    "webpack-dev-server": "^5.2.3",
+    "webpack-merge": "^6.0.1"
   }
 }
