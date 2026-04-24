@@ -10,7 +10,7 @@
     "module": "esnext",
     "target": "es5",
     "ignoreDeprecations": "6.0",
-    "types": [],
+    "types": ["webpack-env"],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
