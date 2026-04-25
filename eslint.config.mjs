@@ -4,6 +4,7 @@ import tseslint from 'typescript-eslint';
 import pluginReact from 'eslint-plugin-react';
 import { defineConfig } from 'eslint/config';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import pluginQuery from '@tanstack/eslint-plugin-query';
 
 export default defineConfig([
   {
@@ -28,6 +29,7 @@ export default defineConfig([
   // flat 구조를 사용하여 최신 방식으로 설정을 가져옴
   pluginReact.configs.flat.recommended,
   eslintPluginPrettierRecommended,
+  pluginQuery.configs['flat/recommended'],
   {
     settings: {
       react: {

@@ -7,6 +7,10 @@
     "build:staging": "cross-env NODE_ENV=production APP_PHASE=staging webpack --config webpack.prod.js",
     "build:production": "cross-env NODE_ENV=production APP_PHASE=production webpack --config webpack.prod.js --profile --json > stats.production.json",
     "type-check": "tsc -p ./tsconfig.build.json",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src",
     "prepare": "husky install"
   },
   "sideEffects": [
@@ -21,9 +25,11 @@
     "node": ">=20.15.1"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.100.3",
     "core-js": "^3.49.0",
     "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "react-dom": "^19.2.5",
+    "react-router": "^7.14.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.28.6",
@@ -35,6 +41,7 @@
     "@babel/runtime-corejs3": "^7.29.2",
     "@eslint/js": "^9.39.4",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.6.2",
+    "@tanstack/eslint-plugin-query": "^5.100.3",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/webpack-env": "^1.18.8",
