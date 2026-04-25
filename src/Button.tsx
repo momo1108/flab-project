@@ -1,4 +1,3 @@
-import './styles.css';
 import { type ButtonHTMLAttributes } from 'react';
 
 type ButtonProps = { children: React.ReactNode } & ButtonHTMLAttributes<HTMLButtonElement>;
