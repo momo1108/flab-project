@@ -335,7 +335,7 @@ try {
 
 - Tree Shaking 활용
 - 코드 분할로 초기 로드 최소화
-- 번들 분석: `npm run build:production` 후 `webpack-bundle-analyzer` 확인
+- 번들 분석: `npm run build:staging` 후 `webpack-bundle-analyzer` 확인
 
 ## 개발 스크립트
 
