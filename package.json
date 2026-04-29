@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development APP_PHASE=local webpack serve --config webpack.dev.js",
-    "build:staging": "cross-env NODE_ENV=production APP_PHASE=staging webpack --config webpack.prod.js",
-    "build:production": "cross-env NODE_ENV=production APP_PHASE=production webpack --config webpack.prod.js --profile --json > stats.production.json",
+    "build:staging": "cross-env NODE_ENV=production APP_PHASE=staging webpack --config webpack.prod.js --profile --json > stats.production.json",
+    "build:production": "cross-env NODE_ENV=production APP_PHASE=production webpack --config webpack.prod.js",
     "type-check": "tsc -p ./tsconfig.build.json",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
