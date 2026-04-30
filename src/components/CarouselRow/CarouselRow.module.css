@@ -1,0 +1,110 @@
+.carouselRow {
+  margin-bottom: 48px;
+}
+
+.header {
+  margin-bottom: 16px;
+  padding: 0 24px;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+}
+
+.description {
+  font-size: 14px;
+  color: #b3b3b3;
+  margin: 0;
+}
+
+.carouselContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.scrollContainer {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 24px;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.content {
+  display: flex;
+  gap: 20px;
+}
+
+.scrollButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(20, 20, 20, 0.8);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.scrollButton:hover {
+  background: rgba(229, 9, 20, 0.9);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.scrollButton:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.scrollButton:first-child {
+  left: 8px;
+}
+
+.scrollButton:last-child {
+  right: 8px;
+}
+
+/* Skeleton Loading */
+.skeletonContainer {
+  display: flex;
+  gap: 16px;
+  padding: 24px;
+  overflow-x: auto;
+}
+
+.skeletonCard {
+  flex-shrink: 0;
+  width: 160px;
+  aspect-ratio: 2/3;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #1f1f1f 25%, #2a2a2a 50%, #1f1f1f 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
