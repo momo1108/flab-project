@@ -6,10 +6,10 @@
 
 ```bash
 # 개발 환경 (.env.local)
-VITE_TMDB_API_KEY=your_development_api_key_here
+TMDB_API_KEY=your_development_api_key_here
 
 # 프로덕션 환경 (.env.production)
-VITE_TMDB_API_KEY=your_production_api_key_here
+TMDB_API_KEY=your_production_api_key_here
 
 # CI/CD 환경 (GitHub Secrets)
 TMDB_API_KEY=production_api_key_here
@@ -53,8 +53,8 @@ TMDB_API_KEY=production_api_key_here
 // TMDB API는 CORS 지원
 // 개발 환경에서 직접 호출 가능
 fetch('https://api.themoviedb.org/3/movie/popular?api_key=YOUR_KEY')
-  .then(response => response.json())
-  .then(data => console.log(data));
+  .then((response) => response.json())
+  .then((data) => console.log(data));
 ```
 
 ### Webpack Dev Server Proxy (선택)
@@ -104,10 +104,7 @@ aws cloudfront create-cloud-front-origin-access-identity \
       "Effect": "Deny",
       "Principal": "*",
       "Action": "s3:*",
-      "Resource": [
-        "arn:aws:s3:::watcha-clone-prod",
-        "arn:aws:s3:::watcha-clone-prod/*"
-      ]
+      "Resource": ["arn:aws:s3:::watcha-clone-prod", "arn:aws:s3:::watcha-clone-prod/*"]
     },
     {
       "Sid": "AllowCloudFrontAccess",
@@ -186,40 +183,53 @@ export const handler = async (event) => {
   const headers = response.headers;
 
   // Content Security Policy
-  headers['content-security-policy'] = [{
-    key: 'Content-Security-Policy',
-    value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.example.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.themoviedb.org;"
-  }];
+  headers['content-security-policy'] = [
+    {
+      key: 'Content-Security-Policy',
+      value:
+        "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.example.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.themoviedb.org;",
+    },
+  ];
 
   // X-Frame-Options
-  headers['x-frame-options'] = [{
-    key: 'X-Frame-Options',
-    value: 'DENY'
-  }];
+  headers['x-frame-options'] = [
+    {
+      key: 'X-Frame-Options',
+      value: 'DENY',
+    },
+  ];
 
   // X-Content-Type-Options
-  headers['x-content-type-options'] = [{
-    key: 'X-Content-Type-Options',
-    value: 'nosniff'
-  }];
+  headers['x-content-type-options'] = [
+    {
+      key: 'X-Content-Type-Options',
+      value: 'nosniff',
+    },
+  ];
 
   // X-XSS-Protection
-  headers['x-xss-protection'] = [{
-    key: 'X-XSS-Protection',
-    value: '1; mode=block'
-  }];
+  headers['x-xss-protection'] = [
+    {
+      key: 'X-XSS-Protection',
+      value: '1; mode=block',
+    },
+  ];
 
   // Strict-Transport-Security
-  headers['strict-transport-security'] = [{
-    key: 'Strict-Transport-Security',
-    value: 'max-age=31536000; includeSubDomains'
-  }];
+  headers['strict-transport-security'] = [
+    {
+      key: 'Strict-Transport-Security',
+      value: 'max-age=31536000; includeSubDomains',
+    },
+  ];
 
   // Referrer-Policy
-  headers['referrer-policy'] = [{
-    key: 'Referrer-Policy',
-    value: 'strict-origin-when-cross-origin'
-  }];
+  headers['referrer-policy'] = [
+    {
+      key: 'Referrer-Policy',
+      value: 'strict-origin-when-cross-origin',
+    },
+  ];
 
   return response;
 };
@@ -236,7 +246,7 @@ export const handler = async (event) => {
 // 자동으로 HTML 이스케이프 처리
 const SafeComponent = () => {
   const userInput = '<script>alert("XSS")</script>';
-  
+
   // 자동으로 이스케이프 처리됨
   return <div>{userInput}</div>;
 };
@@ -287,24 +297,28 @@ aws s3api put-bucket-logging \
 ## 에이전트 개발 시 보안 체크리스트
 
 ### API Key 관리
+
 - [ ] .env 파일을 .gitignore에 포함
 - [ ] 개발/프로덕션 키 분리
 - [ ] CI/CD 환경에서 Secret 사용
 - [ ] 키 노출 방지 (console.log 등)
 
 ### 콘텐츠 보안
+
 - [ ] 사용자 입력 검증
 - [ ] XSS 방지 (React 기본 기능 활용)
 - [ ] 보안 헤더 설정
 - [ ] HTTPS 강제화
 
 ### 클라우드 보안
+
 - [ ] S3 퍼블릭 액세스 차단
 - [ ] CloudFront OAI 설정
 - [ ] WAF 규칙 설정 (선택사항)
 - [ ] CloudWatch 경보 설정
 
 ### 코드 보안
+
 - [ ] 외부 라이브러리 취약점 검사
 - [ ] 의존성 최신화
 - [ ] 보안 라이브러리 사용 (helmet, DOMPurify 등)

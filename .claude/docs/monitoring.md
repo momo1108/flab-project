@@ -81,11 +81,11 @@ export const queryClient = new QueryClient({
 ```typescript
 // api/tmdb/client.ts
 const tmdbFetch = async <T>(endpoint: string): Promise<T> => {
-  const apiKey = import.meta.env.VITE_TMDB_API_KEY;
+  const apiKey = import.meta.env.TMDB_API_KEY;
   const url = `https://api.themoviedb.org/3${endpoint}`;
 
   const startTime = performance.now();
-  
+
   try {
     const response = await fetch(url);
     const endTime = performance.now();
@@ -139,11 +139,11 @@ const reportWebVitals = (metric: Metric) => {
 
 // Web Vitals 측정 시작
 const measureWebVitals = () => {
-  getCLS(reportWebVitals);      // Cumulative Layout Shift
-  getFID(reportWebVitals);      // First Input Delay
-  getFCP(reportWebVitals);      // First Contentful Paint
-  getLCP(reportWebVitals);      // Largest Contentful Paint
-  getTTFB(reportWebVitals);     // Time to First Byte
+  getCLS(reportWebVitals); // Cumulative Layout Shift
+  getFID(reportWebVitals); // First Input Delay
+  getFCP(reportWebVitals); // First Contentful Paint
+  getLCP(reportWebVitals); // Largest Contentful Paint
+  getTTFB(reportWebVitals); // Time to First Byte
 };
 
 // App.tsx에서 초기화
@@ -173,7 +173,7 @@ const onRenderCallback = (
     baseDuration: `${baseDuration.toFixed(2)}ms`,
     interactions: Array.from(interactions).map(i => i.id),
   });
-  
+
   // 모니터링 서비스로 전송
   if (actualDuration > 16) { // 60fps 기준 (16ms 초과)
     logSlowComponent({
@@ -261,26 +261,26 @@ const logger = {
       console.log(`[INFO] ${message}`, data);
     }
   },
-  
+
   warn: (message: string, data?: unknown) => {
     console.warn(`[WARN] ${message}`, data);
   },
-  
+
   error: (message: string, error?: Error | unknown) => {
     console.error(`[ERROR] ${message}`, error);
-    
+
     if (import.meta.env.PROD) {
       // 프로덕션에서는 에러 추적 서비스로 전송
       sendErrorToTracking(message, error);
     }
   },
-  
+
   debug: (message: string, data?: unknown) => {
     if (import.meta.env.DEV) {
       console.debug(`[DEBUG] ${message}`, data);
     }
   },
-  
+
   api: (endpoint: string, duration: number, status?: number) => {
     const statusText = status ? `(${status})` : '';
     console.log(`[API] ${endpoint} ${statusText} - ${duration.toFixed(2)}ms`);
@@ -367,17 +367,20 @@ const MainPage = () => {
 ### 주요 모니터링 지표
 
 #### 성능 지표
+
 - **FCP**: First Contentful Paint < 1.5s
 - **LCP**: Largest Contentful Paint < 2.5s
 - **FID**: First Input Delay < 100ms
 - **CLS**: Cumulative Layout Shift < 0.1
 
 #### API 지표
+
 - **응답 시간**: < 1s (p95)
 - **에러율**: < 5% (4xx)
 - **캐시 적중률**: > 50%
 
 #### CloudFront 지표
+
 - **요청 수**: 시간대별 추이
 - **에러율**: 4xx/5xx
 - **캐시 적중률**

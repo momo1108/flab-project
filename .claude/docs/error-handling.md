@@ -128,10 +128,7 @@ export const UserList = () => {
 
 ```typescript
 const isNetworkError = (error: unknown): boolean => {
-  return (
-    error instanceof TypeError &&
-    error.message.includes('Failed to fetch')
-  );
+  return error instanceof TypeError && error.message.includes('Failed to fetch');
 };
 
 const handleApiError = (error: unknown) => {
@@ -145,7 +142,7 @@ const handleApiError = (error: unknown) => {
 
 ## 글로벌 에러 핸들러
 
-```typescript
+````typescript
 // utils/errorHandler.ts
 export const globalErrorHandler = (error: unknown) => {
   console.error('Global error:', error);
@@ -184,21 +181,21 @@ interface AppError {
 
 // 통합 에러 처리 타입
 type ErrorResponse = TmdbError | AppError;
-```
+````
 
 ### TMDB API 에러 처리
 
 ```typescript
 // API 요청 래퍼
 const tmdbFetch = async <T>(endpoint: string): Promise<T> => {
-  const apiKey = import.meta.env.VITE_TMDB_API_KEY;
+  const apiKey = import.meta.env.TMDB_API_KEY;
   const url = `https://api.themoviedb.org/3${endpoint}${endpoint.includes('?') ? '&' : '?'}api_key=${apiKey}`;
 
   const response = await fetch(url);
 
   if (!response.ok) {
     const error = (await response.json()) as TmdbError;
-    
+
     switch (response.status) {
       case 401:
         throw new Error('API 인증 실패: API Key를 확인해주세요.');
@@ -299,17 +296,17 @@ const SafeImage: React.FC<SafeImageProps> = ({ src, alt, className, size = 'w500
 // TMDB 이미지 URL 생성
 const getTmdbImageUrl = (path: string | null, size: string = 'w500'): string => {
   if (!path) return '/placeholder.png';
-  
-  const baseUrl = import.meta.env.VITE_TMDB_BASE_URL || 'https://image.tmdb.org/t/p/';
+
+  const baseUrl = import.meta.env.TMDB_BASE_URL || 'https://image.tmdb.org/t/p/';
   return `${baseUrl}${size}${path}`;
 };
 
 // 사용 예시
 <MovieCard>
-  <SafeImage 
-    src={getTmdbImageUrl(movie.poster_path)} 
-    alt={movie.title} 
-    className={styles.posterImage} 
+  <SafeImage
+    src={getTmdbImageUrl(movie.poster_path)}
+    alt={movie.title}
+    className={styles.posterImage}
   />
 </MovieCard>
 ```
@@ -321,7 +318,7 @@ const getTmdbImageUrl = (path: string | null, size: string = 'w500'): string => 
 const SearchPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query') || '';
-  
+
   const { data, isLoading, error, refetch } = useSearchMovies(query, {
     enabled: query.trim().length > 0,
     retry: 1,
@@ -451,7 +448,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({ error, onRetry }) => (
 // 에러 추적 유틸리티
 const logError = (error: Error, context?: Record<string, unknown>) => {
   console.error('Error:', error, 'Context:', context);
-  
+
   // 프로덕션 환경에서는 에러 추적 서비스로 전송
   if (import.meta.env.PROD) {
     // trackError(error, context);
@@ -466,4 +463,7 @@ try {
   throw error;
 }
 ```
+
+```
+
 ```

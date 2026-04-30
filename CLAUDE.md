@@ -90,6 +90,12 @@ export const useUsers = () => {
 - Strict Mode 활성화
 - 모든 Props와 함수에 타입 정의 필수
 - `any` 타입 사용 지양
+- **논리적으로 안전성이 보장되는 경우**: early return, length 체크 등으로 이미 안전성이 보장된 경우에는 `non-null assertion (!)` 사용 (불필요한 타입가드 중복 방지)
+  ```typescript
+  if (movies.length === 0) return;
+  // Safe: movies.length >= 1 is guaranteed by early return above
+  const currentMovie = movies[currentIndex]!;
+  ```
 
 ### React
 - 컴포넌트는 PascalCase, Hooks는 camelCase

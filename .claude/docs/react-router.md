@@ -78,8 +78,8 @@ setSearchParams({ page: '2', sort: 'date' });
 
 인증이 필요한 라우트 등은 래퍼 컴포넌트로 구현:
 
-```typescript
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+````typescript
+const ProtectedRoute: React.FC<PropsWithChildren> = ({ children }) => {
   const isAuthenticated = useAuth();
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
 };
@@ -120,11 +120,12 @@ export const routes: RouteObject[] = [
     element: <NotFoundPage />,
   },
 ];
-```
+````
 
 ### 페이지별 라우팅 사용법
 
 #### 메인페이지
+
 ```typescript
 // 페이지 진입
 <Link to="/">홈</Link>
@@ -135,6 +136,7 @@ navigate(`/movie/${movie.id}`);
 ```
 
 #### 검색페이지
+
 ```typescript
 // 검색페이지 이동
 const navigate = useNavigate();
@@ -147,6 +149,7 @@ const page = parseInt(searchParams.get('page') || '1');
 ```
 
 #### 상세페이지
+
 ```typescript
 // URL 파라미터 추출
 const { id } = useParams<{ id: string }>();
@@ -170,4 +173,7 @@ const handlePageChange = (page: number) => {
   setSearchParams({ query: searchParams.get('query') || '', page: page.toString() });
 };
 ```
+
+```
+
 ```
