@@ -12,17 +12,8 @@ module.exports = merge(common, {
     host: 'localhost',
     port: 3000,
     static: path.resolve(__dirname, 'public'), // 정적 파일을 제공할 디렉토리
-    liveReload: true, // 라이브 리로딩 활성화 (기본값: true)
     hot: true, // 핫 모듈 교체 활성화
     historyApiFallback: true, // 히스토리 API를 사용하는 SPA에 유용
-    proxy: [
-      {
-        context: ['/google'],
-        target: 'https://www.google.com',
-        changeOrigin: true,
-        pathRewrite: { '^/google': '' },
-      },
-    ],
   },
   plugins: [new ReactRefreshWebpackPlugin()],
   module: {
@@ -37,7 +28,17 @@ module.exports = merge(common, {
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                namedExport: false,
+              },
+            },
+          },
+        ],
       },
     ],
   },

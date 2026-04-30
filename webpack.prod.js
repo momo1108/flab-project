@@ -33,16 +33,21 @@ module.exports = merge(common, {
         test: /\.css$/i,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                namedExport: false,
+              },
+            },
+          },
           {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                plugins: [
-                  require('postcss-preset-env')({
-                    browsers: 'last 2 versions', // 지원할 브라우저 설정
-                  }),
-                ],
+                // browsers 옵션이 제공되지 않으면 default browserslist query 가 사용됨
+                // https://github.com/csstools/postcss-preset-env#browsers
+                plugins: ['postcss-preset-env'],
               },
             },
           },

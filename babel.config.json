@@ -1,22 +1,20 @@
 {
-    "presets": ["@babel/preset-env", 
-    ["@babel/preset-react", {
+  "presets": [
+    "@babel/preset-env",
+    [
+      "@babel/preset-react",
+      {
         "runtime": "automatic"
-    }], 
-    "@babel/preset-typescript"],
-    "plugins": [
-        [
-            "@babel/plugin-transform-runtime",
-            {
-                "corejs": 3
-            }
-        ]
+      }
     ],
-    "targets": {
-        "chrome": "64",
-        "edge": "79",
-        "firefox": "67",
-        "opera": "51",
-        "safari": "12"
-    }
+    "@babel/preset-typescript"
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "corejs": 3
+      }
+    ]
+  ]
 }
