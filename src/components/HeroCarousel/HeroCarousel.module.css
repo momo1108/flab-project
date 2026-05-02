@@ -1,17 +1,46 @@
 .heroCarousel {
+  --hero-scroll-button-size: 16px;
+  --hero-scroll-button-edge-offset: 2px;
   position: relative;
   width: 100%;
+  max-width: var(--content-max-width);
+  padding: 0 var(--content-side-padding);
+  margin-left: auto;
+  margin-right: auto;
   height: 70vh;
   min-height: 500px;
   max-height: 800px;
-  overflow: hidden;
+  overflow: visible;
   margin-bottom: 48px;
 }
 
+@media screen and (min-width: 768px) {
+  .heroCarousel {
+    --hero-scroll-button-size: 32px;
+    --hero-scroll-button-edge-offset: 4px;
+  }
+}
+
+.slidesClip {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.slidesContainer {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
 .slide {
+  flex: 0 0 100%;
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 .backdrop {
@@ -40,6 +69,11 @@
   flex-direction: column;
   justify-content: flex-end;
   padding: 48px 24px;
+  pointer-events: none;
+}
+
+.ctaButton {
+  pointer-events: auto;
 }
 
 .textContent {
@@ -66,6 +100,7 @@
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -104,38 +139,39 @@
 
 .navButton {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: rgba(20, 20, 20, 0.6);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  top: 0;
+  width: var(--hero-scroll-button-size);
+  height: 100%;
+  background: rgba(20, 20, 20, 0.8);
+  color: #b3b3b3;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
   z-index: 10;
-  backdrop-filter: blur(4px);
+}
+
+.navIcon {
+  width: var(--hero-scroll-button-size);
+  height: calc(var(--hero-scroll-button-size) * 3);
 }
 
 .navButton:hover {
-  background: rgba(229, 9, 20, 0.9);
-  transform: translateY(-50%) scale(1.1);
+  transform: scale(1.1);
 }
 
 .navButton:active {
-  transform: translateY(-50%) scale(0.95);
+  transform: scale(0.95);
 }
 
 .prevButton {
-  left: 24px;
+  left: var(--hero-scroll-button-edge-offset);
 }
 
 .nextButton {
-  right: 24px;
+  right: var(--hero-scroll-button-edge-offset);
 }
 
 /* Skeleton Loading */
@@ -157,27 +193,32 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .heroCarousel {
-    height: 60vh;
-    min-height: 400px;
+    height: auto;
+    min-height: unset;
+    max-height: unset;
+    margin-bottom: 48px;
+  }
+
+  .slide {
+    aspect-ratio: 335 / 442;
+    border-radius: 12px;
+    overflow: hidden;
   }
 
   .content {
     padding: 24px 16px;
+    align-items: center;
+    text-align: center;
   }
 
-  .navButton {
-    width: 40px;
-    height: 40px;
+  .textContent {
+    margin: 0;
   }
 
-  .prevButton {
-    left: 8px;
-  }
-
-  .nextButton {
-    right: 8px;
+  .overview {
+    max-width: 100%;
   }
 
   .indicator {

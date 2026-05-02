@@ -2,13 +2,15 @@
   background-color: #0a0a0a;
   padding: 48px 0 24px;
   margin-top: 64px;
+  display: flex;
+  justify-content: center;
   border-top: 1px solid #1f1f1f;
 }
 
 .container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 24px;
+  width: 100%;
+  max-width: var(--content-max-width);
+  padding: 0 var(--content-side-padding);
 }
 
 .content {

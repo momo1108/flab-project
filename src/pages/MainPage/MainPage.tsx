@@ -88,7 +88,7 @@ const MainPage: React.FC = () => {
 
         {/* TOP 20 Section */}
         <section className={styles.section}>
-          <CarouselRow title="왓챠 TOP 20" description="가장 인기있는 영화 TOP 20" isLoading={popularLoading}>
+          <CarouselRow title="왓챠 TOP 20" isLoading={popularLoading}>
             {popularMovies.slice(0, 20).map((movie, index) => (
               <MovieCard key={movie.id} movie={movie} showRank={true} rank={index + 1} />
             ))}
