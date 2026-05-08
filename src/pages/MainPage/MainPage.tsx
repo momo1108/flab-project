@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
   useTMDBConfiguration,
   useMovieGenres,
   useTrendingMovies,
   usePopularMovies,
   usePopularPersons,
+  useMoviesByGenres,
 } from '../../hooks';
 import { setImageConfig } from '../../utils';
 import { Header, Footer, MovieCard, ArtistCard, CarouselRow, HeroCarousel } from '../../components';
@@ -34,16 +35,19 @@ const MainPage: React.FC = () => {
   const { data: personsData, isLoading: personsLoading } = usePopularPersons(1);
 
   // Get random genres for genre carousels
-  const getRandomGenres = (count: number) => {
+  const randomGenres = useMemo(() => {
     if (!genresData?.genres) return [];
     const shuffled = [...genresData.genres].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
-  };
+    return shuffled.slice(0, 3);
+  }, [genresData?.genres]);
 
   const trendingMovies = trendingData?.results ?? [];
   const popularMovies = popularData?.results ?? [];
   const popularPersons = personsData?.results ?? [];
-  const randomGenres = getRandomGenres(3);
+
+  // Fetch movies for each random genre using useQueries
+  const randomGenreIds = randomGenres.map((genre) => genre.id);
+  const genreMovieQueries = useMoviesByGenres(randomGenreIds);
 
   return (
     <div className={styles.mainPage}>
@@ -69,22 +73,24 @@ const MainPage: React.FC = () => {
         </section>
 
         {/* Genre-based Sections */}
-        {randomGenres.map((genre) => (
-          <section key={genre.id} className={styles.section}>
-            <CarouselRow
-              title={`${genre.name} 영화`}
-              description={`${genre.name} 장르의 인기 영화들`}
-              isLoading={popularLoading}
-            >
-              {popularMovies
-                .filter((movie) => movie.genre_ids.includes(genre.id))
-                .slice(0, 10)
-                .map((movie) => (
+        {genreMovieQueries.map(({ data: genreMovieData, isLoading: genreMovieLoading }, genreIndex) => {
+          const randomGenre = randomGenres[genreIndex]!;
+          const genreMovies = genreMovieData?.results ?? [];
+
+          return (
+            <section key={randomGenre.id} className={styles.section}>
+              <CarouselRow
+                title={`${randomGenre.name} 영화`}
+                description={`${randomGenre.name} 장르의 인기 영화들`}
+                isLoading={genreMovieLoading}
+              >
+                {genreMovies.slice(0, 10).map((movie) => (
                   <MovieCard key={movie.id} movie={movie} />
                 ))}
-            </CarouselRow>
-          </section>
-        ))}
+              </CarouselRow>
+            </section>
+          );
+        })}
 
         {/* TOP 20 Section */}
         <section className={styles.section}>
@@ -97,9 +103,9 @@ const MainPage: React.FC = () => {
 
         {/* Artists Section */}
         <section className={styles.section}>
-          <CarouselRow title="아티스트" description="인기 배우 및 감독" isLoading={personsLoading}>
+          <CarouselRow title="아티스트" description="인기 배우 및 감독" isLoading={personsLoading} rowType="artist">
             {popularPersons.map((person) => (
-              <ArtistCard key={person.id} person={person} latestMovie="최신 출연작 정보" />
+              <ArtistCard key={person.id} person={person} />
             ))}
           </CarouselRow>
         </section>

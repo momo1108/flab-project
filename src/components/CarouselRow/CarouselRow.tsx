@@ -5,9 +5,16 @@ interface CarouselRowProps extends PropsWithChildren {
   title: string;
   description?: string;
   isLoading?: boolean;
+  rowType?: 'movie' | 'artist';
 }
 
-const CarouselRow: React.FC<CarouselRowProps> = ({ title, description, children, isLoading = false }) => {
+const CarouselRow: React.FC<CarouselRowProps> = ({
+  title,
+  description,
+  children,
+  isLoading = false,
+  rowType = 'movie',
+}) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
@@ -114,10 +121,11 @@ const CarouselRow: React.FC<CarouselRowProps> = ({ title, description, children,
 
   const childArray = Array.isArray(children) ? children : [children];
   const itemCount = childArray.length;
+  const rowClassName = rowType === 'artist' ? styles.artistRow : styles.movieRow;
 
   if (isLoading) {
     return (
-      <section ref={sectionRef} className={styles.carouselRow}>
+      <section ref={sectionRef} className={`${styles.carouselRow} ${rowClassName}`}>
         <div className={styles.header}>
           <h2 className={styles.title}>{title}</h2>
           {description && <p className={styles.description}>{description}</p>}
@@ -132,7 +140,7 @@ const CarouselRow: React.FC<CarouselRowProps> = ({ title, description, children,
   }
 
   return (
-    <section ref={sectionRef} className={styles.carouselRow}>
+    <section ref={sectionRef} className={`${styles.carouselRow} ${rowClassName}`}>
       <div className={styles.header}>
         <h2 className={styles.title}>{title}</h2>
         {description && <p className={styles.description}>{description}</p>}

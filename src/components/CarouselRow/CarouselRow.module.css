@@ -1,9 +1,19 @@
 .carouselRow {
-  --carousel-column-count: 3;
+  --movie-carousel-column-count: 3;
+  --artist-carousel-column-count: 3;
+  --carousel-column-count: var(--movie-carousel-column-count);
   --carousel-scroll-button-size: 16px;
   --carousel-scroll-button-edge-offset: 2px;
   padding: 0 var(--content-side-padding);
   margin-bottom: 48px;
+}
+
+.movieRow {
+  --carousel-column-count: var(--movie-carousel-column-count);
+}
+
+.artistRow {
+  --carousel-column-count: var(--artist-carousel-column-count);
 }
 
 @media screen and (min-width: 768px) {
@@ -15,31 +25,36 @@
 
 @media screen and (min-width: 900px) {
   .carouselRow {
-    --carousel-column-count: 4;
+    --movie-carousel-column-count: 4;
+    --artist-carousel-column-count: 4;
   }
 }
 
 @media screen and (min-width: 1000px) {
   .carouselRow {
-    --carousel-column-count: 5;
+    --movie-carousel-column-count: 5;
+    --artist-carousel-column-count: 5;
   }
 }
 
 @media screen and (min-width: 1136px) {
   .carouselRow {
-    --carousel-column-count: 6;
+    --movie-carousel-column-count: 6;
+    --artist-carousel-column-count: 6;
   }
 }
 
 @media screen and (min-width: 1560px) {
   .carouselRow {
-    --carousel-column-count: 7;
+    --movie-carousel-column-count: 7;
+    --artist-carousel-column-count: 7;
   }
 }
 
 @media screen and (min-width: 1650px) {
   .carouselRow {
-    --carousel-column-count: 8;
+    --movie-carousel-column-count: 8;
+    --artist-carousel-column-count: 8;
   }
 }
 

@@ -4,11 +4,10 @@ import styles from './ArtistCard.module.css';
 
 interface ArtistCardProps {
   person: Person;
-  latestMovie?: string;
   onClick?: () => void;
 }
 
-const ArtistCard: React.FC<ArtistCardProps> = ({ person, latestMovie, onClick }) => {
+const ArtistCard: React.FC<ArtistCardProps> = ({ person, onClick }) => {
   const profileUrl = getProfileUrl(person.profile_path, 'w185');
 
   return (
@@ -26,7 +25,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ person, latestMovie, onClick })
       </div>
       <div className={styles.info}>
         <h3 className={styles.name}>{person.name}</h3>
-        {latestMovie && <p className={styles.latestMovie}>{latestMovie}</p>}
+        {person.known_for.length && <p className={styles.latestMovie}>{person.known_for[0]!.title}</p>}
       </div>
     </div>
   );

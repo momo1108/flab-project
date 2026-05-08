@@ -62,62 +62,64 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ movies }) => {
   return (
     <div className={styles.heroCarousel} onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
       <div className={styles.slidesClip}>
-        <div
-          className={styles.slidesContainer}
-          style={{
-            transform: `translateX(${displayIndex * -100}%)`,
-            transition: isAnimating ? undefined : 'none',
-          }}
-          onTransitionEnd={handleTransitionEnd}
-        >
-          {extendedMovies.map((movie, i) => {
-            const url = getBackdropUrl(movie.backdrop_path, 'original');
-            return (
-              <div key={`${movie.id}-${i}`} className={styles.slide}>
-                <img src={url} alt={movie.title} className={styles.backdrop} />
-                <div className={styles.overlay} />
-              </div>
-            );
-          })}
+        <div className={styles.slidesViewport}>
+          <div
+            className={styles.slidesContainer}
+            style={{
+              transform: `translateX(${displayIndex * -100}%)`,
+              transition: isAnimating ? undefined : 'none',
+            }}
+            onTransitionEnd={handleTransitionEnd}
+          >
+            {extendedMovies.map((movie, i) => {
+              const url = getBackdropUrl(movie.backdrop_path, 'original');
+              return (
+                <div key={`${movie.id}-${i}`} className={styles.slide}>
+                  <img src={url} alt={movie.title} className={styles.backdrop} />
+                  <div className={styles.overlay} />
+                </div>
+              );
+            })}
+          </div>
         </div>
+        <div className={styles.content}>
+          <div className={styles.textContent}>
+            <h1 className={styles.title}>{currentMovie.title}</h1>
+            <p className={styles.overview}>{currentMovie.overview}</p>
+            <button className={styles.ctaButton}>감상하기</button>
+          </div>
+          <div className={styles.indicator}>
+            {realIndex + 1}
+            <span className={styles.totalSpan}> | {movies.length}</span>
+          </div>
+        </div>
+
+        <button className={`${styles.navButton} ${styles.prevButton}`} onClick={handlePrevious} aria-label="이전 영화">
+          <svg
+            className={styles.navIcon}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1"
+            preserveAspectRatio="none"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+
+        <button className={`${styles.navButton} ${styles.nextButton}`} onClick={handleNext} aria-label="다음 영화">
+          <svg
+            className={styles.navIcon}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1"
+            preserveAspectRatio="none"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
       </div>
-
-      <div className={styles.content}>
-        <div className={styles.textContent}>
-          <h1 className={styles.title}>{currentMovie.title}</h1>
-          <p className={styles.overview}>{currentMovie.overview}</p>
-          <button className={styles.ctaButton}>감상하기</button>
-        </div>
-        <div className={styles.indicator}>
-          {realIndex + 1}|{movies.length}
-        </div>
-      </div>
-
-      <button className={`${styles.navButton} ${styles.prevButton}`} onClick={handlePrevious} aria-label="이전 영화">
-        <svg
-          className={styles.navIcon}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-          preserveAspectRatio="none"
-        >
-          <polyline points="15 18 9 12 15 6" />
-        </svg>
-      </button>
-
-      <button className={`${styles.navButton} ${styles.nextButton}`} onClick={handleNext} aria-label="다음 영화">
-        <svg
-          className={styles.navIcon}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-          preserveAspectRatio="none"
-        >
-          <polyline points="9 18 15 12 9 6" />
-        </svg>
-      </button>
     </div>
   );
 };

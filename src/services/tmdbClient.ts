@@ -67,10 +67,19 @@ class TMDBClient {
     page?: number;
     with_genres?: string;
     with_keywords?: string;
+    'release_date.lte'?: string;
     sort_by?: string;
   }): Promise<MovieResponse> {
+    const today = new Date();
+    const localDateString = `${today.getFullYear()}-${today.getMonth().toString().padStart(2, '0')}-${today.getDay().toString().padStart(2, '0')}`;
+
+    // prevent sideeffect by copying params
+    const queryParamsObj = { ...params };
+    // if release_date.lte is not passed, use localDateString
+    if (!queryParamsObj['release_date.lte']) queryParamsObj['release_date.lte'] = localDateString;
+
     const queryParams = new URLSearchParams();
-    Object.entries(params).forEach(([key, value]) => {
+    Object.entries(queryParamsObj).forEach(([key, value]) => {
       if (value !== undefined) {
         queryParams.append(key, String(value));
       }

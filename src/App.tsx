@@ -10,6 +10,7 @@ function App() {
         {/* 추후에 다른 라우트 추가 예정
         <Route path="/search" element={<SearchPage />} />
         <Route path="/movie/:id" element={<DetailPage />} />
+        <Route path="/artist/:id" element={<ArtistPage />} />
         <Route path="*" element={<NotFoundPage />} />
         */}
       </Routes>

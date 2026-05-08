@@ -1,6 +1,7 @@
 .artistCard {
   flex-shrink: 0;
-  width: 140px;
+  width: calc(100% / var(--artist-carousel-column-count));
+  padding: 0 10px;
   cursor: pointer;
   transition: transform 0.2s ease;
   display: flex;
@@ -20,7 +21,7 @@
 .imageWrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 2/3;
+  aspect-ratio: 1;
   border-radius: 50%;
   overflow: hidden;
   background-color: #1f1f1f;

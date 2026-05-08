@@ -30,6 +30,7 @@ export interface Person {
   name: string;
   profile_path: string | null;
   known_for_department: string;
+  known_for: Array<{ title: string }>;
 }
 
 export interface PersonCredits {

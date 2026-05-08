@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueries } from '@tanstack/react-query';
 import { tmdbClient } from '../services';
 import type { GenreMap } from '../types';
 
@@ -9,6 +9,8 @@ export const queryKeys = {
   popularMovies: (page: number) => ['popularMovies', page] as const,
   trendingMovies: (timeWindow: 'day' | 'week') => ['trendingMovies', timeWindow] as const,
   discoverMovies: (params: Record<string, string | number>) => ['discoverMovies', params] as const,
+  moviesByGenre: (genreId: number, page: number) => ['moviesByGenre', genreId, page] as const,
+  moviesByGenres: (genreIds: number[], page: number) => ['moviesByGenres', genreIds, page] as const,
   movieDetail: (id: number) => ['movieDetail', id] as const,
   searchMovies: (query: string, page: number) => ['searchMovies', query, page] as const,
   collectionDetail: (id: number) => ['collectionDetail', id] as const,
@@ -91,6 +93,36 @@ export const useDiscoverMovies = (params: Record<string, string | number>) => {
     queryKey: queryKeys.discoverMovies(params),
     queryFn: () => tmdbClient.discoverMovies(params),
     ...queryConfig.movies,
+  });
+};
+
+export const useMoviesByGenre = (genreId: number, page: number = 1) => {
+  return useQuery({
+    queryKey: queryKeys.moviesByGenre(genreId, page),
+    queryFn: () =>
+      tmdbClient.discoverMovies({
+        with_genres: String(genreId),
+        sort_by: 'popularity.desc',
+        page,
+      }),
+    ...queryConfig.movies,
+    enabled: !!genreId,
+  });
+};
+
+export const useMoviesByGenres = (genreIds: number[], page: number = 1) => {
+  return useQueries({
+    queries: genreIds.map((genreId) => ({
+      queryKey: queryKeys.moviesByGenre(genreId, page),
+      queryFn: () =>
+        tmdbClient.discoverMovies({
+          with_genres: String(genreId),
+          sort_by: 'primary_release_date.desc',
+          page,
+        }),
+      ...queryConfig.movies,
+      enabled: !!genreId,
+    })),
   });
 };
 
