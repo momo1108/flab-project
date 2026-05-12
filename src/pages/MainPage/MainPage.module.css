@@ -3,10 +3,6 @@
   background-color: #141414;
 }
 
-.mainContent {
-  padding-top: 72px; /* Header height */
-}
-
 .heroSection {
   margin-bottom: 48px;
 }
@@ -36,10 +32,6 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .mainContent {
-    padding-top: 64px;
-  }
-
   .section {
     margin-bottom: 32px;
   }

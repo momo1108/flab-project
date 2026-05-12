@@ -1,5 +1,6 @@
-import { getPosterUrl, formatRating } from '../../utils';
-import type { Movie } from '../../types';
+import { getPosterUrl } from '../../utils/image';
+import { formatRating } from '../../utils/format';
+import type { Movie } from '../../types/tmdb';
 import styles from './MovieCard.module.css';
 
 interface MovieCardProps {

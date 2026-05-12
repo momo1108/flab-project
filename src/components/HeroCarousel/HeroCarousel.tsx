@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { getBackdropUrl } from '../../utils';
-import type { Movie } from '../../types';
+import { useNavigate } from 'react-router';
+import { getBackdropUrl } from '../../utils/image';
+import type { Movie } from '../../types/tmdb';
 import styles from './HeroCarousel.module.css';
 
 interface HeroCarouselProps {
@@ -8,6 +9,8 @@ interface HeroCarouselProps {
 }
 
 const HeroCarousel: React.FC<HeroCarouselProps> = ({ movies }) => {
+  const navigate = useNavigate();
+
   // displayIndex: 1 = 첫 번째 실제 슬라이드 (0은 마지막 클론, movies.length+1은 첫 클론)
   const [displayIndex, setDisplayIndex] = useState(1);
   const [isAnimating, setIsAnimating] = useState(true);
@@ -74,7 +77,7 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ movies }) => {
             {extendedMovies.map((movie, i) => {
               const url = getBackdropUrl(movie.backdrop_path, 'original');
               return (
-                <div key={`${movie.id}-${i}`} className={styles.slide}>
+                <div key={`${movie.id}-${i}`} className={styles.slide} onClick={() => navigate(`/movie/${movie.id}`)}>
                   <img src={url} alt={movie.title} className={styles.backdrop} />
                   <div className={styles.overlay} />
                 </div>
@@ -86,7 +89,9 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ movies }) => {
           <div className={styles.textContent}>
             <h1 className={styles.title}>{currentMovie.title}</h1>
             <p className={styles.overview}>{currentMovie.overview}</p>
-            <button className={styles.ctaButton}>감상하기</button>
+            <button className={styles.ctaButton} onClick={() => navigate(`/movie/${currentMovie.id}`)}>
+              감상하기
+            </button>
           </div>
           <div className={styles.indicator}>
             {realIndex + 1}

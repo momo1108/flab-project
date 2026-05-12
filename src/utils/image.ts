@@ -1,4 +1,4 @@
-import type { TMDBConfiguration } from '../types';
+import type { TMDBConfiguration } from '../types/tmdb';
 
 let imageConfig: TMDBConfiguration['images'] | null = null;
 

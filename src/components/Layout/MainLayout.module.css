@@ -1,0 +1,9 @@
+.mainContent {
+  padding-top: 72px; /* Header height */
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    padding-top: 64px;
+  }
+}

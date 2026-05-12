@@ -1,18 +1,22 @@
 import { Routes, Route } from 'react-router';
 import { Providers } from './components/Providers';
-import MainPage from './pages/MainPage';
+import { MainLayout } from './components/Layout/MainLayout';
+import MainPage from './pages/MainPage/MainPage';
+import SearchPage from './pages/SearchPage/SearchPage';
+import MovieDetailPage from './pages/MovieDetailPage/MovieDetailPage';
+import ArtistPage from './pages/ArtistPage/ArtistPage';
 
 function App() {
   return (
     <Providers>
       <Routes>
-        <Route path="/" element={<MainPage />} />
-        {/* 추후에 다른 라우트 추가 예정
-        <Route path="/search" element={<SearchPage />} />
-        <Route path="/movie/:id" element={<DetailPage />} />
-        <Route path="/artist/:id" element={<ArtistPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-        */}
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<MainPage />} />
+          <Route path="search" element={<SearchPage />} />
+          <Route path="movie/:id" element={<MovieDetailPage />} />
+          <Route path="artist/:id" element={<ArtistPage />} />
+          {/* <Route path="*" element={<NotFoundPage />} /> */}
+        </Route>
       </Routes>
     </Providers>
   );

@@ -1,5 +1,5 @@
-import { getBackdropUrl } from '../../utils';
-import type { Collection } from '../../types';
+import { getBackdropUrl } from '../../utils/image';
+import type { Collection } from '../../types/tmdb';
 import styles from './CollectionCard.module.css';
 
 interface CollectionCardProps {

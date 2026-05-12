@@ -7,7 +7,7 @@ import type {
   TMDBConfiguration,
   GenreResponse,
   SearchResponse,
-} from '../types';
+} from '../types/tmdb';
 
 const BASE_URL = process.env.TMDB_BASE_URL || 'https://api.themoviedb.org/3';
 const ACCESS_TOKEN = process.env.TMDB_API_KEY;

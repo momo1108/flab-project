@@ -1,5 +1,5 @@
-import { getProfileUrl } from '../../utils';
-import type { Person } from '../../types';
+import { getProfileUrl } from '../../utils/image';
+import type { Person } from '../../types/tmdb';
 import styles from './ArtistCard.module.css';
 
 interface ArtistCardProps {
