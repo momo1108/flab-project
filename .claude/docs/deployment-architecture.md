@@ -128,12 +128,12 @@
 
 ### 캐시 정책
 
-| 파일 타입 | MinTTL | DefaultTTL | MaxTTL | 전략 |
-|-----------|---------|-------------|---------|------|
-| index.html | 5분 (300s) | 5분 (300s) | 5분 (300s) | 짧은 캐시, 빈번한 업데이트 |
-| *.js | 1년 (31536000s) | 1년 (31536000s) | 1년 (31536000s) | 콘텐츠 해시로 무효화 |
-| *.css | 1년 (31536000s) | 1년 (31536000s) | 1년 (31536000s) | 콘텐츠 해시로 무효화 |
-| *.png, *.jpg, *.svg | 1년 (31536000s) | 1년 (31536000s) | 1년 (31536000s) | 정적 리소스 |
+| 파일 타입            | MinTTL          | DefaultTTL      | MaxTTL          | 전략                       |
+| -------------------- | --------------- | --------------- | --------------- | -------------------------- |
+| index.html           | 5분 (300s)      | 5분 (300s)      | 5분 (300s)      | 짧은 캐시, 빈번한 업데이트 |
+| \*.js                | 1년 (31536000s) | 1년 (31536000s) | 1년 (31536000s) | 콘텐츠 해시로 무효화       |
+| \*.css               | 1년 (31536000s) | 1년 (31536000s) | 1년 (31536000s) | 콘텐츠 해시로 무효화       |
+| _.png, _.jpg, \*.svg | 1년 (31536000s) | 1년 (31536000s) | 1년 (31536000s) | 정적 리소스                |
 
 ## S3 버킷 구성
 
@@ -224,37 +224,37 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run tests
         run: npm test
-      
+
       - name: Build for production
         run: npm run build:production
         env:
-          VITE_TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
-      
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-      
+
       - name: Deploy to S3
         run: aws s3 sync dist/ s3://watcha-clone-prod/ --delete
-      
+
       - name: Invalidate CloudFront cache
         run: |
           DISTRIBUTION_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?DefaultCacheBehavior.TargetOriginId=='S3-watcha-clone-prod'].Id" --output text)
@@ -269,18 +269,18 @@ jobs:
 
 ```bash
 # .env.local
-VITE_TMDB_API_KEY=your_api_key_here
-VITE_TMDB_BASE_URL=https://api.themoviedb.org/3
-VITE_TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p
+TMDB_API_KEY=your_api_key_here
+TMDB_BASE_URL=https://api.themoviedb.org/3
+TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p
 ```
 
 ### 프로덕션 환경
 
 ```bash
 # .env.production
-VITE_TMDB_API_KEY=production_api_key_here
-VITE_TMDB_BASE_URL=https://api.themoviedb.org/3
-VITE_TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p
+TMDB_API_KEY=production_api_key_here
+TMDB_BASE_URL=https://api.themoviedb.org/3
+TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p
 ```
 
 ### CI/CD 환경

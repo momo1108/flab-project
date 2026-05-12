@@ -11,12 +11,10 @@ src/
 ├── components/         # 재사용 컴포넌트
 │   ├── Header/
 │   │   ├── Header.tsx
-│   │   ├── Header.module.css
-│   │   └── index.ts    # re-export
+│   │   └── Header.module.css
 │   ├── Sidebar/
 │   │   ├── Sidebar.tsx
-│   │   ├── Sidebar.module.css
-│   │   └── index.ts
+│   │   └── Sidebar.module.css
 │   └── common/         # 공통 컴포넌트
 │       ├── Button.tsx
 │       ├── Input.tsx
@@ -29,20 +27,16 @@ src/
 ├── api/                # API 호출 및 쿼리 설정
 │   ├── queries/        # Query Hooks
 │   │   ├── users.ts
-│   │   ├── posts.ts
-│   │   └── index.ts    # re-export
+│   │   └── posts.ts
 │   ├── mutations/      # Mutation Hooks
 │   │   ├── users.ts
-│   │   ├── posts.ts
-│   │   └── index.ts    # re-export
+│   │   └── posts.ts
 │   ├── keys.ts         # Query Key Factory
-│   ├── client.ts       # QueryClient 설정
-│   └── index.ts        # re-export
+│   └── client.ts       # QueryClient 설정
 ├── types/              # TypeScript 타입 정의
 │   ├── user.ts
 │   ├── post.ts
-│   ├── api.ts
-│   └── index.ts        # re-export
+│   └── api.ts
 ├── routes/             # React Router 설정
 │   ├── index.ts        # 라우트 정의
 │   └── guards.ts       # 라우트 가드
@@ -53,12 +47,10 @@ src/
 ├── utils/              # 유틸리티 함수
 │   ├── format.ts       # 데이터 포맷팅
 │   ├── validation.ts   # 유효성 검사
-│   ├── date.ts         # 날짜 관련
-│   └── index.ts        # re-export
+│   └── date.ts         # 날짜 관련
 ├── constants/          # 상수 값
 │   ├── api.ts          # API 관련 상수
-│   ├── routes.ts       # 라우트 관련 상수
-│   └── index.ts        # re-export
+│   └── routes.ts       # 라우트 관련 상수
 ├── assets/             # 정적 자원
 │   ├── images/
 │   ├── icons/
@@ -79,7 +71,7 @@ src/
 ### 컴포넌트 파일
 
 - **PascalCase**: `UserProfile.tsx`, `Header.tsx`, `Sidebar.tsx`
-- 폴더 구성: 컴포넌트 + 관련 스타일 + index.ts
+- 폴더 구성: 컴포넌트 + 관련 스타일
 
 ### Hooks 파일
 
@@ -95,20 +87,6 @@ src/
 
 - **소문자 또는 PascalCase**: `user.ts`, `User.ts`
 - 타입은 `types/` 폴더에 위치
-
-## index.ts 파일 활용
-
-각 폴더의 진입점에서 `index.ts`를 사용하여 내보내기:
-
-```typescript
-// types/index.ts
-export * from './user';
-export * from './post';
-export * from './api';
-
-// 사용 시
-import { User, Post, ApiResponse } from '@/types';
-```
 
 ## CSS Modules
 
@@ -140,41 +118,35 @@ src/
 │   ├── layout/                # 레이아웃 컴포넌트
 │   │   ├── Header/
 │   │   │   ├── Header.tsx
-│   │   │   ├── Header.module.css
-│   │   │   └── index.ts
+│   │   │   └── Header.module.css
 │   │   ├── Footer/
 │   │   │   ├── Footer.tsx
-│   │   │   ├── Footer.module.css
-│   │   │   └── index.ts
+│   │   │   └── Footer.module.css
 │   │   └── MainLayout.tsx
 │   ├── movie/                 # 영화 관련 컴포넌트
 │   │   ├── MovieCard.tsx
 │   │   ├── MovieCard.module.css
 │   │   ├── MovieGrid.tsx
-│   │   ├── MovieGrid.module.css
-│   │   └── index.ts
+│   │   └── MovieGrid.module.css
 │   ├── carousel/              # 캐러셀 컴포넌트
 │   │   ├── CarouselRow.tsx
 │   │   ├── CarouselRow.module.css
 │   │   ├── CollectionCard.tsx
 │   │   ├── CollectionCard.module.css
 │   │   ├── ArtistCard.tsx
-│   │   ├── ArtistCard.module.css
-│   │   └── index.ts
+│   │   └── ArtistCard.module.css
 │   ├── search/                # 검색 관련 컴포넌트
 │   │   ├── SearchBar.tsx
 │   │   ├── SearchBar.module.css
 │   │   ├── Pagination.tsx
-│   │   ├── Pagination.module.css
-│   │   └── index.ts
+│   │   └── Pagination.module.css
 │   └── common/                # 공통 컴포넌트
 │       ├── Button.tsx
 │       ├── Button.module.css
 │       ├── LoadingSpinner.tsx
 │       ├── LoadingSpinner.module.css
 │       ├── ErrorMessage.tsx
-│       ├── ErrorMessage.module.css
-│       └── index.ts
+│       └── ErrorMessage.module.css
 ├── hooks/                     # Custom Hooks
 │   ├── tmdb/                  # TMDB 관련 Hooks
 │   │   ├── useConfiguration.ts
@@ -185,42 +157,33 @@ src/
 │   │   ├── usePopularPersons.ts
 │   │   ├── usePersonCredits.ts
 │   │   ├── useSearchMovies.ts
-│   │   ├── useMovieDetail.ts
-│   │   └── index.ts
+│   │   └── useMovieDetail.ts
 │   └── common/                # 공통 Hooks
 │       ├── useDebouncedValue.ts
-│       ├── useIntersectionObserver.ts
-│       └── index.ts
+│       └── useIntersectionObserver.ts
 ├── api/                       # API 호출 및 쿼리 설정
 │   ├── tmdb/                  # TMDB API
 │   │   ├── client.ts          # API 클라이언트
 │   │   ├── endpoints.ts       # 엔드포인트 상수
-│   │   ├── queries.ts         # 쿼리 함수
-│   │   └── index.ts
+│   │   └── queries.ts         # 쿼리 함수
 │   ├── keys/                  # Query Key Factory
-│   │   ├── tmdbKeys.ts
-│   │   └── index.ts
-│   ├── queries/               # React Query Hooks
-│   │   ├── tmdbQueries.ts
-│   │   └── index.ts
-│   └── index.ts
+│   │   └── tmdbKeys.ts
+│   └── queries/               # React Query Hooks
+│       └── tmdbQueries.ts
 ├── types/                     # TypeScript 타입 정의
 │   ├── tmdb.ts                # TMDB API 타입
 │   ├── movie.ts               # 영화 관련 타입
 │   ├── collection.ts          # 컬렉션 관련 타입
-│   ├── person.ts              # 인물 관련 타입
-│   └── index.ts
+│   └── person.ts              # 인물 관련 타입
 ├── utils/                     # 유틸리티 함수
 │   ├── format.ts              # 데이터 포맷팅
 │   ├── image.ts               # 이미지 관련 유틸리티
 │   ├── validation.ts          # 유효성 검사
-│   ├── error.ts               # 에러 처리 유틸리티
-│   └── index.ts
+│   └── error.ts               # 에러 처리 유틸리티
 ├── constants/                 # 상수 값
 │   ├── tmdb.ts                # TMDB 관련 상수
 │   ├── cache.ts               # 캐시 관련 상수
-│   ├── image.ts               # 이미지 크기 상수
-│   └── index.ts
+│   └── image.ts               # 이미지 크기 상수
 ├── styles/                    # 전역 스타일
 │   ├── global.css
 │   ├── variables.css          # CSS 변수
@@ -230,8 +193,7 @@ src/
 │   └── lazyRoutes.ts          # Lazy Loading 라우트
 ├── providers/                 # Context Providers
 │   ├── QueryProvider.tsx
-│   ├── RouterProvider.tsx
-│   └── index.ts
+│   └── RouterProvider.tsx
 ├── assets/                    # 정적 자원
 │   ├── images/
 │   │   ├── placeholder.png
@@ -250,18 +212,14 @@ api/
 ├── tmdb/
 │   ├── client.ts              # TMDB API 클라이언트
 │   ├── endpoints.ts           # 엔드포인트 정의
-│   ├── types.ts               # TMDB API 타입
-│   └── index.ts
+│   └── types.ts               # TMDB API 타입
 ├── keys/
-│   ├── tmdbKeys.ts            # TMDB Query Keys
-│   └── index.ts
-├── queries/
-│   ├── configuration.ts       # 설정 관련 쿼리
-│   ├── movies.ts             # 영화 관련 쿼리
-│   ├── collections.ts        # 컬렉션 관련 쿼리
-│   ├── persons.ts           # 인물 관련 쿼리
-│   └── index.ts
-└── index.ts
+│   └── tmdbKeys.ts            # TMDB Query Keys
+└── queries/
+    ├── configuration.ts       # 설정 관련 쿼리
+    ├── movies.ts             # 영화 관련 쿼리
+    ├── collections.ts        # 컬렉션 관련 쿼리
+    └── persons.ts           # 인물 관련 쿼리
 ```
 
 ## 컴포넌트별 파일 구조
@@ -288,8 +246,7 @@ components/carousel/
 ├── CollectionCard.tsx       # 컬렉션 카드
 ├── CollectionCard.module.css # 컬렉션 카드 스타일
 ├── ArtistCard.tsx           # 인물 카드
-├── ArtistCard.module.css    # 인물 카드 스타일
-└── index.ts                # re-export
+└── ArtistCard.module.css    # 인물 카드 스타일
 ```
 
 ## Hooks 폴더 구조
@@ -305,12 +262,10 @@ hooks/
 │   ├── usePopularPersons.ts # 인기 인물 목록
 │   ├── usePersonCredits.ts  # 인물 출연작
 │   ├── useSearchMovies.ts   # 영화 검색
-│   ├── useMovieDetail.ts    # 영화 상세
-│   └── index.ts
+│   └── useMovieDetail.ts    # 영화 상세
 └── common/                  # 공통 Hooks
     ├── useDebouncedValue.ts # 디바운싱
-    ├── useIntersectionObserver.ts # Intersection Observer
-    └── index.ts
+    └── useIntersectionObserver.ts # Intersection Observer
 ```
 
 ## 스타일 폴더 구조

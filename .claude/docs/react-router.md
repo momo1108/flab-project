@@ -2,37 +2,36 @@
 
 ## 라우트 정의 구조
 
-```typescript
-// ✅ 권장: 라우트 설정 파일 분리
-// routes/index.ts
-import { RouteObject } from 'react-router-dom';
-import { lazy } from 'react';
+```tsx
+// src/App.tsx
+import { Routes, Route } from 'react-router';
+import { Providers } from './components/Providers';
+import MainPage from './pages/MainPage';
 
-const HomePage = lazy(() => import('../pages/HomePage'));
-const DetailPage = lazy(() => import('../pages/DetailPage'));
+function App() {
+  return (
+    <Providers>
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/movie/:id" element={<DetailPage />} />
+        <Route path="/artist/:id" element={<ArtistPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Providers>
+  );
+}
 
-export const routes: RouteObject[] = [
-  {
-    path: '/',
-    element: <HomePage />,
-  },
-  {
-    path: '/detail/:id',
-    element: <DetailPage />,
-  },
-  {
-    path: '*',
-    element: <NotFound />,
-  },
-];
+export default App;
 ```
 
 ## 라우트 구성
 
-- 라우트 설정은 별도 파일로 분리
+- `Routes`와 `Route` 컴포넌트를 직접 사용하여 라우트 정의
+- 전역 Providers(React Query 등)로 전체 앱 감싸기
 - Lazy Loading으로 번들 크기 최적화
 - 동적 세그먼트는 `:param` 형식
-- 404 페이지는 `path: '*'`로 마지막 라우트 설정
+- 404 페이지는 `path: "*"`로 마지막 라우트 설정`
 
 ## 네비게이션
 
@@ -79,52 +78,16 @@ setSearchParams({ page: '2', sort: 'date' });
 인증이 필요한 라우트 등은 래퍼 컴포넌트로 구현:
 
 ```typescript
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const ProtectedRoute: React.FC<PropsWithChildren> = ({ children }) => {
   const isAuthenticated = useAuth();
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
 };
-
-## FLAB 프로젝트 라우팅 구조
-
-### 라우트 정의
-
-```typescript
-import { RouteObject } from 'react-router-dom';
-import { lazy } from 'react';
-
-const MainPage = lazy(() => import('../pages/MainPage'));
-const SearchPage = lazy(() => import('../pages/SearchPage'));
-const DetailPage = lazy(() => import('../pages/DetailPage'));
-const CollectionDetailPage = lazy(() => import('../pages/CollectionDetailPage'));
-const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
-
-export const routes: RouteObject[] = [
-  {
-    path: '/',
-    element: <MainPage />,
-  },
-  {
-    path: '/search',
-    element: <SearchPage />,
-  },
-  {
-    path: '/movie/:id',
-    element: <DetailPage />,
-  },
-  {
-    path: '/collection/:id',
-    element: <CollectionDetailPage />,
-  },
-  {
-    path: '*',
-    element: <NotFoundPage />,
-  },
-];
 ```
 
-### 페이지별 라우팅 사용법
+## 페이지별 라우팅 사용법
 
-#### 메인페이지
+### 메인페이지
+
 ```typescript
 // 페이지 진입
 <Link to="/">홈</Link>
@@ -134,7 +97,8 @@ const navigate = useNavigate();
 navigate(`/movie/${movie.id}`);
 ```
 
-#### 검색페이지
+### 검색페이지
+
 ```typescript
 // 검색페이지 이동
 const navigate = useNavigate();
@@ -146,7 +110,8 @@ const query = searchParams.get('query');
 const page = parseInt(searchParams.get('page') || '1');
 ```
 
-#### 상세페이지
+### 상세페이지
+
 ```typescript
 // URL 파라미터 추출
 const { id } = useParams<{ id: string }>();
@@ -156,7 +121,7 @@ const navigate = useNavigate();
 navigate(-1); // 또는 navigate('/');
 ```
 
-### 쿼리 파라미터 처리
+## 쿼리 파라미터 처리
 
 ```typescript
 // 검색페이지 URL 동기화
@@ -169,5 +134,4 @@ const handleSearch = (query: string) => {
 const handlePageChange = (page: number) => {
   setSearchParams({ query: searchParams.get('query') || '', page: page.toString() });
 };
-```
 ```

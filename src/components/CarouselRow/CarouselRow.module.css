@@ -1,0 +1,176 @@
+.carouselRow {
+  --movie-carousel-column-count: 3;
+  --artist-carousel-column-count: 3;
+  --carousel-column-count: var(--movie-carousel-column-count);
+  --carousel-scroll-button-size: 16px;
+  --carousel-scroll-button-edge-offset: 2px;
+  padding: 0 var(--content-side-padding);
+  margin-bottom: 48px;
+}
+
+.movieRow {
+  --carousel-column-count: var(--movie-carousel-column-count);
+}
+
+.artistRow {
+  --carousel-column-count: var(--artist-carousel-column-count);
+}
+
+@media screen and (min-width: 768px) {
+  .carouselRow {
+    --carousel-scroll-button-size: 32px;
+    --carousel-scroll-button-edge-offset: 4px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .carouselRow {
+    --movie-carousel-column-count: 4;
+    --artist-carousel-column-count: 4;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .carouselRow {
+    --movie-carousel-column-count: 5;
+    --artist-carousel-column-count: 5;
+  }
+}
+
+@media screen and (min-width: 1136px) {
+  .carouselRow {
+    --movie-carousel-column-count: 6;
+    --artist-carousel-column-count: 6;
+  }
+}
+
+@media screen and (min-width: 1560px) {
+  .carouselRow {
+    --movie-carousel-column-count: 7;
+    --artist-carousel-column-count: 7;
+  }
+}
+
+@media screen and (min-width: 1650px) {
+  .carouselRow {
+    --movie-carousel-column-count: 8;
+    --artist-carousel-column-count: 8;
+  }
+}
+
+.header {
+  margin-bottom: 12px;
+  padding: 0;
+  max-width: var(--content-max-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 2px 0;
+}
+
+.description {
+  font-size: 14px;
+  color: #b3b3b3;
+  margin: 0;
+}
+
+.carouselContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  max-width: var(--content-max-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.scrollContainer {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 6px 0 24px 0;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.content {
+  display: flex;
+  margin: 0 -10px;
+}
+
+.scrollButton {
+  position: absolute;
+  top: 0;
+  width: var(--carousel-scroll-button-size);
+  height: 100%;
+  margin-bottom: 48px;
+  background: rgba(20, 20, 20, 0.8);
+  color: #b3b3b3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.scrollIcon {
+  width: var(--carousel-scroll-button-size);
+  height: calc(var(--carousel-scroll-button-size) * 3);
+}
+
+.scrollButton:hover {
+  transform: scale(1.1);
+}
+
+.scrollButton:active {
+  transform: scale(0.95);
+}
+
+.scrollButton:first-child {
+  left: calc(var(--content-side-padding) * -1 + var(--carousel-scroll-button-edge-offset));
+}
+
+.scrollButton:last-child {
+  right: calc(var(--content-side-padding) * -1 + var(--carousel-scroll-button-edge-offset));
+}
+
+/* Skeleton Loading */
+.skeletonContainer {
+  display: flex;
+  margin: 0 -10px;
+  padding: 24px var(--content-side-padding);
+  overflow-x: auto;
+  max-width: var(--content-max-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.skeletonCard {
+  flex-shrink: 0;
+  width: calc(100% / var(--carousel-column-count));
+  padding: 0 10px;
+  aspect-ratio: 2/3;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #1f1f1f 25%, #2a2a2a 50%, #1f1f1f 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

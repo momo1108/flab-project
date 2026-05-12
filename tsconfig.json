@@ -8,7 +8,8 @@
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "esnext",
-    "target": "es5",
+    "moduleResolution": "bundler",
+    "target": "es2017",
     "ignoreDeprecations": "6.0",
     "types": ["webpack-env"],
     // For nodejs:
