@@ -1,5 +1,5 @@
 import { useQuery, useQueries } from '@tanstack/react-query';
-import { tmdbClient } from '../services';
+import { tmdbClient } from '../services/tmdbClient';
 import type { GenreMap } from '../types/tmdb';
 
 // Query Keys
