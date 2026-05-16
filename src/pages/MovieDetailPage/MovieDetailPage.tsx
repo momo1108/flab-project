@@ -7,14 +7,26 @@ import {
   useMovieCredits,
   useMovieReviews,
   useSimilarMovies,
+  useTMDBConfiguration,
 } from '../../hooks/useTMDB';
 import styles from './MovieDetailPage.module.css';
 import type { MovieReview } from '../../types/tmdb';
 import { MovieHero } from './MovieHero';
 import { MovieContentTab } from './MovieContentTab';
 import { RelatedContentTab } from './RelatedContentTab';
+import { setImageConfig } from '../../utils/image';
 
 const MovieDetailPage = () => {
+  // API Configuration
+  const { data: config } = useTMDBConfiguration();
+
+  // Initialize image config
+  useEffect(() => {
+    if (config?.images) {
+      setImageConfig(config.images);
+    }
+  }, [config]);
+
   const { id } = useParams<{ id: string }>();
   const movieId = id ? Number.parseInt(id, 10) : 0;
 
