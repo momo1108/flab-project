@@ -12,7 +12,7 @@ export const getImageUrl = (
   defaultSize: string = 'w500',
 ): string => {
   if (!path) {
-    return '/placeholder.jpg';
+    return '/placeholder.png';
   }
 
   if (!imageConfig) {

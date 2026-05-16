@@ -28,6 +28,7 @@
   --spacing-xl: 32px;
   --spacing-2xl: 48px;
   --spacing-3xl: 64px;
+  --page-side-margin: 30px;
 
   --border-radius-sm: 4px;
   --border-radius-md: 8px;
@@ -51,6 +52,12 @@
 @media (min-width: 768px) {
   :root {
     --content-side-padding: 40px;
+  }
+}
+
+@media (min-width: 1081px) {
+  :root {
+    --page-side-margin: 40px;
   }
 }
 
