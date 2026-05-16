@@ -9,12 +9,12 @@ const Header: React.FC = () => {
           FLAB
         </Link>
         <nav className={styles.nav}>
-          <button className={styles.searchButton} aria-label="검색">
+          <Link to="/search" className={styles.searchButton} aria-label="검색">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.35-4.35" />
             </svg>
-          </button>
+          </Link>
         </nav>
       </div>
     </header>
