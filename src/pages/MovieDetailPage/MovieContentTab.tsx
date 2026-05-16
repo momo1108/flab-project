@@ -8,10 +8,9 @@ interface MovieContentTabProps {
   isVideosLoading: boolean;
   credits: MovieCreditsResponse | undefined;
   isCreditsLoading: boolean;
-  allReviews: MovieReview[];
+  currentReviews: MovieReview[];
+  reviewCount: number;
   isReviewsLoading: boolean;
-  reviewPage: number;
-  hasMoreReviews: boolean;
   loadMoreReviews: () => void;
 }
 
@@ -40,36 +39,40 @@ export const MovieContentTab: React.FC<MovieContentTabProps> = ({
   isVideosLoading,
   credits,
   isCreditsLoading,
-  allReviews,
+  currentReviews,
+  reviewCount,
   isReviewsLoading,
-  reviewPage,
-  hasMoreReviews,
   loadMoreReviews,
 }) => {
-  const reviewsRef = useRef<HTMLDivElement>(null);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const producer: CrewMember | undefined =
     credits?.crew.find((c) => c.job === 'Executive Producer') ?? credits?.crew.find((c) => c.job === 'Producer');
 
   const topCast = credits?.cast.sort((a, b) => a.order - b.order).slice(0, 10);
 
-  const handleScroll = () => {
-    const container = reviewsRef.current;
-    if (!container || !hasMoreReviews || isReviewsLoading) return;
-
-    const { scrollTop, scrollHeight, clientHeight } = container;
-    if (scrollHeight - scrollTop <= clientHeight + 100) {
-      loadMoreReviews();
-    }
-  };
-
+  // Intersection Observer for infinite scroll
   useEffect(() => {
-    const container = reviewsRef.current;
-    if (container) {
-      container.addEventListener('scroll', handleScroll);
-      return () => container.removeEventListener('scroll', handleScroll);
+    if (currentReviews.length >= reviewCount || isReviewsLoading) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          loadMoreReviews();
+        }
+      },
+      { rootMargin: '200px', threshold: 0.1 },
+    );
+
+    const target = loadMoreRef.current;
+    if (target) {
+      observer.observe(target);
     }
-  }, [hasMoreReviews, isReviewsLoading]);
+
+    return () => {
+      if (target) observer.unobserve(target);
+    };
+  }, [currentReviews, isReviewsLoading, loadMoreReviews]);
 
   return (
     <div className={`${styles.tabContent} ${styles.active}`}>
@@ -166,17 +169,20 @@ export const MovieContentTab: React.FC<MovieContentTabProps> = ({
       )}
 
       <div className={styles.subsection}>
-        <h2 className={styles.sectionTitle}>사용자 평</h2>
-        {isReviewsLoading && reviewPage === 1 ? (
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>사용자 평</h2>
+          <span>{reviewCount}</span>
+        </div>
+        {isReviewsLoading && currentReviews.length === 0 ? (
           <div className={styles.loading}>
             <div className="spinner" />
             <p className={styles.loadingText}>로딩 중...</p>
           </div>
-        ) : allReviews.length === 0 ? (
+        ) : currentReviews.length === 0 ? (
           <p className={styles.emptyState}>리뷰가 없습니다.</p>
         ) : (
-          <div ref={reviewsRef} className={styles.reviewsList}>
-            {allReviews.map((review) => (
+          <div className={styles.reviewsList}>
+            {currentReviews.map((review) => (
               <div key={review.id} className={styles.reviewCard}>
                 <img
                   src={
@@ -201,10 +207,15 @@ export const MovieContentTab: React.FC<MovieContentTabProps> = ({
                 </div>
               </div>
             ))}
-            {hasMoreReviews && (
-              <button className={styles.loadMoreButton} onClick={loadMoreReviews} disabled={isReviewsLoading}>
-                {isReviewsLoading ? '로딩 중...' : '더 보기'}
-              </button>
+            {currentReviews.length < reviewCount && (
+              <div ref={loadMoreRef}>
+                {isReviewsLoading && (
+                  <div className={styles.loading}>
+                    <div className="spinner" />
+                    <p className={styles.loadingText}>로딩 중...</p>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         )}

@@ -19,46 +19,41 @@ const MovieDetailPage = () => {
   const movieId = id ? Number.parseInt(id, 10) : 0;
 
   const [activeTab, setActiveTab] = useState<'content' | 'related'>('content');
-  const [reviewPage, setReviewPage] = useState(1);
-  const [allReviews, setAllReviews] = useState<MovieReview[]>([]);
-  const [hasMoreReviews, setHasMoreReviews] = useState(true);
+  const [currentReviews, setCurrentReviews] = useState<MovieReview[]>([]);
 
   const { data: movie, isLoading: isMovieLoading, error: movieError } = useMovieDetail(movieId);
   const { data: images } = useMovieImages(movieId);
   const { data: videos, isLoading: isVideosLoading } = useMovieVideos(movieId);
   const { data: credits, isLoading: isCreditsLoading } = useMovieCredits(movieId);
-  const { data: reviews, isLoading: isReviewsLoading } = useMovieReviews(movieId, reviewPage, activeTab === 'content');
+  const { data: reviews, isLoading: isReviewsLoading } = useMovieReviews(movieId, 1, activeTab === 'content');
   const { data: similarMovies, isLoading: isSimilarLoading } = useSimilarMovies(movieId, 1, activeTab === 'related');
 
   useEffect(() => {
     if (reviews && activeTab === 'content') {
-      if (reviewPage === 1) {
-        setAllReviews(reviews.results);
-      } else {
-        setAllReviews((prev) => [...prev, ...reviews.results]);
+      if (currentReviews.length === 0) {
+        setCurrentReviews(reviews.results.slice(0, 10));
       }
-      setHasMoreReviews(reviews.page < reviews.total_pages);
     }
-  }, [reviews, reviewPage, activeTab]);
+  }, [reviews, activeTab]);
 
   useEffect(() => {
     if (activeTab === 'content') {
-      setReviewPage(1);
-      setAllReviews([]);
+      setCurrentReviews([]);
     }
   }, [activeTab, movieId]);
 
   // Reset state when movieId changes
   useEffect(() => {
     setActiveTab('content');
-    setReviewPage(1);
-    setAllReviews([]);
-    setHasMoreReviews(true);
+    setCurrentReviews([]);
     window.scrollTo(0, 0);
   }, [movieId]);
 
   const loadMoreReviews = () => {
-    if (hasMoreReviews) setReviewPage((prev) => prev + 1);
+    if (!reviews) return;
+    if (currentReviews.length < reviews.results.length) {
+      setCurrentReviews((currentReviews) => reviews.results.slice(0, currentReviews.length + 10));
+    }
   };
 
   const youtubeVideos = videos?.results.filter((v) => v.site === 'YouTube') ?? [];
@@ -114,10 +109,9 @@ const MovieDetailPage = () => {
               isVideosLoading={isVideosLoading}
               credits={credits}
               isCreditsLoading={isCreditsLoading}
-              allReviews={allReviews}
+              currentReviews={currentReviews}
+              reviewCount={reviews?.results.length || 0}
               isReviewsLoading={isReviewsLoading}
-              reviewPage={reviewPage}
-              hasMoreReviews={hasMoreReviews}
               loadMoreReviews={loadMoreReviews}
             />
           )}

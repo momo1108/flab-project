@@ -411,12 +411,18 @@
   display: block;
 }
 
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 16px 0;
+  color: var(--color-text-primary);
+}
+
 /* Section Title */
 .sectionTitle {
   font-size: 18px;
   font-weight: 700;
-  color: var(--color-text-primary);
-  margin: 0 0 16px 0;
 }
 
 /* Videos Grid (.s-jos) */
