@@ -7,6 +7,11 @@ import type {
   TMDBConfiguration,
   GenreResponse,
   SearchResponse,
+  MovieImages,
+  MovieVideosResponse,
+  MovieCreditsResponse,
+  MovieReviewsResponse,
+  SimilarMoviesResponse,
 } from '../types/tmdb';
 
 const BASE_URL = process.env.TMDB_BASE_URL || 'https://api.themoviedb.org/3';
@@ -111,6 +116,26 @@ class TMDBClient {
 
   async getPersonMovieCredits(personId: number): Promise<PersonCredits> {
     return this.request<PersonCredits>(`/person/${personId}/movie_credits`);
+  }
+
+  async getMovieImages(id: number): Promise<MovieImages> {
+    return this.request<MovieImages>(`/movie/${id}/images`);
+  }
+
+  async getMovieVideos(id: number): Promise<MovieVideosResponse> {
+    return this.request<MovieVideosResponse>(`/movie/${id}/videos`);
+  }
+
+  async getMovieCredits(id: number): Promise<MovieCreditsResponse> {
+    return this.request<MovieCreditsResponse>(`/movie/${id}/credits`);
+  }
+
+  async getMovieReviews(id: number, page: number = 1): Promise<MovieReviewsResponse> {
+    return this.request<MovieReviewsResponse>(`/movie/${id}/reviews?page=${page}`);
+  }
+
+  async getSimilarMovies(id: number, page: number = 1): Promise<SimilarMoviesResponse> {
+    return this.request<SimilarMoviesResponse>(`/movie/${id}/similar?page=${page}`);
   }
 }
 

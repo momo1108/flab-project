@@ -16,6 +16,11 @@ export const queryKeys = {
   collectionDetail: (id: number) => ['collectionDetail', id] as const,
   popularPersons: (page: number) => ['popularPersons', page] as const,
   personCredits: (personId: number) => ['personCredits', personId] as const,
+  movieImages: (id: number) => ['movieImages', id] as const,
+  movieVideos: (id: number) => ['movieVideos', id] as const,
+  movieCredits: (id: number) => ['movieCredits', id] as const,
+  movieReviews: (id: number, page: number) => ['movieReviews', id, page] as const,
+  similarMovies: (id: number, page: number) => ['similarMovies', id, page] as const,
 };
 
 // Query Configurations
@@ -167,5 +172,50 @@ export const usePersonMovieCredits = (personId: number) => {
     queryFn: () => tmdbClient.getPersonMovieCredits(personId),
     ...queryConfig.movieDetail,
     enabled: !!personId,
+  });
+};
+
+export const useMovieImages = (id: number) => {
+  return useQuery({
+    queryKey: queryKeys.movieImages(id),
+    queryFn: () => tmdbClient.getMovieImages(id),
+    ...queryConfig.movieDetail,
+    enabled: !!id,
+  });
+};
+
+export const useMovieVideos = (id: number) => {
+  return useQuery({
+    queryKey: queryKeys.movieVideos(id),
+    queryFn: () => tmdbClient.getMovieVideos(id),
+    ...queryConfig.movies,
+    enabled: !!id,
+  });
+};
+
+export const useMovieCredits = (id: number) => {
+  return useQuery({
+    queryKey: queryKeys.movieCredits(id),
+    queryFn: () => tmdbClient.getMovieCredits(id),
+    ...queryConfig.movies,
+    enabled: !!id,
+  });
+};
+
+export const useMovieReviews = (id: number, page: number = 1, enabled: boolean = true) => {
+  return useQuery({
+    queryKey: queryKeys.movieReviews(id, page),
+    queryFn: () => tmdbClient.getMovieReviews(id, page),
+    ...queryConfig.movies,
+    enabled: enabled && !!id,
+  });
+};
+
+export const useSimilarMovies = (id: number, page: number = 1, enabled: boolean = true) => {
+  return useQuery({
+    queryKey: queryKeys.similarMovies(id, page),
+    queryFn: () => tmdbClient.getSimilarMovies(id, page),
+    ...queryConfig.movies,
+    enabled: enabled && !!id,
   });
 };
