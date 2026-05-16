@@ -15,6 +15,16 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # 환경변수 파일 생성
+      - name: Generate .env.production
+        run: |
+          cat <<'EOF' > .env.production
+          TMDB_API_KEY=${{ secrets.TMDB_API_KEY }}
+          TMDB_BASE_URL=${{ secrets.TMDB_BASE_URL }}
+          TMDB_IMAGE_BASE_URL=${{ secrets.TMDB_IMAGE_BASE_URL }}
+          APP_PHASE=production
+          EOF
+
       # 빌드
       - name: Build
         run: npm run build:production
