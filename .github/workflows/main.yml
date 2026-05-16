@@ -11,17 +11,21 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
-        
+
       - name: Install dependencies
         run: npm install
 
       # 환경변수 파일 생성
       - name: Generate .env.production
+        env:
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+          TMDB_BASE_URL: ${{ secrets.TMDB_BASE_URL }}
+          TMDB_IMAGE_BASE_URL: ${{ secrets.TMDB_IMAGE_BASE_URL }}
         run: |
-          cat <<'EOF' > .env.production
-          TMDB_API_KEY=${{ secrets.TMDB_API_KEY }}
-          TMDB_BASE_URL=${{ secrets.TMDB_BASE_URL }}
-          TMDB_IMAGE_BASE_URL=${{ secrets.TMDB_IMAGE_BASE_URL }}
+          cat <<EOF > .env.production
+          TMDB_API_KEY=$TMDB_API_KEY
+          TMDB_BASE_URL=$TMDB_BASE_URL
+          TMDB_IMAGE_BASE_URL=$TMDB_IMAGE_BASE_URL
           APP_PHASE=production
           EOF
 
@@ -38,9 +42,9 @@ jobs:
           AWS_REGION: ap-northeast-2
 
       # 기존 캐시 무효화
-      - name: Invalidate CloudFront Cache 
+      - name: Invalidate CloudFront Cache
         uses: chetan/invalidate-cloudfront-action@master
         env:
           AWS_DISTRIBUTION: ${{ secrets.AWS_DISTRIBUTION_ID }}
-          PATHS: "/index.html"
+          PATHS: '/index.html'
         continue-on-error: true
