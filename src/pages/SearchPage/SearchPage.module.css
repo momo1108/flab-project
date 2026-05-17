@@ -1,3 +1,400 @@
 .pageContainer {
-  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  max-width: 1680px;
+  padding: 0 var(--page-side-margin);
+  gap: 24px;
+}
+
+/* Search Input Section */
+.searchSection {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 16px 0;
+  background-color: #121212;
+}
+
+.searchInputWrapper {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 14px 44px 14px 44px;
+  font-size: 15px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background-color: #1a1a1a;
+  color: #fff;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.searchInput::placeholder {
+  color: #666;
+}
+
+.searchInput:focus {
+  border-color: #e50914;
+  background-color: #222;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+
+.clearButton {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 4px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.clearButton.visible {
+  display: flex;
+}
+
+.clearButton:hover {
+  color: #fff;
+  background-color: #333;
+}
+
+/* Content Layout */
+.contentLayout {
+  position: relative;
+  display: flex;
+  gap: 24px;
+  padding: 0 24px;
+}
+
+.contentMain {
+  flex: 1;
+  max-width: 720px;
+}
+
+/* Section Title */
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+/* Popular TOP 10 Grid */
+.popularGrid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: row dense;
+  gap: 12px;
+}
+
+@media screen and (max-width: 48em) {
+  .popularGrid {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Popular Item */
+.popularItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.popularItem:hover {
+  background-color: #1a1a1a;
+}
+
+.popularRank {
+  font-size: 18px;
+  font-weight: 700;
+  color: #e50914;
+  min-width: 24px;
+  text-align: center;
+}
+
+.popularTitle {
+  font-size: 14px;
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Backdrop Image Section */
+.backdropSection {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backdropWrapper {
+  position: relative;
+  height: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.backdropImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.backdropImage.fading {
+  opacity: 0;
+}
+
+.backdropOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(18, 18, 18, 0.9) 0%, rgba(18, 18, 18, 0.4) 40%, rgba(18, 18, 18, 0.7) 100%);
+}
+
+@media screen and (max-width: 80em) {
+  .backdropSection {
+    display: none;
+  }
+}
+
+/* Search Results */
+.searchResultsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.searchResultsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Search Result Card */
+.searchResultCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.searchResultCard:hover {
+  background-color: #1a1a1a;
+}
+
+.searchResultPoster {
+  width: auto;
+  height: 70px;
+  border-radius: 4px;
+  object-fit: cover;
+  background-color: #2a2a2a;
+  flex-shrink: 0;
+}
+
+.searchResultPosterPlaceholder {
+  width: 47px;
+  height: 70px;
+  border-radius: 4px;
+  background-color: #2a2a2a;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchResultPosterPlaceholder svg {
+  width: 24px;
+  height: 24px;
+  color: #444;
+}
+
+.searchResultInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.searchResultTitle {
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.searchResultMeta {
+  font-size: 13px;
+  color: #888;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Loading State */
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.loadingSpinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #333;
+  border-top-color: #e50914;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  margin-left: 12px;
+  color: #888;
+  font-size: 14px;
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+  font-size: 15px;
+}
+
+/* Genre Sections - CSS Variables at :root for JS access */
+:root {
+  --poster-side-padding: 4px;
+  --poster-column-count: 3;
+}
+
+@media (min-width: 769px) {
+  :root {
+    --poster-side-padding: 12px;
+  }
+}
+
+@media (min-width: 900px) {
+  :root {
+    --poster-column-count: 4;
+  }
+}
+
+@media (min-width: 1000px) {
+  :root {
+    --poster-column-count: 5;
+  }
+}
+
+@media (min-width: 1136px) {
+  :root {
+    --poster-column-count: 6;
+  }
+}
+
+@media (min-width: 1560px) {
+  :root {
+    --poster-column-count: 7;
+  }
+}
+
+@media (min-width: 1650px) {
+  :root {
+    --poster-column-count: 8;
+  }
+}
+
+.genreSection {
+  padding: 0;
+}
+
+/* Genre Poster Grid */
+.genrePosterGrid {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+
+.genrePosterItem {
+  box-sizing: border-box;
+  padding: var(--poster-side-padding);
+  width: calc(100% / var(--poster-column-count));
+}
+
+.genrePoster {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+
+.genrePoster:hover {
+  transform: scale(1.05);
+}
+
+.genrePosterPlaceholder {
+  width: 100%;
+  aspect-ratio: 2/3;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #444;
+}
+
+/* Intersection Observer Target */
+.loadMoreTrigger {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

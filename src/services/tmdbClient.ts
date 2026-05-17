@@ -13,6 +13,7 @@ import type {
   MovieReviewsResponse,
   SimilarMoviesResponse,
 } from '../types/tmdb';
+import { getLocalDateString } from '../utils/format';
 
 const BASE_URL = process.env.TMDB_BASE_URL || 'https://api.themoviedb.org/3';
 const ACCESS_TOKEN = process.env.TMDB_API_KEY;
@@ -75,8 +76,7 @@ class TMDBClient {
     'release_date.lte'?: string;
     sort_by?: string;
   }): Promise<MovieResponse> {
-    const today = new Date();
-    const localDateString = `${today.getFullYear()}-${today.getMonth().toString().padStart(2, '0')}-${today.getDay().toString().padStart(2, '0')}`;
+    const localDateString = getLocalDateString();
 
     // prevent sideeffect by copying params
     const queryParamsObj = { ...params };

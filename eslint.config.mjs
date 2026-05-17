@@ -37,7 +37,18 @@ export default defineConfig([
       },
     },
     rules: {
-      'no-unused-vars': 'error', // 미사용 변수 발견 시 에러
+      // TypeScript 코드에서는 base rule 대신 @typescript-eslint rule을 사용해야
+      // 타입 위치의 식별자(예: 함수 타입 인자명)에서 오탐을 줄일 수 있음
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
       'react/prop-types': 'off', // Typescript 로 props 의 타입 검증을 할 수 있으니 비활성화
 
       // pluginReact.configs.flat.recommended 에서 활성화된 옵션을 비활성화
