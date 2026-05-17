@@ -4,6 +4,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 
 /** @type {import("webpack").Configuration} */
 module.exports = {
@@ -28,6 +29,17 @@ module.exports = {
     }),
     new Dotenv({
       path: `./.env.${process.env.APP_PHASE}`,
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'public'),
+          to: path.resolve(__dirname, 'dist'), // Optional: defaults to output.path
+          globOptions: {
+            ignore: ['**/index.html'], // Avoid conflict if using HtmlWebpackPlugin
+          },
+        },
+      ],
     }),
     // Add your plugins here
     // Learn more about plugins from https://webpack.js.org/configuration/plugins/

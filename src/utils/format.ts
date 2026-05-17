@@ -29,7 +29,7 @@ export const getYearFromDate = (dateString: string): string => {
 
 export const getLocalDateString = (): string => {
   const today = new Date();
-  const localDateString = `${today.getFullYear() + 10}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+  const localDateString = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
 
   return localDateString;
 };
