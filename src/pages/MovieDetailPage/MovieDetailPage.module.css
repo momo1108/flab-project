@@ -1,5 +1,7 @@
 .pageContainer {
   background-color: var(--color-background);
+  max-width: calc(var(--page-side-margin) * 2 + 1600px);
+  margin: auto;
   min-height: 100vh;
 }
 
@@ -20,8 +22,7 @@
 
 /* Main Container */
 .mainContainer {
-  max-width: calc(var(--page-side-margin) * 2 + 1600px);
-  margin: auto;
+  width: 100%;
   padding-bottom: 100px;
 }
 
@@ -310,8 +311,7 @@
 .watchButton {
   background: var(--color-primary);
   color: var(--color-text-primary);
-  height: 40px;
-  padding: 0 16px;
+  padding: 6px 16px;
   border: none;
   border-radius: var(--border-radius-sm);
   font-size: 16px;
@@ -327,12 +327,6 @@
 
 .watchButton:hover {
   background: var(--color-primary-hover);
-}
-
-@media (max-width: 600px) {
-  .watchButton {
-    width: 100%;
-  }
 }
 
 /* Backdrop Stats (absolute positioned) */
@@ -700,8 +694,8 @@
 }
 
 .footerContent {
-  width: calc(var(--page-side-margin) * 2 + 1600px);
-  padding: 16px var(--page-side-margin);
+  width: 100%;
+  padding: 12px var(--page-side-margin);
   margin: auto;
   display: flex;
   align-items: center;

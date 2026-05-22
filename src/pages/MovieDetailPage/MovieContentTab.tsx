@@ -121,52 +121,52 @@ export const MovieContentTab: React.FC<MovieContentTabProps> = ({
         </div>
       )}
 
-      {(producer || topCast?.length) && (
-        <div className={styles.subsection}>
-          <h2 className={styles.sectionTitle}>감독/출연</h2>
-          {isCreditsLoading ? (
-            <div className={styles.loading}>
-              <div className="spinner" />
-              <p className={styles.loadingText}>로딩 중...</p>
-            </div>
-          ) : (
-            <div className={styles.castGrid}>
-              {producer && (
-                <div className={styles.castCard}>
-                  <img
-                    src={getProfileUrl(producer.profile_path, 'w185')}
-                    onError={(e) => {
-                      e.currentTarget.src = '/default-avatar.png';
-                    }}
-                    alt={producer.name}
-                    className={styles.castProfileImage}
-                  />
-                  <div className={styles.castInfo}>
-                    <span className={styles.castName}>{producer.name}</span>
-                    <span className={styles.castRole}>감독</span>
-                  </div>
+      <div className={styles.subsection}>
+        <h2 className={styles.sectionTitle}>감독/출연</h2>
+        {isCreditsLoading ? (
+          <div className={styles.loading}>
+            <div className="spinner" />
+            <p className={styles.loadingText}>로딩 중...</p>
+          </div>
+        ) : producer || topCast?.length ? (
+          <div className={styles.castGrid}>
+            {producer && (
+              <div className={styles.castCard}>
+                <img
+                  src={getProfileUrl(producer.profile_path, 'w185')}
+                  onError={(e) => {
+                    e.currentTarget.src = '/default-avatar.png';
+                  }}
+                  alt={producer.name}
+                  className={styles.castProfileImage}
+                />
+                <div className={styles.castInfo}>
+                  <span className={styles.castName}>{producer.name}</span>
+                  <span className={styles.castRole}>감독</span>
                 </div>
-              )}
-              {topCast?.map((person: CastMember) => (
-                <div key={person.id} className={styles.castCard}>
-                  <img
-                    src={getProfileUrl(person.profile_path, 'w185')}
-                    onError={(e) => {
-                      e.currentTarget.src = '/default-avatar.png';
-                    }}
-                    alt={person.name}
-                    className={styles.castProfileImage}
-                  />
-                  <div className={styles.castInfo}>
-                    <span className={styles.castName}>{person.name}</span>
-                    <span className={styles.castRole}>배우 {person.character}</span>
-                  </div>
+              </div>
+            )}
+            {topCast?.map((person: CastMember) => (
+              <div key={person.id} className={styles.castCard}>
+                <img
+                  src={getProfileUrl(person.profile_path, 'w185')}
+                  onError={(e) => {
+                    e.currentTarget.src = '/default-avatar.png';
+                  }}
+                  alt={person.name}
+                  className={styles.castProfileImage}
+                />
+                <div className={styles.castInfo}>
+                  <span className={styles.castName}>{person.name}</span>
+                  <span className={styles.castRole}>배우 {person.character}</span>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className={styles.emptyState}>감독/배우 정보가 없습니다.</p>
+        )}
+      </div>
 
       <div className={styles.subsection}>
         <div className={styles.sectionHeader}>
