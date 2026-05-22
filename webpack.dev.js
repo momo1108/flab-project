@@ -34,6 +34,7 @@ module.exports = merge(common, {
             loader: 'css-loader',
             options: {
               modules: {
+                auto: /\.module\.css$/i,
                 namedExport: false,
               },
             },

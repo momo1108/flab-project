@@ -1,7 +1,7 @@
 import { useQuery, useQueries, useInfiniteQuery } from '@tanstack/react-query';
 import { tmdbClient } from '../services/tmdbClient';
 import type { GenreMap } from '../types/tmdb';
-import type { MovieResponse } from '../types/tmdb';
+import type { MovieResponse, MovieReviewsResponse } from '../types/tmdb';
 
 // Query Keys
 export const queryKeys = {
@@ -20,7 +20,7 @@ export const queryKeys = {
   movieImages: (id: number) => ['movieImages', id] as const,
   movieVideos: (id: number) => ['movieVideos', id] as const,
   movieCredits: (id: number) => ['movieCredits', id] as const,
-  movieReviews: (id: number, page: number) => ['movieReviews', id, page] as const,
+  movieReviews: (id: number) => ['movieReviews', id] as const,
   similarMovies: (id: number, page: number) => ['similarMovies', id, page] as const,
 };
 
@@ -208,10 +208,15 @@ export const useMovieCredits = (id: number) => {
   });
 };
 
-export const useMovieReviews = (id: number, page: number = 1, enabled: boolean = true) => {
-  return useQuery({
-    queryKey: queryKeys.movieReviews(id, page),
-    queryFn: () => tmdbClient.getMovieReviews(id, page),
+export const useMovieReviews = (id: number, enabled: boolean = true) => {
+  return useInfiniteQuery({
+    queryKey: queryKeys.movieReviews(id),
+    queryFn: ({ pageParam = 1 }) => tmdbClient.getMovieReviews(id, pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: MovieReviewsResponse) => {
+      if (lastPage.page >= lastPage.total_pages) return undefined;
+      return lastPage.page + 1;
+    },
     ...queryConfig.movies,
     enabled: enabled && !!id,
   });

@@ -11,7 +11,9 @@ interface MovieContentTabProps {
   currentReviews: MovieReview[];
   reviewCount: number;
   isReviewsLoading: boolean;
-  loadMoreReviews: () => void;
+  hasMoreReviews: boolean;
+  fetchMoreReviews: () => void;
+  isFetchingMoreReviews: boolean;
 }
 
 const renderStars = (rating: number | null): React.ReactElement[] => {
@@ -42,7 +44,9 @@ export const MovieContentTab: React.FC<MovieContentTabProps> = ({
   currentReviews,
   reviewCount,
   isReviewsLoading,
-  loadMoreReviews,
+  hasMoreReviews,
+  fetchMoreReviews,
+  isFetchingMoreReviews,
 }) => {
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
@@ -53,12 +57,12 @@ export const MovieContentTab: React.FC<MovieContentTabProps> = ({
 
   // Intersection Observer for infinite scroll
   useEffect(() => {
-    if (currentReviews.length >= reviewCount || isReviewsLoading) return;
+    if (!hasMoreReviews || isFetchingMoreReviews) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0]?.isIntersecting) {
-          loadMoreReviews();
+        if (entries[0]?.isIntersecting && !isFetchingMoreReviews) {
+          fetchMoreReviews();
         }
       },
       { rootMargin: '200px', threshold: 0.1 },
@@ -72,7 +76,7 @@ export const MovieContentTab: React.FC<MovieContentTabProps> = ({
     return () => {
       if (target) observer.unobserve(target);
     };
-  }, [currentReviews, isReviewsLoading, loadMoreReviews]);
+  }, [hasMoreReviews, isFetchingMoreReviews, fetchMoreReviews]);
 
   return (
     <div className={`${styles.tabContent} ${styles.active}`}>
@@ -121,52 +125,52 @@ export const MovieContentTab: React.FC<MovieContentTabProps> = ({
         </div>
       )}
 
-      {(producer || topCast?.length) && (
-        <div className={styles.subsection}>
-          <h2 className={styles.sectionTitle}>감독/출연</h2>
-          {isCreditsLoading ? (
-            <div className={styles.loading}>
-              <div className="spinner" />
-              <p className={styles.loadingText}>로딩 중...</p>
-            </div>
-          ) : (
-            <div className={styles.castGrid}>
-              {producer && (
-                <div className={styles.castCard}>
-                  <img
-                    src={getProfileUrl(producer.profile_path, 'w185')}
-                    onError={(e) => {
-                      e.currentTarget.src = '/default-avatar.png';
-                    }}
-                    alt={producer.name}
-                    className={styles.castProfileImage}
-                  />
-                  <div className={styles.castInfo}>
-                    <span className={styles.castName}>{producer.name}</span>
-                    <span className={styles.castRole}>감독</span>
-                  </div>
+      <div className={styles.subsection}>
+        <h2 className={styles.sectionTitle}>감독/출연</h2>
+        {isCreditsLoading ? (
+          <div className={styles.loading}>
+            <div className="spinner" />
+            <p className={styles.loadingText}>로딩 중...</p>
+          </div>
+        ) : producer || topCast?.length ? (
+          <div className={styles.castGrid}>
+            {producer && (
+              <div className={styles.castCard}>
+                <img
+                  src={getProfileUrl(producer.profile_path, 'w185')}
+                  onError={(e) => {
+                    e.currentTarget.src = '/default-avatar.png';
+                  }}
+                  alt={producer.name}
+                  className={styles.castProfileImage}
+                />
+                <div className={styles.castInfo}>
+                  <span className={styles.castName}>{producer.name}</span>
+                  <span className={styles.castRole}>감독</span>
                 </div>
-              )}
-              {topCast?.map((person: CastMember) => (
-                <div key={person.id} className={styles.castCard}>
-                  <img
-                    src={getProfileUrl(person.profile_path, 'w185')}
-                    onError={(e) => {
-                      e.currentTarget.src = '/default-avatar.png';
-                    }}
-                    alt={person.name}
-                    className={styles.castProfileImage}
-                  />
-                  <div className={styles.castInfo}>
-                    <span className={styles.castName}>{person.name}</span>
-                    <span className={styles.castRole}>배우 {person.character}</span>
-                  </div>
+              </div>
+            )}
+            {topCast?.map((person: CastMember) => (
+              <div key={person.id} className={styles.castCard}>
+                <img
+                  src={getProfileUrl(person.profile_path, 'w185')}
+                  onError={(e) => {
+                    e.currentTarget.src = '/default-avatar.png';
+                  }}
+                  alt={person.name}
+                  className={styles.castProfileImage}
+                />
+                <div className={styles.castInfo}>
+                  <span className={styles.castName}>{person.name}</span>
+                  <span className={styles.castRole}>배우 {person.character}</span>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className={styles.emptyState}>감독/배우 정보가 없습니다.</p>
+        )}
+      </div>
 
       <div className={styles.subsection}>
         <div className={styles.sectionHeader}>
@@ -207,9 +211,9 @@ export const MovieContentTab: React.FC<MovieContentTabProps> = ({
                 </div>
               </div>
             ))}
-            {currentReviews.length < reviewCount && (
+            {hasMoreReviews && (
               <div ref={loadMoreRef}>
-                {isReviewsLoading && (
+                {isFetchingMoreReviews && (
                   <div className={styles.loading}>
                     <div className="spinner" />
                     <p className={styles.loadingText}>로딩 중...</p>
