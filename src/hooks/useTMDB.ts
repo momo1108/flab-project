@@ -1,6 +1,7 @@
-import { useQuery, useQueries } from '@tanstack/react-query';
+import { useQuery, useQueries, useInfiniteQuery } from '@tanstack/react-query';
 import { tmdbClient } from '../services/tmdbClient';
 import type { GenreMap } from '../types/tmdb';
+import type { MovieResponse } from '../types/tmdb';
 
 // Query Keys
 export const queryKeys = {
@@ -12,7 +13,7 @@ export const queryKeys = {
   moviesByGenre: (genreId: number, page: number) => ['moviesByGenre', genreId, page] as const,
   moviesByGenres: (genreIds: number[], page: number) => ['moviesByGenres', genreIds, page] as const,
   movieDetail: (id: number) => ['movieDetail', id] as const,
-  searchMovies: (query: string, page: number) => ['searchMovies', query, page] as const,
+  searchMovies: (query: string) => ['searchMovies', query] as const,
   collectionDetail: (id: number) => ['collectionDetail', id] as const,
   popularPersons: (page: number) => ['popularPersons', page] as const,
   personCredits: (personId: number) => ['personCredits', personId] as const,
@@ -140,10 +141,15 @@ export const useMovieDetail = (id: number) => {
   });
 };
 
-export const useSearchMovies = (query: string, page: number = 1) => {
-  return useQuery({
-    queryKey: queryKeys.searchMovies(query, page),
-    queryFn: () => tmdbClient.searchMovies(query, page),
+export const useSearchMovies = (query: string) => {
+  return useInfiniteQuery({
+    queryKey: queryKeys.searchMovies(query),
+    queryFn: ({ pageParam = 1 }) => tmdbClient.searchMovies(query, pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: MovieResponse) => {
+      if (lastPage.page >= lastPage.total_pages) return undefined;
+      return lastPage.page + 1;
+    },
     ...queryConfig.search,
     enabled: query.length > 0,
   });
