@@ -9,6 +9,7 @@ interface SearchResultsProps {
   hasMore: boolean;
   loadMoreRef: React.RefObject<HTMLDivElement | null>;
   getDirectorName: (movie: Movie) => string;
+  isFetchingNextPage: boolean;
 }
 
 export const SearchResults: React.FC<SearchResultsProps> = ({
@@ -17,6 +18,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   hasMore,
   loadMoreRef,
   getDirectorName,
+  isFetchingNextPage,
 }) => {
   const getReleaseYear = (movie: Movie) => {
     return movie.release_date?.substring(0, 4) || '';
@@ -68,7 +70,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
           ))}
           {hasMore && (
             <div ref={loadMoreRef} className={styles.loadMoreTrigger}>
-              <div className={styles.loadingSpinner} style={{ width: 24, height: 24 }} />
+              {isFetchingNextPage && <div className={styles.loadingSpinner} style={{ width: 24, height: 24 }} />}
             </div>
           )}
         </div>

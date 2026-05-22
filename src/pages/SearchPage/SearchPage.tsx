@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useQueries } from '@tanstack/react-query';
 import { tmdbClient } from '../../services/tmdbClient';
 import {
@@ -10,7 +10,7 @@ import {
 } from '../../hooks/useTMDB';
 import { setImageConfig } from '../../utils/image';
 import styles from './SearchPage.module.css';
-import type { Movie } from '../../types/tmdb';
+import type { Movie, MovieCreditsResponse } from '../../types/tmdb';
 import { SearchInputSection } from './SearchInputSection';
 import { PopularTop10 } from './PopularTop10';
 import { SearchResults } from './SearchResults';
@@ -49,39 +49,20 @@ const SearchPage: React.FC = () => {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Search results with infinite scroll
-  const [searchPage, setSearchPage] = useState(1);
-  const [searchResults, setSearchResults] = useState<Movie[]>([]);
-  const [hasMore, setHasMore] = useState(false);
+  // Search results with infinite scroll using useInfiniteQuery
+  const {
+    data: searchMoviesData,
+    isLoading: searchLoading,
+    hasNextPage: hasMore,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useSearchMovies(debouncedQuery);
 
-  const { data: searchMoviesData, isLoading: searchLoading } = useSearchMovies(debouncedQuery, searchPage);
-
-  // Append search results when new data arrives
-  useEffect(() => {
-    if (searchMoviesData && debouncedQuery) {
-      setSearchResults((prevResults) => {
-        return searchPage === 1 ? searchMoviesData.results : [...prevResults, ...searchMoviesData.results];
-      });
-      setHasMore(searchPage < searchMoviesData.total_pages);
-    }
-  }, [searchMoviesData, debouncedQuery, searchPage]);
-
-  // Reset search when query changes
-  useEffect(() => {
-    setSearchPage(1);
-    setSearchResults([]);
-    setHasMore(false);
-  }, [debouncedQuery]);
+  const searchResults = searchMoviesData?.pages?.reduce<Movie[]>((acc, page) => [...acc, ...page.results], []) ?? [];
 
   // Infinite scroll with intersection observer
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
-
-  const loadMore = useCallback(() => {
-    if (!searchLoading && hasMore && debouncedQuery) {
-      setSearchPage((prev) => prev + 1);
-    }
-  }, [searchLoading, hasMore, debouncedQuery]);
 
   useEffect(() => {
     if (!loadMoreRef.current || !hasMore || !debouncedQuery) return;
@@ -92,8 +73,8 @@ const SearchPage: React.FC = () => {
 
     observerRef.current = new IntersectionObserver(
       (entries) => {
-        if (entries[0]?.isIntersecting) {
-          loadMore();
+        if (entries[0]?.isIntersecting && !isFetchingNextPage) {
+          fetchNextPage();
         }
       },
       { threshold: 0.1 },
@@ -104,7 +85,7 @@ const SearchPage: React.FC = () => {
     return () => {
       observerRef.current?.disconnect();
     };
-  }, [hasMore, debouncedQuery, loadMore]);
+  }, [hasMore, debouncedQuery, fetchNextPage, isFetchingNextPage]);
 
   // Popular Movies (for TOP 10)
   const { data: popularData, isLoading: popularLoading } = usePopularMovies(1);
@@ -144,7 +125,7 @@ const SearchPage: React.FC = () => {
     })),
   });
 
-  const creditsData = movieCreditsQueries.map((q) => q.data);
+  const creditsData = movieCreditsQueries.map((q) => q.data) as MovieCreditsResponse[];
 
   // Director name cache for quick lookup
   const directorNameCache = useMemo(() => {
@@ -158,7 +139,7 @@ const SearchPage: React.FC = () => {
         return;
       }
 
-      const director = credits.crew.find((c: { job: string }) => c.job === 'Director');
+      const director = credits.crew.find((c) => c.job === 'Director');
       cache.set(movie.id, director?.name ?? '');
     });
     return cache;
@@ -195,6 +176,7 @@ const SearchPage: React.FC = () => {
               hasMore={hasMore}
               loadMoreRef={loadMoreRef}
               getDirectorName={getDirectorName}
+              isFetchingNextPage={isFetchingNextPage}
             />
           )}
         </div>
