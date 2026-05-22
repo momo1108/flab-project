@@ -31,42 +31,30 @@ const MovieDetailPage = () => {
   const movieId = id ? Number.parseInt(id, 10) : 0;
 
   const [activeTab, setActiveTab] = useState<'content' | 'related'>('content');
-  const [currentReviews, setCurrentReviews] = useState<MovieReview[]>([]);
 
   const { data: movie, isLoading: isMovieLoading, error: movieError } = useMovieDetail(movieId);
   const { data: images } = useMovieImages(movieId);
   const { data: videos, isLoading: isVideosLoading } = useMovieVideos(movieId);
   const { data: credits, isLoading: isCreditsLoading } = useMovieCredits(movieId);
-  const { data: reviews, isLoading: isReviewsLoading } = useMovieReviews(movieId, 1, activeTab === 'content');
+
+  const {
+    data: reviewsData,
+    isLoading: isReviewsLoading,
+    hasNextPage: hasMoreReviews,
+    fetchNextPage: fetchMoreReviews,
+    isFetchingNextPage: isFetchingMoreReviews,
+  } = useMovieReviews(movieId, activeTab === 'content');
+
+  const currentReviews = reviewsData?.pages?.reduce<MovieReview[]>((acc, page) => [...acc, ...page.results], []) ?? [];
+  const reviewCount = reviewsData?.pages?.[0]?.total_results ?? 0;
+
   const { data: similarMovies, isLoading: isSimilarLoading } = useSimilarMovies(movieId, 1, activeTab === 'related');
-
-  useEffect(() => {
-    if (reviews && activeTab === 'content') {
-      if (currentReviews.length === 0) {
-        setCurrentReviews(reviews.results.slice(0, 10));
-      }
-    }
-  }, [reviews, activeTab]);
-
-  useEffect(() => {
-    if (activeTab === 'content') {
-      setCurrentReviews([]);
-    }
-  }, [activeTab, movieId]);
 
   // Reset state when movieId changes
   useEffect(() => {
     setActiveTab('content');
-    setCurrentReviews([]);
     window.scrollTo(0, 0);
   }, [movieId]);
-
-  const loadMoreReviews = () => {
-    if (!reviews) return;
-    if (currentReviews.length < reviews.results.length) {
-      setCurrentReviews((currentReviews) => reviews.results.slice(0, currentReviews.length + 10));
-    }
-  };
 
   const youtubeVideos = videos?.results.filter((v) => v.site === 'YouTube') ?? [];
 
@@ -122,9 +110,11 @@ const MovieDetailPage = () => {
               credits={credits}
               isCreditsLoading={isCreditsLoading}
               currentReviews={currentReviews}
-              reviewCount={reviews?.results.length || 0}
+              reviewCount={reviewCount}
               isReviewsLoading={isReviewsLoading}
-              loadMoreReviews={loadMoreReviews}
+              hasMoreReviews={hasMoreReviews}
+              fetchMoreReviews={fetchMoreReviews}
+              isFetchingMoreReviews={isFetchingMoreReviews}
             />
           )}
 

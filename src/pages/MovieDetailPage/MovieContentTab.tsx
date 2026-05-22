@@ -11,7 +11,9 @@ interface MovieContentTabProps {
   currentReviews: MovieReview[];
   reviewCount: number;
   isReviewsLoading: boolean;
-  loadMoreReviews: () => void;
+  hasMoreReviews: boolean;
+  fetchMoreReviews: () => void;
+  isFetchingMoreReviews: boolean;
 }
 
 const renderStars = (rating: number | null): React.ReactElement[] => {
@@ -42,7 +44,9 @@ export const MovieContentTab: React.FC<MovieContentTabProps> = ({
   currentReviews,
   reviewCount,
   isReviewsLoading,
-  loadMoreReviews,
+  hasMoreReviews,
+  fetchMoreReviews,
+  isFetchingMoreReviews,
 }) => {
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
@@ -53,12 +57,12 @@ export const MovieContentTab: React.FC<MovieContentTabProps> = ({
 
   // Intersection Observer for infinite scroll
   useEffect(() => {
-    if (currentReviews.length >= reviewCount || isReviewsLoading) return;
+    if (!hasMoreReviews || isFetchingMoreReviews) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0]?.isIntersecting) {
-          loadMoreReviews();
+        if (entries[0]?.isIntersecting && !isFetchingMoreReviews) {
+          fetchMoreReviews();
         }
       },
       { rootMargin: '200px', threshold: 0.1 },
@@ -72,7 +76,7 @@ export const MovieContentTab: React.FC<MovieContentTabProps> = ({
     return () => {
       if (target) observer.unobserve(target);
     };
-  }, [currentReviews, isReviewsLoading, loadMoreReviews]);
+  }, [hasMoreReviews, isFetchingMoreReviews, fetchMoreReviews]);
 
   return (
     <div className={`${styles.tabContent} ${styles.active}`}>
@@ -207,9 +211,9 @@ export const MovieContentTab: React.FC<MovieContentTabProps> = ({
                 </div>
               </div>
             ))}
-            {currentReviews.length < reviewCount && (
+            {hasMoreReviews && (
               <div ref={loadMoreRef}>
-                {isReviewsLoading && (
+                {isFetchingMoreReviews && (
                   <div className={styles.loading}>
                     <div className="spinner" />
                     <p className={styles.loadingText}>로딩 중...</p>
