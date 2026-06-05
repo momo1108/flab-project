@@ -12,5 +12,26 @@
       "mcp__github__list_pull_requests"
     ]
   },
-  "enabledMcpjsonServers": ["github"]
+  "enabledMcpjsonServers": ["github"],
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npm run type-check"
+          },
+          {
+            "type": "command",
+            "command": "npm run lint"
+          },
+          {
+            "type": "command",
+            "command": "npm run format:check"
+          }
+        ]
+      }
+    ]
+  }
 }
