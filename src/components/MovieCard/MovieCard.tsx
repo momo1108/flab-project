@@ -1,4 +1,4 @@
-import { getPosterUrl } from '../../utils/image';
+import { useImageUrls } from '../../hooks/useImageUrls';
 import { formatRating } from '../../utils/format';
 import type { Movie } from '../../types/tmdb';
 import styles from './MovieCard.module.css';
@@ -11,6 +11,7 @@ interface MovieCardProps {
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick, showRank = false, rank }) => {
+  const { getPosterUrl } = useImageUrls();
   const posterUrl = getPosterUrl(movie.poster_path);
 
   return (

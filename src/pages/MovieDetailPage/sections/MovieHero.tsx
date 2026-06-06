@@ -1,12 +1,9 @@
-import type { MovieDetail, MovieImages } from '../../types/tmdb';
-import { getImageUrl, getBackdropUrl } from '../../utils/image';
-import styles from './MovieDetailPage.module.css';
-
-interface MovieHeroProps {
-  movie: MovieDetail;
-  images: MovieImages | undefined;
-  releaseYear: string;
-}
+import { useMemo } from 'react';
+import { useParams } from 'react-router';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { movieDetailQuery, movieImagesQuery } from '../../../services/tmdb/tmdbMovies';
+import { useImageUrls } from '../../../hooks/useImageUrls';
+import styles from '../MovieDetailPage.module.css';
 
 const formatRuntime = (minutes: number): string => {
   const hours = Math.floor(minutes / 60);
@@ -16,8 +13,16 @@ const formatRuntime = (minutes: number): string => {
 
 const formatVoteCount = (count: number): string => new Intl.NumberFormat('ko-KR').format(count);
 
-export const MovieHero: React.FC<MovieHeroProps> = ({ movie, images, releaseYear }) => {
+export const MovieHero = () => {
+  const { id } = useParams<{ id: string }>();
+  const movieId = id ? Number.parseInt(id, 10) : 0;
+
+  const { data: movie } = useSuspenseQuery(movieDetailQuery(movieId));
+  const { data: images } = useSuspenseQuery(movieImagesQuery(movieId));
+
+  const { getImageUrl, getBackdropUrl } = useImageUrls();
   const logo = images?.logos?.[0];
+  const releaseYear = useMemo(() => movie.release_date?.split('-')[0] ?? '', [movie.release_date]);
 
   return (
     <div className={styles.hero}>

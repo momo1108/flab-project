@@ -405,18 +405,19 @@
   display: block;
 }
 
-.sectionHeader {
+/* Section Title */
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.reviewsHeader {
   display: flex;
   align-items: center;
   gap: 6px;
   margin: 0 0 16px 0;
   color: var(--color-text-primary);
-}
-
-/* Section Title */
-.sectionTitle {
-  font-size: 18px;
-  font-weight: 700;
 }
 
 /* Videos Grid (.s-jos) */
@@ -544,6 +545,15 @@
 }
 
 /* Reviews */
+.reviewsHeader {
+  display: flex;
+  gap: 6px;
+}
+
+.reviewCountSpan {
+  font-weight: bold;
+}
+
 .reviewsList {
   display: flex;
   flex-direction: column;

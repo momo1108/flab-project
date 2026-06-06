@@ -1,122 +1,29 @@
-import { useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router';
-import {
-  useTMDBConfiguration,
-  useMovieGenres,
-  useTrendingMovies,
-  usePopularMovies,
-  usePopularPersons,
-  useMoviesByGenres,
-} from '../../hooks/useTMDB';
-import { setImageConfig } from '../../utils/image';
-import MovieCard from '../../components/MovieCard/MovieCard';
-import ArtistCard from '../../components/ArtistCard/ArtistCard';
-import CarouselRow from '../../components/CarouselRow/CarouselRow';
-import HeroCarousel from '../../components/HeroCarousel/HeroCarousel';
+import { HeroSection } from './sections/HeroSection';
+import { PopularMoviesSection } from './sections/PopularMoviesSection';
+import { GenreSections } from './sections/GenreSections';
+import { Top20Section } from './sections/Top20Section';
+import { ArtistsSection } from './sections/ArtistsSection';
 import styles from './MainPage.module.css';
+import SectionWrapper from '../../components/SectionWrapper';
 
 const MainPage: React.FC = () => {
-  console.log(styles);
-  const navigate = useNavigate();
-
-  // API Configuration
-  const { data: config } = useTMDBConfiguration();
-  const { data: genresData } = useMovieGenres();
-
-  // Initialize image config
-  useEffect(() => {
-    if (config?.images) {
-      setImageConfig(config.images);
-    }
-  }, [config]);
-
-  // Trending Movies (for Hero Carousel)
-  const { data: trendingData } = useTrendingMovies('day');
-
-  // Popular Movies (for various sections)
-  const { data: popularData, isLoading: popularLoading } = usePopularMovies(1);
-
-  // Popular Persons (for Artist section)
-  const { data: personsData, isLoading: personsLoading } = usePopularPersons(1);
-
-  // Get random genres for genre carousels
-  const randomGenres = useMemo(() => {
-    if (!genresData?.genres) return [];
-    const shuffled = [...genresData.genres].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 3);
-  }, [genresData?.genres]);
-
-  const trendingMovies = trendingData?.results ?? [];
-  const popularMovies = popularData?.results ?? [];
-  const popularPersons = personsData?.results ?? [];
-
-  // Fetch movies for each random genre using useQueries
-  const randomGenreIds = randomGenres.map((genre) => genre.id);
-  const genreMovieQueries = useMoviesByGenres(randomGenreIds);
-
   return (
     <main className={styles.mainPage}>
-      {/* Hero Carousel */}
-      <section className={styles.heroSection}>
-        {trendingMovies.length > 0 ? (
-          <HeroCarousel movies={trendingMovies.slice(0, 10)} />
-        ) : (
-          <div className={styles.heroSkeleton} />
-        )}
-      </section>
-
-      {/* Popular Movies Section */}
-      <section className={styles.section}>
-        <CarouselRow title="지금 뜨는 영화" isLoading={popularLoading}>
-          {popularMovies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} onClick={() => navigate(`/movie/${movie.id}`)} />
-          ))}
-        </CarouselRow>
-      </section>
-
-      {/* Genre-based Sections */}
-      {genreMovieQueries.map(({ data: genreMovieData, isLoading: genreMovieLoading }, genreIndex) => {
-        const randomGenre = randomGenres[genreIndex]!;
-        const genreMovies = genreMovieData?.results ?? [];
-
-        return (
-          <section key={randomGenre.id} className={styles.section}>
-            <CarouselRow
-              title={`${randomGenre.name} 영화`}
-              description={`${randomGenre.name} 장르의 인기 영화들`}
-              isLoading={genreMovieLoading}
-            >
-              {genreMovies.slice(0, 10).map((movie) => (
-                <MovieCard key={movie.id} movie={movie} onClick={() => navigate(`/movie/${movie.id}`)} />
-              ))}
-            </CarouselRow>
-          </section>
-        );
-      })}
-
-      {/* TOP 20 Section */}
-      <section className={styles.section}>
-        <CarouselRow title="왓챠 TOP 20" isLoading={popularLoading}>
-          {popularMovies.slice(0, 20).map((movie, index) => (
-            <MovieCard
-              key={movie.id}
-              movie={movie}
-              showRank={true}
-              rank={index + 1}
-              onClick={() => navigate(`/movie/${movie.id}`)}
-            />
-          ))}
-        </CarouselRow>
-      </section>
-
-      {/* Artists Section */}
-      <section className={styles.section}>
-        <CarouselRow title="아티스트" description="인기 배우 및 감독" isLoading={personsLoading} rowType="artist">
-          {popularPersons.map((person) => (
-            <ArtistCard key={person.id} person={person} onClick={() => navigate(`/artist/${person.id}`)} />
-          ))}
-        </CarouselRow>
-      </section>
+      <SectionWrapper>
+        <HeroSection />
+      </SectionWrapper>
+      <SectionWrapper>
+        <PopularMoviesSection />
+      </SectionWrapper>
+      <SectionWrapper>
+        <GenreSections />
+      </SectionWrapper>
+      <SectionWrapper>
+        <Top20Section />
+      </SectionWrapper>
+      <SectionWrapper>
+        <ArtistsSection />
+      </SectionWrapper>
     </main>
   );
 };

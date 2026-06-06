@@ -1,24 +1,31 @@
-import { useEffect, useState } from 'react';
-import type { Movie } from '../../types/tmdb';
-import { getImageUrl } from '../../utils/image';
-import styles from './SearchPage.module.css';
+import { useEffect, useMemo, useState } from 'react';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { popularMoviesQuery } from '../../../services/tmdb/tmdbMovies';
+import { useImageUrls } from '../../../hooks/useImageUrls';
+import styles from '../SearchPage.module.css';
 
-interface BackdropSlideshowProps {
-  popularMovies: Movie[];
-}
-
-export const BackdropSlideshow: React.FC<BackdropSlideshowProps> = ({ popularMovies }) => {
+export const BackdropSlideshow: React.FC = () => {
+  const { getImageUrl } = useImageUrls();
+  const { data: popularData } = useSuspenseQuery(popularMoviesQuery(1));
+  const popularMovies = useMemo(() => {
+    return popularData.results.slice(0, 10);
+  }, [popularData]);
   const [currentBackdropIndex, setCurrentBackdropIndex] = useState(0);
+
+  if (popularMovies.length === 0) {
+    return null;
+  }
 
   useEffect(() => {
     if (popularMovies.length === 0) return;
 
+    setCurrentBackdropIndex(0);
     const interval = setInterval(() => {
       setCurrentBackdropIndex((prev) => (prev + 1) % popularMovies.length);
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [popularMovies]);
+  }, [popularMovies.length]);
 
   return (
     <div className={styles.backdropSection}>
