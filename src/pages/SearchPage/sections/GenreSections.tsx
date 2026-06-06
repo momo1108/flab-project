@@ -23,13 +23,15 @@ interface GenreMovieGridProps {
 const GenreMovieGrid: React.FC<GenreMovieGridProps> = ({ genreId, posterColumnCount }) => {
   const { getImageUrl } = useImageUrls();
   const { data } = useSuspenseQuery(moviesByGenreQuery(genreId, 1));
-  const genreMovies = data.results;
+  const genreMovies = useMemo(() => {
+    return data.results.slice(0, posterColumnCount);
+  }, [data, posterColumnCount]);
 
   if (genreMovies.length === 0) return null;
 
   return (
     <div className={styles.genrePosterGrid}>
-      {genreMovies.slice(0, posterColumnCount).map((movie) => (
+      {genreMovies.map((movie) => (
         <Link key={movie.id} to={`/movie/${movie.id}`} className={styles.genrePosterItem}>
           {movie.poster_path ? (
             <img

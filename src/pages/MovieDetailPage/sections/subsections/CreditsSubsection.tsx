@@ -4,6 +4,7 @@ import { movieCreditsQuery } from '../../../../services/tmdb/tmdbMovies';
 import { useImageUrls } from '../../../../hooks/useImageUrls';
 import styles from '../../MovieDetailPage.module.css';
 import type { CastMember, CrewMember } from '../../../../types/tmdb';
+import { useMemo } from 'react';
 
 export const CreditsSubsection = () => {
   const { id } = useParams<{ id: string }>();
@@ -15,7 +16,11 @@ export const CreditsSubsection = () => {
   const producer: CrewMember | undefined =
     credits.crew.find((c) => c.job === 'Executive Producer') ?? credits.crew.find((c) => c.job === 'Producer');
 
-  const topCast = credits.cast.sort((a, b) => a.order - b.order).slice(0, 10);
+  const topCast = useMemo(() => {
+    const casts: CastMember[] = credits.cast.map((cast) => ({ ...cast }));
+    casts.sort((a, b) => a.order - b.order);
+    return casts.slice(0, 10);
+  }, [credits]);
 
   if (!producer && topCast.length === 0) {
     return <p className={styles.emptyState}>감독/배우 정보가 없습니다.</p>;

@@ -20,7 +20,9 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => 
     isFetchingNextPage,
   } = useSuspenseInfiniteQuery(searchMoviesQuery(searchQuery));
 
-  const searchResults = searchMoviesData.pages.reduce<Movie[]>((acc, page) => [...acc, ...page.results], []);
+  const searchResults = useMemo(() => {
+    return searchMoviesData.pages.reduce<Movie[]>((acc, page) => [...acc, ...page.results], []);
+  }, [searchMoviesData.pages]);
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);

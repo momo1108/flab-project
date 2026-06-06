@@ -2,19 +2,22 @@ import { useParams } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { movieVideosQuery } from '../../../../services/tmdb/tmdbMovies';
 import styles from '../../MovieDetailPage.module.css';
+import { useMemo } from 'react';
 
 export const VideosSubsection = () => {
   const { id } = useParams<{ id: string }>();
   const movieId = id ? Number.parseInt(id, 10) : 0;
 
   const { data: videosData } = useSuspenseQuery(movieVideosQuery(movieId));
-  const youtubeVideos = videosData.results.filter((v) => v.site === 'YouTube');
+  const youtubeVideos = useMemo(() => {
+    return videosData.results.filter((v) => v.site === 'YouTube').slice(0, 4);
+  }, [videosData]);
 
   if (youtubeVideos.length === 0) return null;
 
   return (
     <div className={styles.videosGrid}>
-      {youtubeVideos.slice(0, 4).map((video) => (
+      {youtubeVideos.map((video) => (
         <a
           key={video.id}
           href={`https://www.youtube.com/watch?v=${video.key}`}

@@ -21,7 +21,7 @@ export const GenreSections = () => {
   // Fetch movies for each random genre using useSuspenseQueries
   const randomGenreIds = randomGenres.map((genre) => genre.id);
   const genreMovieQueries = useSuspenseQueries({
-    queries: moviesByGenresQuery(randomGenreIds, 1),
+    queries: moviesByGenresQuery(randomGenreIds, 1, 16),
   });
 
   if (randomGenres.length === 0) return null;
@@ -39,7 +39,7 @@ export const GenreSections = () => {
               description={`${randomGenre.name} 장르의 인기 영화들`}
               isLoading={false}
             >
-              {genreMovies.slice(0, 10).map((movie) => (
+              {genreMovies.map((movie) => (
                 <MovieCard key={movie.id} movie={movie} onClick={() => navigate(`/movie/${movie.id}`)} />
               ))}
             </CarouselRow>

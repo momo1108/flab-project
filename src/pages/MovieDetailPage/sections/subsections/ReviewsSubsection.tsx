@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { movieReviewsQuery } from '../../../../services/tmdb/tmdbMovies';
@@ -40,7 +40,9 @@ export const ReviewsSubsection = () => {
     isFetchingNextPage,
   } = useSuspenseInfiniteQuery(movieReviewsQuery(movieId, true));
 
-  const allReviews = reviewsData.pages.reduce<MovieReview[]>((acc, page) => [...acc, ...page.results], []);
+  const allReviews = useMemo(() => {
+    return reviewsData.pages.reduce<MovieReview[]>((acc, page) => [...acc, ...page.results], []);
+  }, [reviewsData.pages]);
   const reviewCount = reviewsData.pages[0]?.total_results ?? 0;
 
   // Intersection Observer for infinite scroll

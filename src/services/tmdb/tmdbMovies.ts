@@ -106,7 +106,7 @@ export const moviesByGenreQuery = (genreId: number, page: number = 1) => ({
   enabled: !!genreId,
 });
 
-export const moviesByGenresQuery = (genreIds: number[], page: number = 1) => {
+export const moviesByGenresQuery = (genreIds: number[], page: number = 1, limit?: number | undefined) => {
   return genreIds.map((genreId) => ({
     queryKey: queryKeys.moviesByGenre(genreId, page),
     queryFn: () =>
@@ -115,6 +115,14 @@ export const moviesByGenresQuery = (genreIds: number[], page: number = 1) => {
         sort_by: 'primary_release_date.desc',
         page,
       }),
+    select: (data: MovieResponse) => {
+      if (Number.isInteger(limit)) {
+        return {
+          ...data,
+          results: data.results.slice(0, limit),
+        };
+      } else return data;
+    },
     ...queryConfig.movies,
     enabled: !!genreId,
   }));

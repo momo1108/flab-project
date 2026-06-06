@@ -3,13 +3,16 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { similarMoviesQuery } from '../../../services/tmdb/tmdbMovies';
 import { useImageUrls } from '../../../hooks/useImageUrls';
 import styles from '../MovieDetailPage.module.css';
+import { useMemo } from 'react';
 
 export const RelatedContentTab = () => {
   const { id } = useParams<{ id: string }>();
   const movieId = id ? Number.parseInt(id, 10) : 0;
 
   const { data: similarMoviesData } = useSuspenseQuery(similarMoviesQuery(movieId, 1, true));
-  const similarMovies = similarMoviesData.results.slice(0, 16);
+  const similarMovies = useMemo(() => {
+    return similarMoviesData.results.slice(0, 16);
+  }, [similarMoviesData]);
 
   const { getImageUrl } = useImageUrls();
 
