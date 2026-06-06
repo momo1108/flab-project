@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
-import type { Movie } from '../../../types/tmdb';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { popularMoviesQuery } from '../../../services/tmdb/tmdbMovies';
 import { useImageUrls } from '../../../hooks/useImageUrls';
 import styles from '../SearchPage.module.css';
 
-interface BackdropSlideshowProps {
-  popularMovies: Movie[];
-}
-
-export const BackdropSlideshow: React.FC<BackdropSlideshowProps> = ({ popularMovies }) => {
+export const BackdropSlideshow: React.FC = () => {
   const { getImageUrl } = useImageUrls();
+  const { data: popularData } = useSuspenseQuery(popularMoviesQuery(1));
+  const popularMovies = popularData.results.slice(0, 10);
   const [currentBackdropIndex, setCurrentBackdropIndex] = useState(0);
+
+  if (popularMovies.length === 0) {
+    return null;
+  }
 
   useEffect(() => {
     if (popularMovies.length === 0) return;

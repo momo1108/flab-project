@@ -1,21 +1,19 @@
 import { useNavigate } from 'react-router';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { popularMoviesQuery } from '../../../services/tmdb/tmdbMovies';
 import MovieCard from '../../../components/MovieCard/MovieCard';
 import CarouselRow from '../../../components/CarouselRow/CarouselRow';
 import styles from '../MainPage.module.css';
-import type { Movie } from '../../../types/tmdb';
 
-interface Top20SectionProps {
-  movies: Movie[];
-  isLoading: boolean;
-}
-
-export const Top20Section = ({ movies, isLoading }: Top20SectionProps) => {
+export const Top20Section = () => {
   const navigate = useNavigate();
+  const { data: popularData } = useSuspenseQuery(popularMoviesQuery(1));
+  const popularMovies = popularData.results;
 
   return (
     <section className={styles.section}>
-      <CarouselRow title="왓챠 TOP 20" isLoading={isLoading}>
-        {movies.slice(0, 20).map((movie, index) => (
+      <CarouselRow title="왓챠 TOP 20" isLoading={false}>
+        {popularMovies.slice(0, 20).map((movie, index) => (
           <MovieCard
             key={movie.id}
             movie={movie}

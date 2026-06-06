@@ -1,39 +1,51 @@
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
+import { useSuspenseQuery, useSuspenseQueries } from '@tanstack/react-query';
+import { genresQuery } from '../../../services/tmdb/tmdbGenres';
+import { moviesByGenresQuery } from '../../../services/tmdb/tmdbMovies';
 import MovieCard from '../../../components/MovieCard/MovieCard';
 import CarouselRow from '../../../components/CarouselRow/CarouselRow';
 import styles from '../MainPage.module.css';
-import type { Movie, Genre } from '../../../types/tmdb';
 
-interface GenreSectionData {
-  genre: Genre;
-  movies: Movie[];
-  isLoading: boolean;
-}
-
-interface GenreSectionsProps {
-  genreSections: GenreSectionData[];
-}
-
-export const GenreSections = ({ genreSections }: GenreSectionsProps) => {
+export const GenreSections = () => {
   const navigate = useNavigate();
 
-  if (genreSections.length === 0) return null;
+  const { data: genresData } = useSuspenseQuery(genresQuery());
+
+  // Get random genres for genre carousels
+  const randomGenres = useMemo(() => {
+    const shuffled = [...genresData.genres].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 3);
+  }, [genresData.genres]);
+
+  // Fetch movies for each random genre using useSuspenseQueries
+  const randomGenreIds = randomGenres.map((genre) => genre.id);
+  const genreMovieQueries = useSuspenseQueries({
+    queries: moviesByGenresQuery(randomGenreIds, 1),
+  });
+
+  if (randomGenres.length === 0) return null;
 
   return (
     <>
-      {genreSections.map(({ genre, movies, isLoading }) => (
-        <section key={genre.id} className={styles.section}>
-          <CarouselRow
-            title={`${genre.name} 영화`}
-            description={`${genre.name} 장르의 인기 영화들`}
-            isLoading={isLoading}
-          >
-            {movies.slice(0, 10).map((movie) => (
-              <MovieCard key={movie.id} movie={movie} onClick={() => navigate(`/movie/${movie.id}`)} />
-            ))}
-          </CarouselRow>
-        </section>
-      ))}
+      {genreMovieQueries.map(({ data: genreMovieData }, genreIndex) => {
+        const randomGenre = randomGenres[genreIndex]!;
+        const genreMovies = genreMovieData.results;
+
+        return (
+          <section key={randomGenre.id} className={styles.section}>
+            <CarouselRow
+              title={`${randomGenre.name} 영화`}
+              description={`${randomGenre.name} 장르의 인기 영화들`}
+              isLoading={false}
+            >
+              {genreMovies.slice(0, 10).map((movie) => (
+                <MovieCard key={movie.id} movie={movie} onClick={() => navigate(`/movie/${movie.id}`)} />
+              ))}
+            </CarouselRow>
+          </section>
+        );
+      })}
     </>
   );
 };

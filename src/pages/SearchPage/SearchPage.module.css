@@ -90,6 +90,7 @@
 
 .contentMain {
   flex: 1;
+  min-width: 240px;
   max-width: 720px;
 }
 
