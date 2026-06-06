@@ -11,9 +11,9 @@ import {
 } from '../../services/tmdb/tmdbMovies';
 import styles from './MovieDetailPage.module.css';
 import type { MovieReview } from '../../types/tmdb';
-import { MovieHero } from './MovieHero';
-import { MovieContentTab } from './MovieContentTab';
-import { RelatedContentTab } from './RelatedContentTab';
+import { MovieHero } from './sections/MovieHero';
+import { MovieContentTab } from './sections/MovieContentTab';
+import { RelatedContentTab } from './sections/RelatedContentTab';
 
 const MovieDetailPage = () => {
   const { id } = useParams<{ id: string }>();

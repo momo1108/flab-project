@@ -1,6 +1,6 @@
-import type { MovieDetail, MovieImages } from '../../types/tmdb';
-import { useImageUrls } from '../../hooks/useImageUrls';
-import styles from './MovieDetailPage.module.css';
+import type { MovieDetail, MovieImages } from '../../../types/tmdb';
+import { useImageUrls } from '../../../hooks/useImageUrls';
+import styles from '../MovieDetailPage.module.css';
 
 interface MovieHeroProps {
   movie: MovieDetail;

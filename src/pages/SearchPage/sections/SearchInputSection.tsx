@@ -1,4 +1,4 @@
-import styles from './SearchPage.module.css';
+import styles from '../SearchPage.module.css';
 
 interface SearchInputSectionProps {
   searchQuery: string;

@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
-import type { Movie } from '../../types/tmdb';
-import styles from './SearchPage.module.css';
+import type { Movie } from '../../../types/tmdb';
+import styles from '../SearchPage.module.css';
 
 interface PopularTop10Props {
   popularMovies: Movie[];

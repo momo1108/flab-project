@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
-import type { Genre, MovieResponse } from '../../types/tmdb';
-import { useImageUrls } from '../../hooks/useImageUrls';
-import styles from './SearchPage.module.css';
+import type { Genre, MovieResponse } from '../../../types/tmdb';
+import { useImageUrls } from '../../../hooks/useImageUrls';
+import styles from '../SearchPage.module.css';
 import type { UseQueryResult } from '@tanstack/react-query';
 
 export type GenreMovieQuery = UseQueryResult<MovieResponse, Error>;

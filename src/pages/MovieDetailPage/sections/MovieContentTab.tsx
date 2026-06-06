@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
-import type { MovieVideo, MovieCreditsResponse, MovieReview, CastMember, CrewMember } from '../../types/tmdb';
-import { useImageUrls } from '../../hooks/useImageUrls';
-import styles from './MovieDetailPage.module.css';
+import type { MovieVideo, MovieCreditsResponse, MovieReview, CastMember, CrewMember } from '../../../types/tmdb';
+import { useImageUrls } from '../../../hooks/useImageUrls';
+import styles from '../MovieDetailPage.module.css';
 
 interface MovieContentTabProps {
   youtubeVideos: MovieVideo[];

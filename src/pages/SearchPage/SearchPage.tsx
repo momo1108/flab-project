@@ -9,11 +9,11 @@ import {
 import { genresQuery } from '../../services/tmdb/tmdbGenres';
 import styles from './SearchPage.module.css';
 import type { Movie, MovieCreditsResponse } from '../../types/tmdb';
-import { SearchInputSection } from './SearchInputSection';
-import { PopularTop10 } from './PopularTop10';
-import { SearchResults } from './SearchResults';
-import { BackdropSlideshow } from './BackdropSlideshow';
-import { GenreSections } from './GenreSections';
+import { SearchInputSection } from './sections/SearchInputSection';
+import { PopularTop10 } from './sections/PopularTop10';
+import { SearchResults } from './sections/SearchResults';
+import { BackdropSlideshow } from './sections/BackdropSlideshow';
+import { GenreSections } from './sections/GenreSections';
 
 const getPosterColumnCount = (): number => {
   if (typeof window === 'undefined') return 8;

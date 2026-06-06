@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import type { Movie } from '../../types/tmdb';
-import { useImageUrls } from '../../hooks/useImageUrls';
-import styles from './SearchPage.module.css';
+import type { Movie } from '../../../types/tmdb';
+import { useImageUrls } from '../../../hooks/useImageUrls';
+import styles from '../SearchPage.module.css';
 
 interface BackdropSlideshowProps {
   popularMovies: Movie[];
