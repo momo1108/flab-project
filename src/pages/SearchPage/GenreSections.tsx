@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import type { Genre, MovieResponse } from '../../types/tmdb';
-import { getImageUrl } from '../../utils/image';
+import { useImageUrls } from '../../hooks/useImageUrls';
 import styles from './SearchPage.module.css';
 import type { UseQueryResult } from '@tanstack/react-query';
 
@@ -13,6 +13,7 @@ interface GenreSectionsProps {
 }
 
 export const GenreSections: React.FC<GenreSectionsProps> = ({ randomGenres, genreMovieQueries, posterColumnCount }) => {
+  const { getImageUrl } = useImageUrls();
   return (
     <>
       {genreMovieQueries.map(({ data: genreMovieData, isLoading: genreMovieLoading }, genreIndex) => {

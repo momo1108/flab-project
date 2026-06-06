@@ -1,14 +1,12 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { useQueries } from '@tanstack/react-query';
-import { tmdbClient } from '../../services/tmdbClient';
+import { useQuery, useQueries, useInfiniteQuery } from '@tanstack/react-query';
 import {
-  useTMDBConfiguration,
-  usePopularMovies,
-  useSearchMovies,
-  useMoviesByGenres,
-  useMovieGenres,
-} from '../../hooks/useTMDB';
-import { setImageConfig } from '../../utils/image';
+  popularMoviesQuery,
+  searchMoviesQuery,
+  moviesByGenresQuery,
+  movieCreditsQuery,
+} from '../../services/tmdb/tmdbMovies';
+import { genresQuery } from '../../services/tmdb/tmdbGenres';
 import styles from './SearchPage.module.css';
 import type { Movie, MovieCreditsResponse } from '../../types/tmdb';
 import { SearchInputSection } from './SearchInputSection';
@@ -26,16 +24,6 @@ const getPosterColumnCount = (): number => {
 };
 
 const SearchPage: React.FC = () => {
-  // API Configuration
-  const { data: config } = useTMDBConfiguration();
-
-  // Initialize image config
-  useEffect(() => {
-    if (config?.images) {
-      setImageConfig(config.images);
-    }
-  }, [config]);
-
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
@@ -56,7 +44,7 @@ const SearchPage: React.FC = () => {
     hasNextPage: hasMore,
     fetchNextPage,
     isFetchingNextPage,
-  } = useSearchMovies(debouncedQuery);
+  } = useInfiniteQuery(searchMoviesQuery(debouncedQuery));
 
   const searchResults = searchMoviesData?.pages?.reduce<Movie[]>((acc, page) => [...acc, ...page.results], []) ?? [];
 
@@ -88,11 +76,11 @@ const SearchPage: React.FC = () => {
   }, [hasMore, debouncedQuery, fetchNextPage, isFetchingNextPage]);
 
   // Popular Movies (for TOP 10)
-  const { data: popularData, isLoading: popularLoading } = usePopularMovies(1);
+  const { data: popularData, isLoading: popularLoading } = useQuery(popularMoviesQuery(1));
   const popularMovies = popularData?.results?.slice(0, 10) ?? [];
 
   // Get random genres for genre carousels
-  const { data: genresData } = useMovieGenres();
+  const { data: genresData } = useQuery(genresQuery());
 
   const randomGenres = useMemo(() => {
     if (!genresData?.genres) return [];
@@ -113,16 +101,13 @@ const SearchPage: React.FC = () => {
   }, []);
 
   const randomGenreIds = randomGenres.map((genre) => genre.id);
-  const genreMovieQueries = useMoviesByGenres(randomGenreIds);
+  const genreMovieQueries = useQueries({
+    queries: moviesByGenresQuery(randomGenreIds, 1),
+  });
 
   // Fetch credits for search result movies to get director names
   const movieCreditsQueries = useQueries({
-    queries: searchResults.map((movie) => ({
-      queryKey: ['movieCredits', movie.id],
-      queryFn: () => tmdbClient.getMovieCredits(movie.id),
-      enabled: !!movie.id,
-      staleTime: 1000 * 60 * 10,
-    })),
+    queries: searchResults.map((movie) => movieCreditsQuery(movie.id)),
   });
 
   const creditsData = movieCreditsQueries.map((q) => q.data) as MovieCreditsResponse[];

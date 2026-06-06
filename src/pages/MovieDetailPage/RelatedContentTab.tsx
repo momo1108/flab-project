@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import type { Movie } from '../../types/tmdb';
-import { getImageUrl } from '../../utils/image';
+import { useImageUrls } from '../../hooks/useImageUrls';
 import styles from './MovieDetailPage.module.css';
 
 interface RelatedContentTabProps {
@@ -9,6 +9,7 @@ interface RelatedContentTabProps {
 }
 
 export const RelatedContentTab: React.FC<RelatedContentTabProps> = ({ similarMovies, isSimilarLoading }) => {
+  const { getImageUrl } = useImageUrls();
   const displaySimilarMovies = similarMovies.slice(0, 16);
 
   return (

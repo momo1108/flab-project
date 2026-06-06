@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import type { MovieVideo, MovieCreditsResponse, MovieReview, CastMember, CrewMember } from '../../types/tmdb';
-import { getImageUrl, getProfileUrl } from '../../utils/image';
+import { useImageUrls } from '../../hooks/useImageUrls';
 import styles from './MovieDetailPage.module.css';
 
 interface MovieContentTabProps {
@@ -48,6 +48,7 @@ export const MovieContentTab: React.FC<MovieContentTabProps> = ({
   fetchMoreReviews,
   isFetchingMoreReviews,
 }) => {
+  const { getImageUrl, getProfileUrl } = useImageUrls();
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const producer: CrewMember | undefined =

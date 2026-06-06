@@ -1,10 +1,12 @@
+import { lazy } from 'react';
 import { Routes, Route } from 'react-router';
 import { Providers } from './components/Providers';
 import { MainLayout } from './components/Layout/MainLayout';
-import MainPage from './pages/MainPage/MainPage';
-import SearchPage from './pages/SearchPage/SearchPage';
-import MovieDetailPage from './pages/MovieDetailPage/MovieDetailPage';
-import ArtistPage from './pages/ArtistPage/ArtistPage';
+
+const MainPage = lazy(() => import('./pages/MainPage/MainPage'));
+const SearchPage = lazy(() => import('./pages/SearchPage/SearchPage'));
+const MovieDetailPage = lazy(() => import('./pages/MovieDetailPage/MovieDetailPage'));
+const ArtistPage = lazy(() => import('./pages/ArtistPage/ArtistPage'));
 
 function App() {
   return (

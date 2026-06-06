@@ -1,5 +1,5 @@
 import type { MovieDetail, MovieImages } from '../../types/tmdb';
-import { getImageUrl, getBackdropUrl } from '../../utils/image';
+import { useImageUrls } from '../../hooks/useImageUrls';
 import styles from './MovieDetailPage.module.css';
 
 interface MovieHeroProps {
@@ -17,6 +17,7 @@ const formatRuntime = (minutes: number): string => {
 const formatVoteCount = (count: number): string => new Intl.NumberFormat('ko-KR').format(count);
 
 export const MovieHero: React.FC<MovieHeroProps> = ({ movie, images, releaseYear }) => {
+  const { getImageUrl, getBackdropUrl } = useImageUrls();
   const logo = images?.logos?.[0];
 
   return (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Movie } from '../../types/tmdb';
-import { getImageUrl } from '../../utils/image';
+import { useImageUrls } from '../../hooks/useImageUrls';
 import styles from './SearchPage.module.css';
 
 interface BackdropSlideshowProps {
@@ -8,6 +8,7 @@ interface BackdropSlideshowProps {
 }
 
 export const BackdropSlideshow: React.FC<BackdropSlideshowProps> = ({ popularMovies }) => {
+  const { getImageUrl } = useImageUrls();
   const [currentBackdropIndex, setCurrentBackdropIndex] = useState(0);
 
   useEffect(() => {

@@ -1,14 +1,9 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
-import {
-  useTMDBConfiguration,
-  useMovieGenres,
-  useTrendingMovies,
-  usePopularMovies,
-  usePopularPersons,
-  useMoviesByGenres,
-} from '../../hooks/useTMDB';
-import { setImageConfig } from '../../utils/image';
+import { useQuery, useQueries } from '@tanstack/react-query';
+import { genresQuery } from '../../services/tmdb/tmdbGenres';
+import { trendingMoviesQuery, popularMoviesQuery, moviesByGenresQuery } from '../../services/tmdb/tmdbMovies';
+import { popularPersonsQuery } from '../../services/tmdb/tmdbPersons';
 import MovieCard from '../../components/MovieCard/MovieCard';
 import ArtistCard from '../../components/ArtistCard/ArtistCard';
 import CarouselRow from '../../components/CarouselRow/CarouselRow';
@@ -16,28 +11,18 @@ import HeroCarousel from '../../components/HeroCarousel/HeroCarousel';
 import styles from './MainPage.module.css';
 
 const MainPage: React.FC = () => {
-  console.log(styles);
   const navigate = useNavigate();
 
-  // API Configuration
-  const { data: config } = useTMDBConfiguration();
-  const { data: genresData } = useMovieGenres();
-
-  // Initialize image config
-  useEffect(() => {
-    if (config?.images) {
-      setImageConfig(config.images);
-    }
-  }, [config]);
+  const { data: genresData } = useQuery(genresQuery());
 
   // Trending Movies (for Hero Carousel)
-  const { data: trendingData } = useTrendingMovies('day');
+  const { data: trendingData } = useQuery(trendingMoviesQuery('day'));
 
   // Popular Movies (for various sections)
-  const { data: popularData, isLoading: popularLoading } = usePopularMovies(1);
+  const { data: popularData, isLoading: popularLoading } = useQuery(popularMoviesQuery(1));
 
   // Popular Persons (for Artist section)
-  const { data: personsData, isLoading: personsLoading } = usePopularPersons(1);
+  const { data: personsData, isLoading: personsLoading } = useQuery(popularPersonsQuery(1));
 
   // Get random genres for genre carousels
   const randomGenres = useMemo(() => {
@@ -52,7 +37,9 @@ const MainPage: React.FC = () => {
 
   // Fetch movies for each random genre using useQueries
   const randomGenreIds = randomGenres.map((genre) => genre.id);
-  const genreMovieQueries = useMoviesByGenres(randomGenreIds);
+  const genreMovieQueries = useQueries({
+    queries: moviesByGenresQuery(randomGenreIds, 1),
+  });
 
   return (
     <main className={styles.mainPage}>

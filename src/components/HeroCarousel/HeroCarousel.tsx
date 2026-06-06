@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { getBackdropUrl } from '../../utils/image';
+import { useImageUrls } from '../../hooks/useImageUrls';
 import type { Movie } from '../../types/tmdb';
 import styles from './HeroCarousel.module.css';
 
@@ -10,6 +10,7 @@ interface HeroCarouselProps {
 
 const HeroCarousel: React.FC<HeroCarouselProps> = ({ movies }) => {
   const navigate = useNavigate();
+  const { getBackdropUrl } = useImageUrls();
 
   // displayIndex: 1 = 첫 번째 실제 슬라이드 (0은 마지막 클론, movies.length+1은 첫 클론)
   const [displayIndex, setDisplayIndex] = useState(1);

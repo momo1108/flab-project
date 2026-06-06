@@ -1,4 +1,4 @@
-import { getProfileUrl } from '../../utils/image';
+import { useImageUrls } from '../../hooks/useImageUrls';
 import type { Person } from '../../types/tmdb';
 import styles from './ArtistCard.module.css';
 
@@ -8,6 +8,7 @@ interface ArtistCardProps {
 }
 
 const ArtistCard: React.FC<ArtistCardProps> = ({ person, onClick }) => {
+  const { getProfileUrl } = useImageUrls();
   const profileUrl = getProfileUrl(person.profile_path, 'w185');
 
   return (

@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import type { Movie } from '../../types/tmdb';
-import { getImageUrl } from '../../utils/image';
+import { useImageUrls } from '../../hooks/useImageUrls';
 import styles from './SearchPage.module.css';
 
 interface SearchResultsProps {
@@ -20,6 +20,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   getDirectorName,
   isFetchingNextPage,
 }) => {
+  const { getImageUrl } = useImageUrls();
   const getReleaseYear = (movie: Movie) => {
     return movie.release_date?.substring(0, 4) || '';
   };

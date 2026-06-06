@@ -1,0 +1,20 @@
+// Query Keys for TMDB API
+export const queryKeys = {
+  configuration: ['configuration'] as const,
+  genres: ['genres'] as const,
+  popularMovies: (page: number) => ['popularMovies', page] as const,
+  trendingMovies: (timeWindow: 'day' | 'week') => ['trendingMovies', timeWindow] as const,
+  discoverMovies: (params: Record<string, string | number>) => ['discoverMovies', params] as const,
+  moviesByGenre: (genreId: number, page: number) => ['moviesByGenre', genreId, page] as const,
+  moviesByGenres: (genreIds: number[], page: number) => ['moviesByGenres', genreIds, page] as const,
+  movieDetail: (id: number) => ['movieDetail', id] as const,
+  searchMovies: (query: string) => ['searchMovies', query] as const,
+  collectionDetail: (id: number) => ['collectionDetail', id] as const,
+  popularPersons: (page: number) => ['popularPersons', page] as const,
+  personCredits: (personId: number) => ['personCredits', personId] as const,
+  movieImages: (id: number) => ['movieImages', id] as const,
+  movieVideos: (id: number) => ['movieVideos', id] as const,
+  movieCredits: (id: number) => ['movieCredits', id] as const,
+  movieReviews: (id: number) => ['movieReviews', id] as const,
+  similarMovies: (id: number, page: number) => ['similarMovies', id, page] as const,
+};

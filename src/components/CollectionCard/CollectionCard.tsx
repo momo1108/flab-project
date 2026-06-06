@@ -1,4 +1,4 @@
-import { getBackdropUrl } from '../../utils/image';
+import { useImageUrls } from '../../hooks/useImageUrls';
 import type { Collection } from '../../types/tmdb';
 import styles from './CollectionCard.module.css';
 
@@ -8,6 +8,7 @@ interface CollectionCardProps {
 }
 
 const CollectionCard: React.FC<CollectionCardProps> = ({ collection, onClick }) => {
+  const { getBackdropUrl } = useImageUrls();
   const backdropUrl = getBackdropUrl(collection.backdrop_path, 'w780');
 
   return (

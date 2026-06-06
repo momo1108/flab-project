@@ -1,41 +1,30 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router';
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import {
-  useMovieDetail,
-  useMovieImages,
-  useMovieVideos,
-  useMovieCredits,
-  useMovieReviews,
-  useSimilarMovies,
-  useTMDBConfiguration,
-} from '../../hooks/useTMDB';
+  movieDetailQuery,
+  movieImagesQuery,
+  movieVideosQuery,
+  movieCreditsQuery,
+  movieReviewsQuery,
+  similarMoviesQuery,
+} from '../../services/tmdb/tmdbMovies';
 import styles from './MovieDetailPage.module.css';
 import type { MovieReview } from '../../types/tmdb';
 import { MovieHero } from './MovieHero';
 import { MovieContentTab } from './MovieContentTab';
 import { RelatedContentTab } from './RelatedContentTab';
-import { setImageConfig } from '../../utils/image';
 
 const MovieDetailPage = () => {
-  // API Configuration
-  const { data: config } = useTMDBConfiguration();
-
-  // Initialize image config
-  useEffect(() => {
-    if (config?.images) {
-      setImageConfig(config.images);
-    }
-  }, [config]);
-
   const { id } = useParams<{ id: string }>();
   const movieId = id ? Number.parseInt(id, 10) : 0;
 
   const [activeTab, setActiveTab] = useState<'content' | 'related'>('content');
 
-  const { data: movie, isLoading: isMovieLoading, error: movieError } = useMovieDetail(movieId);
-  const { data: images } = useMovieImages(movieId);
-  const { data: videos, isLoading: isVideosLoading } = useMovieVideos(movieId);
-  const { data: credits, isLoading: isCreditsLoading } = useMovieCredits(movieId);
+  const { data: movie, isLoading: isMovieLoading, error: movieError } = useQuery(movieDetailQuery(movieId));
+  const { data: images } = useQuery(movieImagesQuery(movieId));
+  const { data: videos, isLoading: isVideosLoading } = useQuery(movieVideosQuery(movieId));
+  const { data: credits, isLoading: isCreditsLoading } = useQuery(movieCreditsQuery(movieId));
 
   const {
     data: reviewsData,
@@ -43,12 +32,14 @@ const MovieDetailPage = () => {
     hasNextPage: hasMoreReviews,
     fetchNextPage: fetchMoreReviews,
     isFetchingNextPage: isFetchingMoreReviews,
-  } = useMovieReviews(movieId, activeTab === 'content');
+  } = useInfiniteQuery(movieReviewsQuery(movieId, activeTab === 'content'));
 
   const currentReviews = reviewsData?.pages?.reduce<MovieReview[]>((acc, page) => [...acc, ...page.results], []) ?? [];
   const reviewCount = reviewsData?.pages?.[0]?.total_results ?? 0;
 
-  const { data: similarMovies, isLoading: isSimilarLoading } = useSimilarMovies(movieId, 1, activeTab === 'related');
+  const { data: similarMovies, isLoading: isSimilarLoading } = useQuery(
+    similarMoviesQuery(movieId, 1, activeTab === 'related'),
+  );
 
   // Reset state when movieId changes
   useEffect(() => {
