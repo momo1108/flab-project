@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { configurationQuery } from '../services/tmdb/tmdbConfiguration';
+import { configurationQuery } from '@/services/tmdb/tmdbConfiguration';
 
 export const useImageUrls = () => {
   // Automatically fetch config if not in cache

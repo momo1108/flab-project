@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { useImageUrls } from '../../hooks/useImageUrls';
-import type { Movie } from '../../types/tmdb';
+import { useImageUrls } from '@/hooks/useImageUrls';
+import type { Movie } from '@/types/tmdb';
 import styles from './HeroCarousel.module.css';
 
 interface HeroCarouselProps {

@@ -1,5 +1,5 @@
-import { useImageUrls } from '../../hooks/useImageUrls';
-import type { Person } from '../../types/tmdb';
+import { useImageUrls } from '@/hooks/useImageUrls';
+import type { Person } from '@/types/tmdb';
 import styles from './ArtistCard.module.css';
 
 interface ArtistCardProps {

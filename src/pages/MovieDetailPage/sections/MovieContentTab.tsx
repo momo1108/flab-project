@@ -2,7 +2,7 @@ import { VideosSubsection } from './subsections/VideosSubsection';
 import { CreditsSubsection } from './subsections/CreditsSubsection';
 import { ReviewsSubsection } from './subsections/ReviewsSubsection';
 import styles from '../MovieDetailPage.module.css';
-import SectionWrapper from '../../../components/SectionWrapper';
+import SectionWrapper from '@/components/SectionWrapper';
 import { useParams } from 'react-router';
 
 export const MovieContentTab = () => {

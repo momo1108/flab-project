@@ -4,7 +4,7 @@ import { GenreSections } from './sections/GenreSections';
 import { Top20Section } from './sections/Top20Section';
 import { ArtistsSection } from './sections/ArtistsSection';
 import styles from './MainPage.module.css';
-import SectionWrapper from '../../components/SectionWrapper';
+import SectionWrapper from '@/components/SectionWrapper';
 
 const MainPage: React.FC = () => {
   return (

@@ -10,8 +10,8 @@ import type {
   MovieCreditsResponse,
   MovieReviewsResponse,
   SimilarMoviesResponse,
-} from '../../types/tmdb';
-import { getLocalDateString } from '../../utils/format';
+} from '@/types/tmdb';
+import { getLocalDateString } from '@/utils/format';
 
 // ===== API Functions =====
 

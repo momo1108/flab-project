@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { popularMoviesQuery } from '../../../services/tmdb/tmdbMovies';
-import { useImageUrls } from '../../../hooks/useImageUrls';
+import { popularMoviesQuery } from '@/services/tmdb/tmdbMovies';
+import { useImageUrls } from '@/hooks/useImageUrls';
 import styles from '../SearchPage.module.css';
 
 export const BackdropSlideshow: React.FC = () => {

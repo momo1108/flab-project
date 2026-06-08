@@ -5,7 +5,7 @@ import { MovieContentTab } from './sections/MovieContentTab';
 import { RelatedContentTab } from './sections/RelatedContentTab';
 import { MovieDetailFooter } from './sections/MovieDetailFooter';
 import styles from './MovieDetailPage.module.css';
-import SectionWrapper from '../../components/SectionWrapper';
+import SectionWrapper from '@/components/SectionWrapper';
 
 const MovieDetailPage = () => {
   const { id } = useParams<{ id: string }>();
