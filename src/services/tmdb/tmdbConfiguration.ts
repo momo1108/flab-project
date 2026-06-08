@@ -1,7 +1,7 @@
 import { tmdbClient } from './tmdbClient';
-import { queryKeys } from './queryKeys';
 import { queryConfig } from './queryConfig';
 import type { TMDBConfiguration } from '@/types/tmdb';
+import { configurationQueryKey } from './queryKeys/configurationQueryKeys';
 
 // ===== API Functions =====
 
@@ -12,7 +12,7 @@ export const getConfiguration = (): Promise<TMDBConfiguration> => {
 // ===== Query Options =====
 
 export const configurationQuery = () => ({
-  queryKey: queryKeys.configuration,
+  queryKey: configurationQueryKey,
   queryFn: () => getConfiguration(),
   ...queryConfig.configuration,
 });

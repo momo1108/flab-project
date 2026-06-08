@@ -1,7 +1,7 @@
 import { tmdbClient } from './tmdbClient';
-import { queryKeys } from './queryKeys';
 import { queryConfig } from './queryConfig';
 import type { Collection } from '@/types/tmdb';
+import { collectionDetailQueryKey } from './queryKeys/collectionQueryKeys';
 
 // ===== API Functions =====
 
@@ -16,7 +16,7 @@ export const getCollectionDetail = (id: number): Promise<Collection> => {
 // ===== Query Options =====
 
 export const collectionDetailQuery = (id: number) => ({
-  queryKey: queryKeys.collectionDetail(id),
+  queryKey: collectionDetailQueryKey(id),
   queryFn: () => getCollectionDetail(id),
   ...queryConfig.movies,
   enabled: !!id,

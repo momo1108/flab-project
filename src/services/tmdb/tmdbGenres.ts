@@ -1,7 +1,7 @@
 import { tmdbClient } from './tmdbClient';
-import { queryKeys } from './queryKeys';
 import { queryConfig } from './queryConfig';
 import type { GenreResponse, GenreMap } from '@/types/tmdb';
+import { genresQueryKey } from './queryKeys/genreQueryKeys';
 
 // ===== API Functions =====
 
@@ -20,13 +20,13 @@ export const getGenreMap = async (): Promise<GenreMap> => {
 // ===== Query Options =====
 
 export const genresQuery = () => ({
-  queryKey: queryKeys.genres,
+  queryKey: genresQueryKey,
   queryFn: () => getMovieGenres(),
   ...queryConfig.genres,
 });
 
 export const genreMapQuery = () => ({
-  queryKey: queryKeys.genres,
+  queryKey: genresQueryKey,
   queryFn: () =>
     getMovieGenres().then((data) =>
       data.genres.reduce((acc, genre) => {

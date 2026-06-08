@@ -1,5 +1,4 @@
 import { tmdbClient } from './tmdbClient';
-import { queryKeys } from './queryKeys';
 import { queryConfig } from './queryConfig';
 import type {
   MovieResponse,
@@ -12,6 +11,19 @@ import type {
   SimilarMoviesResponse,
 } from '@/types/tmdb';
 import { getLocalDateString } from '@/utils/format';
+import {
+  discoverMoviesQueryKey,
+  movieCreditsQueryKey,
+  movieDetailQueryKey,
+  movieImagesQueryKey,
+  movieReviewsQueryKey,
+  movieVideosQueryKey,
+  moviesByGenreQueryKey,
+  popularMoviesQueryKey,
+  searchMoviesQueryKey,
+  similarMoviesQueryKey,
+  trendingMoviesQueryKey,
+} from './queryKeys/movieQueryKeys';
 
 // ===== API Functions =====
 
@@ -77,25 +89,25 @@ export const getSimilarMovies = (id: number, page: number = 1): Promise<SimilarM
 // ===== Query Options =====
 
 export const popularMoviesQuery = (page: number = 1) => ({
-  queryKey: queryKeys.popularMovies(page),
+  queryKey: popularMoviesQueryKey(page),
   queryFn: () => getPopularMovies(page),
   ...queryConfig.movies,
 });
 
 export const trendingMoviesQuery = (timeWindow: 'day' | 'week' = 'day') => ({
-  queryKey: queryKeys.trendingMovies(timeWindow),
+  queryKey: trendingMoviesQueryKey(timeWindow),
   queryFn: () => getTrendingMovies(timeWindow),
   ...queryConfig.movies,
 });
 
 export const discoverMoviesQuery = (params: Record<string, string | number>) => ({
-  queryKey: queryKeys.discoverMovies(params),
+  queryKey: discoverMoviesQueryKey(params),
   queryFn: () => discoverMovies(params),
   ...queryConfig.movies,
 });
 
 export const moviesByGenreQuery = (genreId: number, page: number = 1) => ({
-  queryKey: queryKeys.moviesByGenre(genreId, page),
+  queryKey: moviesByGenreQueryKey(genreId, page),
   queryFn: () =>
     discoverMovies({
       with_genres: String(genreId),
@@ -108,7 +120,7 @@ export const moviesByGenreQuery = (genreId: number, page: number = 1) => ({
 
 export const moviesByGenresQuery = (genreIds: number[], page: number = 1, limit?: number | undefined) => {
   return genreIds.map((genreId) => ({
-    queryKey: queryKeys.moviesByGenre(genreId, page),
+    queryKey: moviesByGenreQueryKey(genreId, page),
     queryFn: () =>
       discoverMovies({
         with_genres: String(genreId),
@@ -129,14 +141,14 @@ export const moviesByGenresQuery = (genreIds: number[], page: number = 1, limit?
 };
 
 export const movieDetailQuery = (id: number) => ({
-  queryKey: queryKeys.movieDetail(id),
+  queryKey: movieDetailQueryKey(id),
   queryFn: () => getMovieDetail(id),
   ...queryConfig.movieDetail,
   enabled: !!id,
 });
 
 export const searchMoviesQuery = (query: string) => ({
-  queryKey: queryKeys.searchMovies(query),
+  queryKey: searchMoviesQueryKey(query),
   queryFn: ({ pageParam = 1 }: { pageParam?: number }) => searchMovies(query, pageParam),
   initialPageParam: 1,
   getNextPageParam: (lastPage: MovieResponse) => {
@@ -148,28 +160,28 @@ export const searchMoviesQuery = (query: string) => ({
 });
 
 export const movieImagesQuery = (id: number) => ({
-  queryKey: queryKeys.movieImages(id),
+  queryKey: movieImagesQueryKey(id),
   queryFn: () => getMovieImages(id),
   ...queryConfig.movieDetail,
   enabled: !!id,
 });
 
 export const movieVideosQuery = (id: number) => ({
-  queryKey: queryKeys.movieVideos(id),
+  queryKey: movieVideosQueryKey(id),
   queryFn: () => getMovieVideos(id),
   ...queryConfig.movies,
   enabled: !!id,
 });
 
 export const movieCreditsQuery = (id: number) => ({
-  queryKey: queryKeys.movieCredits(id),
+  queryKey: movieCreditsQueryKey(id),
   queryFn: () => getMovieCredits(id),
   ...queryConfig.movies,
   enabled: !!id,
 });
 
 export const movieReviewsQuery = (id: number, enabled: boolean = true) => ({
-  queryKey: queryKeys.movieReviews(id),
+  queryKey: movieReviewsQueryKey(id),
   queryFn: ({ pageParam = 1 }: { pageParam?: number }) => getMovieReviews(id, pageParam),
   initialPageParam: 1,
   getNextPageParam: (lastPage: MovieReviewsResponse) => {
@@ -181,7 +193,7 @@ export const movieReviewsQuery = (id: number, enabled: boolean = true) => ({
 });
 
 export const similarMoviesQuery = (id: number, page: number = 1, enabled: boolean = true) => ({
-  queryKey: queryKeys.similarMovies(id, page),
+  queryKey: similarMoviesQueryKey(id, page),
   queryFn: () => getSimilarMovies(id, page),
   ...queryConfig.movies,
   enabled: enabled && !!id,
