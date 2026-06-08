@@ -1,6 +1,6 @@
-import { useImageUrls } from '../../hooks/useImageUrls';
-import { formatRating } from '../../utils/format';
-import type { Movie } from '../../types/tmdb';
+import { useImageUrls } from '@/hooks/useImageUrls';
+import { formatRating } from '@/utils/format';
+import type { Movie } from '@/types/tmdb';
 import styles from './MovieCard.module.css';
 
 interface MovieCardProps {

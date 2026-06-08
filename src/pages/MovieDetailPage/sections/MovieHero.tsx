@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { movieDetailQuery, movieImagesQuery } from '../../../services/tmdb/tmdbMovies';
-import { useImageUrls } from '../../../hooks/useImageUrls';
+import { movieDetailQuery, movieImagesQuery } from '@/services/tmdb/tmdbMovies';
+import { useImageUrls } from '@/hooks/useImageUrls';
 import styles from '../MovieDetailPage.module.css';
 
 const formatRuntime = (minutes: number): string => {

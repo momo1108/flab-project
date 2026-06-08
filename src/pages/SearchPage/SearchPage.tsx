@@ -5,7 +5,7 @@ import { PopularTop10 } from './sections/PopularTop10';
 import { SearchResults } from './sections/SearchResults';
 import { BackdropSlideshow } from './sections/BackdropSlideshow';
 import { GenreSections } from './sections/GenreSections';
-import SectionWrapper from '../../components/SectionWrapper';
+import SectionWrapper from '@/components/SectionWrapper';
 
 const SearchPage: React.FC = () => {
   // Search state

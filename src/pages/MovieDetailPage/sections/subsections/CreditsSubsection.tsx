@@ -1,9 +1,9 @@
 import { useParams } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { movieCreditsQuery } from '../../../../services/tmdb/tmdbMovies';
-import { useImageUrls } from '../../../../hooks/useImageUrls';
+import { movieCreditsQuery } from '@/services/tmdb/tmdbMovies';
+import { useImageUrls } from '@/hooks/useImageUrls';
 import styles from '../../MovieDetailPage.module.css';
-import type { CastMember, CrewMember } from '../../../../types/tmdb';
+import type { CastMember, CrewMember } from '@/types/tmdb';
 import { useMemo } from 'react';
 
 export const CreditsSubsection = () => {

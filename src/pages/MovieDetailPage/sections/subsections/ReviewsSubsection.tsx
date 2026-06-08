@@ -1,10 +1,10 @@
 import { useRef, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { movieReviewsQuery } from '../../../../services/tmdb/tmdbMovies';
-import { useImageUrls } from '../../../../hooks/useImageUrls';
+import { movieReviewsQuery } from '@/services/tmdb/tmdbMovies';
+import { useImageUrls } from '@/hooks/useImageUrls';
 import styles from '../../MovieDetailPage.module.css';
-import type { MovieReview } from '../../../../types/tmdb';
+import type { MovieReview } from '@/types/tmdb';
 
 const renderStars = (rating: number | null): React.ReactElement[] => {
   if (rating === null) return [];

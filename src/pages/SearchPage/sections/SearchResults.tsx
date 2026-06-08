@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useQueries, useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
-import { movieCreditsQuery, searchMoviesQuery } from '../../../services/tmdb/tmdbMovies';
-import type { Movie, MovieCreditsResponse } from '../../../types/tmdb';
-import { useImageUrls } from '../../../hooks/useImageUrls';
+import { movieCreditsQuery, searchMoviesQuery } from '@/services/tmdb/tmdbMovies';
+import type { Movie, MovieCreditsResponse } from '@/types/tmdb';
+import { useImageUrls } from '@/hooks/useImageUrls';
 import styles from '../SearchPage.module.css';
 
 interface SearchResultsProps {

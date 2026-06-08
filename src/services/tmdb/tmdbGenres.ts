@@ -1,7 +1,7 @@
 import { tmdbClient } from './tmdbClient';
 import { queryKeys } from './queryKeys';
 import { queryConfig } from './queryConfig';
-import type { GenreResponse, GenreMap } from '../../types/tmdb';
+import type { GenreResponse, GenreMap } from '@/types/tmdb';
 
 // ===== API Functions =====
 

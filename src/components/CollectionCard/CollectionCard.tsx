@@ -1,5 +1,5 @@
-import { useImageUrls } from '../../hooks/useImageUrls';
-import type { Collection } from '../../types/tmdb';
+import { useImageUrls } from '@/hooks/useImageUrls';
+import type { Collection } from '@/types/tmdb';
 import styles from './CollectionCard.module.css';
 
 interface CollectionCardProps {
