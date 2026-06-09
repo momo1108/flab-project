@@ -1,7 +1,7 @@
 import { tmdbClient } from './tmdbClient';
-import { queryKeys } from './queryKeys';
 import { queryConfig } from './queryConfig';
 import type { Person, PersonCredits } from '@/types/tmdb';
+import { personCreditsQueryKey, popularPersonsQueryKey } from './queryKeys/personQueryKeys';
 
 // ===== API Functions =====
 
@@ -16,13 +16,13 @@ export const getPersonMovieCredits = (personId: number): Promise<PersonCredits> 
 // ===== Query Options =====
 
 export const popularPersonsQuery = (page: number = 1) => ({
-  queryKey: queryKeys.popularPersons(page),
+  queryKey: popularPersonsQueryKey(page),
   queryFn: () => getPopularPersons(page),
   ...queryConfig.movies,
 });
 
 export const personCreditsQuery = (personId: number) => ({
-  queryKey: queryKeys.personCredits(personId),
+  queryKey: personCreditsQueryKey(personId),
   queryFn: () => getPersonMovieCredits(personId),
   ...queryConfig.movieDetail,
   enabled: !!personId,
