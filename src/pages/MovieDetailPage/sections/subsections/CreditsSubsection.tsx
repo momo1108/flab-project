@@ -1,6 +1,6 @@
 import { useParams } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { movieCreditsQuery } from '@/services/tmdb/tmdbMovies';
+import { movieCreditsQuery } from '@/services/tmdb/queries/movieQueries';
 import { useImageUrls } from '@/hooks/useImageUrls';
 import styles from '../../MovieDetailPage.module.css';
 import type { CastMember, CrewMember } from '@/types/tmdb';

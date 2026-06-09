@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { popularPersonsQuery } from '@/services/tmdb/tmdbPersons';
+import { popularPersonsQuery } from '@/services/tmdb/queries/personQueries';
 import ArtistCard from '@/components/ArtistCard/ArtistCard';
 import CarouselRow from '@/components/CarouselRow/CarouselRow';
 import styles from '../MainPage.module.css';

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
-import { genresQuery } from '@/services/tmdb/tmdbGenres';
-import { moviesByGenreQuery } from '@/services/tmdb/tmdbMovies';
+import { genresQuery } from '@/services/tmdb/queries/genreQueries';
+import { moviesByGenreQuery } from '@/services/tmdb/queries/moviesQueries';
 import { useImageUrls } from '@/hooks/useImageUrls';
 import styles from '../SearchPage.module.css';
 import SectionWrapper from '@/components/SectionWrapper';

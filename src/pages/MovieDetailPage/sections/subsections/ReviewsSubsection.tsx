@@ -1,7 +1,7 @@
 import { useRef, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { movieReviewsQuery } from '@/services/tmdb/tmdbMovies';
+import { movieReviewsQuery } from '@/services/tmdb/queries/movieQueries';
 import { useImageUrls } from '@/hooks/useImageUrls';
 import styles from '../../MovieDetailPage.module.css';
 import type { MovieReview } from '@/types/tmdb';

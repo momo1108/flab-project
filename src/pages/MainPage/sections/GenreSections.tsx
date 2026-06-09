@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { useSuspenseQuery, useSuspenseQueries } from '@tanstack/react-query';
-import { genresQuery } from '@/services/tmdb/tmdbGenres';
-import { moviesByGenresQuery } from '@/services/tmdb/tmdbMovies';
+import { genresQuery } from '@/services/tmdb/queries/genreQueries';
+import { moviesByGenresQuery } from '@/services/tmdb/queries/moviesQueries';
 import MovieCard from '@/components/MovieCard/MovieCard';
 import CarouselRow from '@/components/CarouselRow/CarouselRow';
 import styles from '../MainPage.module.css';

@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { similarMoviesQuery } from '@/services/tmdb/tmdbMovies';
+import { similarMoviesQuery } from '@/services/tmdb/queries/moviesQueries';
 import { useImageUrls } from '@/hooks/useImageUrls';
 import styles from '../MovieDetailPage.module.css';
 import { useMemo } from 'react';
