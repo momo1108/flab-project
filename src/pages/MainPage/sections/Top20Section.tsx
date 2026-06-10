@@ -4,25 +4,29 @@ import { popularMoviesQuery } from '@/services/tmdb/queries/moviesQueries';
 import MovieCard from '@/components/MovieCard/MovieCard';
 import CarouselRow from '@/components/CarouselRow/CarouselRow';
 import styles from '../MainPage.module.css';
-import { useMemo } from 'react';
+import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
+import { getPosterUrl } from '@/services/tmdb/imageUrls';
 
 export const Top20Section = () => {
   const navigate = useNavigate();
-  const { data: popularData } = useSuspenseQuery(popularMoviesQuery(1));
-  const popularMovies = useMemo(() => {
-    return popularData.results.slice(0, 20);
-  }, [popularData]);
+  const { data: config } = useSuspenseQuery(configurationQueryObj);
+  const {
+    data: { results: popularMovies },
+  } = useSuspenseQuery(popularMoviesQuery(1, 20));
 
   return (
     <section className={styles.section}>
       <CarouselRow title="왓챠 TOP 20" isLoading={false}>
-        {popularMovies.map((movie, index) => (
+        {popularMovies.map(({ id, title, poster_path, vote_average, release_date }, index) => (
           <MovieCard
-            key={movie.id}
-            movie={movie}
+            key={id}
+            title={title}
+            posterUrl={getPosterUrl(poster_path, config)}
+            voteAverage={vote_average}
+            releaseDate={release_date}
+            onClick={() => navigate(`/movie/${id}`)}
             showRank={true}
             rank={index + 1}
-            onClick={() => navigate(`/movie/${movie.id}`)}
           />
         ))}
       </CarouselRow>

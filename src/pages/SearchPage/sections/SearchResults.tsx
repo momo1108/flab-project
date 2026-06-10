@@ -1,19 +1,19 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { useQueries, useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { useSuspenseInfiniteQuery, useSuspenseQueries, useSuspenseQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
 import { movieCreditsQuery } from '@/services/tmdb/queries/movieQueries';
 import { searchMoviesQuery } from '@/services/tmdb/queries/moviesQueries';
-import type { Movie, MovieCreditsResponse } from '@/types/tmdb';
-import { useImageUrls } from '@/hooks/useImageUrls';
+import type { Movie } from '@/types/tmdb';
 import styles from '../SearchPage.module.css';
+import { getPosterUrl } from '@/services/tmdb/imageUrls';
+import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
 
 interface SearchResultsProps {
   searchQuery: string;
 }
 
 export const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
-  const { getImageUrl } = useImageUrls();
-
+  const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
     data: searchMoviesData,
     hasNextPage,
@@ -51,11 +51,11 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => 
     };
   }, [hasNextPage, fetchNextPage, isFetchingNextPage]);
 
-  const movieCreditsQueries = useQueries({
+  const movieCreditsQueries = useSuspenseQueries({
     queries: searchResults.map((movie) => movieCreditsQuery(movie.id)),
   });
 
-  const creditsData = movieCreditsQueries.map((q) => q.data) as MovieCreditsResponse[];
+  const creditsData = movieCreditsQueries.map((q) => q.data);
 
   const directorNameCache = useMemo(() => {
     const cache = new Map<number, string>();
@@ -68,23 +68,15 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => 
         return;
       }
 
-      const director = credits.crew.find((c) => c.job === 'Director');
+      const director = credits.producer;
       cache.set(movie.id, director?.name ?? '');
     });
     return cache;
   }, [creditsData, searchResults]);
 
-  const getDirectorName = (movie: Movie): string => {
-    return directorNameCache.get(movie.id) ?? '';
-  };
-
-  const getReleaseYear = (movie: Movie) => {
-    return movie.release_date?.substring(0, 4) || '';
-  };
-
-  const renderMetaText = (movie: Movie) => {
-    const director = getDirectorName(movie);
-    const year = getReleaseYear(movie);
+  const renderMetaText = (id: number, release_date: string) => {
+    const director = directorNameCache.get(id) ?? '';
+    const year = release_date?.substring(0, 4) || '';
 
     if (director && year) {
       return `${director} · ${year}`;
@@ -95,43 +87,35 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => 
     return '';
   };
 
-  return (
-    <>
-      {searchResults.length > 0 ? (
-        <div className={styles.searchResultsContainer}>
-          {searchResults.map((movie) => (
-            <Link key={movie.id} to={`/movie/${movie.id}`} className={styles.searchResultCard}>
-              {movie.poster_path ? (
-                <img
-                  src={getImageUrl(movie.poster_path, 'poster', 'w200')}
-                  alt={movie.title}
-                  className={styles.searchResultPoster}
-                />
-              ) : (
-                <div className={styles.searchResultPosterPlaceholder}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-                    <rect x="2" y="2" width="20" height="20" rx="2" />
-                    <path d="M12 7v10M7 12h10" />
-                  </svg>
-                </div>
-              )}
-              <div className={styles.searchResultInfo}>
-                <div className={styles.searchResultTitle}>{movie.title}</div>
-                <div className={styles.searchResultMeta}>{renderMetaText(movie)}</div>
-              </div>
-            </Link>
-          ))}
-          {hasNextPage && (
-            <div ref={loadMoreRef} className={styles.loadMoreTrigger}>
-              {isFetchingNextPage && <div className={styles.loadingSpinner} style={{ width: 24, height: 24 }} />}
+  return searchResults.length > 0 ? (
+    <div className={styles.searchResultsContainer}>
+      {searchResults.map(({ id, poster_path, title, release_date }) => (
+        <Link key={id} to={`/movie/${id}`} className={styles.searchResultCard}>
+          {poster_path ? (
+            <img src={getPosterUrl(poster_path, config, 'w200')} alt={title} className={styles.searchResultPoster} />
+          ) : (
+            <div className={styles.searchResultPosterPlaceholder}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                <rect x="2" y="2" width="20" height="20" rx="2" />
+                <path d="M12 7v10M7 12h10" />
+              </svg>
             </div>
           )}
-        </div>
-      ) : (
-        <div className={styles.emptyState}>
-          <p>검색 결과가 없습니다</p>
+          <div className={styles.searchResultInfo}>
+            <div className={styles.searchResultTitle}>{title}</div>
+            <div className={styles.searchResultMeta}>{renderMetaText(id, release_date)}</div>
+          </div>
+        </Link>
+      ))}
+      {hasNextPage && (
+        <div ref={loadMoreRef} className={styles.loadMoreTrigger}>
+          {isFetchingNextPage && <div className={styles.loadingSpinner} style={{ width: 24, height: 24 }} />}
         </div>
       )}
-    </>
+    </div>
+  ) : (
+    <div className={styles.emptyState}>
+      <p>검색 결과가 없습니다</p>
+    </div>
   );
 };

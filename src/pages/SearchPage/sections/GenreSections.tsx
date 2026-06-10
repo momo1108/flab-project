@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
-import { genresQuery } from '@/services/tmdb/queries/genreQueries';
 import { moviesByGenreQuery } from '@/services/tmdb/queries/moviesQueries';
-import { useImageUrls } from '@/hooks/useImageUrls';
 import styles from '../SearchPage.module.css';
 import SectionWrapper from '@/components/SectionWrapper';
+import { getPosterUrl } from '@/services/tmdb/imageUrls';
+import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
+import { genresQueryObj } from '@/services/tmdb/queries/genreQueries';
 
 const getPosterColumnCount = (): number => {
   if (typeof window === 'undefined') return 8;
@@ -21,7 +22,7 @@ interface GenreMovieGridProps {
 }
 
 const GenreMovieGrid: React.FC<GenreMovieGridProps> = ({ genreId, posterColumnCount }) => {
-  const { getImageUrl } = useImageUrls();
+  const { data: config } = useSuspenseQuery(configurationQueryObj);
   const { data } = useSuspenseQuery(moviesByGenreQuery(genreId, 1));
   const genreMovies = useMemo(() => {
     return data.results.slice(0, posterColumnCount);
@@ -31,14 +32,10 @@ const GenreMovieGrid: React.FC<GenreMovieGridProps> = ({ genreId, posterColumnCo
 
   return (
     <div className={styles.genrePosterGrid}>
-      {genreMovies.map((movie) => (
-        <Link key={movie.id} to={`/movie/${movie.id}`} className={styles.genrePosterItem}>
-          {movie.poster_path ? (
-            <img
-              src={getImageUrl(movie.poster_path, 'poster', 'w500')}
-              alt={movie.title}
-              className={styles.genrePoster}
-            />
+      {genreMovies.map(({ id, poster_path, title }) => (
+        <Link key={id} to={`/movie/${id}`} className={styles.genrePosterItem}>
+          {poster_path ? (
+            <img src={getPosterUrl(poster_path, config, 'w500')} alt={title} className={styles.genrePoster} />
           ) : (
             <div className={styles.genrePosterPlaceholder}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
@@ -54,7 +51,7 @@ const GenreMovieGrid: React.FC<GenreMovieGridProps> = ({ genreId, posterColumnCo
 };
 
 export const GenreSections: React.FC = () => {
-  const { data: genresData } = useSuspenseQuery(genresQuery());
+  const { data: genresData } = useSuspenseQuery(genresQueryObj);
 
   const randomGenres = useMemo(() => {
     if (!genresData?.genres) return [];
@@ -73,18 +70,14 @@ export const GenreSections: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  return (
-    <>
-      {randomGenres.map((randomGenre) => {
-        return (
-          <div key={randomGenre.id} className={styles.genreSection}>
-            <h2 className={styles.sectionTitle}>{`${randomGenre.name} 영화`}</h2>
-            <SectionWrapper resetKeys={[randomGenre.id]}>
-              <GenreMovieGrid genreId={randomGenre.id} posterColumnCount={posterColumnCount} />
-            </SectionWrapper>
-          </div>
-        );
-      })}
-    </>
-  );
+  return randomGenres.map(({ id, name }) => {
+    return (
+      <div key={id} className={styles.genreSection}>
+        <h2 className={styles.sectionTitle}>{`${name} 영화`}</h2>
+        <SectionWrapper resetKeys={[id]}>
+          <GenreMovieGrid genreId={id} posterColumnCount={posterColumnCount} />
+        </SectionWrapper>
+      </div>
+    );
+  });
 };

@@ -4,17 +4,28 @@ import { popularMoviesQuery } from '@/services/tmdb/queries/moviesQueries';
 import MovieCard from '@/components/MovieCard/MovieCard';
 import CarouselRow from '@/components/CarouselRow/CarouselRow';
 import styles from '../MainPage.module.css';
+import { getPosterUrl } from '@/services/tmdb/imageUrls';
+import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
 
 export const PopularMoviesSection = () => {
   const navigate = useNavigate();
-  const { data: popularData } = useSuspenseQuery(popularMoviesQuery(1));
-  const popularMovies = popularData.results;
+  const { data: config } = useSuspenseQuery(configurationQueryObj);
+  const {
+    data: { results: popularMovies },
+  } = useSuspenseQuery(popularMoviesQuery(1));
 
   return (
     <section className={styles.section}>
       <CarouselRow title="지금 뜨는 영화" isLoading={false}>
-        {popularMovies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} onClick={() => navigate(`/movie/${movie.id}`)} />
+        {popularMovies.map(({ id, title, poster_path, vote_average, release_date }) => (
+          <MovieCard
+            key={id}
+            title={title}
+            posterUrl={getPosterUrl(poster_path, config)}
+            voteAverage={vote_average}
+            releaseDate={release_date}
+            onClick={() => navigate(`/movie/${id}`)}
+          />
         ))}
       </CarouselRow>
     </section>

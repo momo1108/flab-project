@@ -4,17 +4,27 @@ import { popularPersonsQuery } from '@/services/tmdb/queries/personQueries';
 import ArtistCard from '@/components/ArtistCard/ArtistCard';
 import CarouselRow from '@/components/CarouselRow/CarouselRow';
 import styles from '../MainPage.module.css';
+import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
+import { getProfileUrl } from '@/services/tmdb/imageUrls';
 
 export const ArtistsSection = () => {
   const navigate = useNavigate();
-  const { data: personsData } = useSuspenseQuery(popularPersonsQuery(1));
-  const popularPersons = personsData.results;
+  const { data: config } = useSuspenseQuery(configurationQueryObj);
+  const {
+    data: { results: popularPersons },
+  } = useSuspenseQuery(popularPersonsQuery(1));
 
   return (
     <section className={styles.section}>
       <CarouselRow title="아티스트" description="인기 배우 및 감독" isLoading={false} rowType="artist">
-        {popularPersons.map((person) => (
-          <ArtistCard key={person.id} person={person} onClick={() => navigate(`/artist/${person.id}`)} />
+        {popularPersons.map(({ id, name, profile_path, known_for }) => (
+          <ArtistCard
+            key={id}
+            name={name}
+            profileUrl={getProfileUrl(profile_path, config, 'w185')}
+            knownFor={known_for}
+            onClick={() => navigate(`/artist/${id}`)}
+          />
         ))}
       </CarouselRow>
     </section>
