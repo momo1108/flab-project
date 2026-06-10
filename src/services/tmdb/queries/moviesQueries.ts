@@ -1,4 +1,4 @@
-import type { MovieResponse } from '@/types/tmdb';
+import type { Movie, MovieResponse } from '@/types/tmdb';
 import { queryConfig } from '../queryConfig';
 import {
   discoverMoviesQueryKey,
@@ -9,18 +9,21 @@ import {
   trendingMoviesQueryKey,
 } from '../queryKeys/movieQueryKeys';
 import { discoverMovies, getPopularMovies, getSimilarMovies, getTrendingMovies, searchMovies } from '../api/moviesApi';
+import { createResultsLimitSelect } from './queryHelper';
 
 // ===== Query Options =====
 
-export const popularMoviesQuery = (page: number = 1) => ({
+export const popularMoviesQuery = (page: number = 1, limit?: number | undefined) => ({
   queryKey: popularMoviesQueryKey(page),
   queryFn: () => getPopularMovies(page),
+  select: createResultsLimitSelect<Movie, MovieResponse>(limit),
   ...queryConfig.movies,
 });
 
-export const trendingMoviesQuery = (timeWindow: 'day' | 'week' = 'day') => ({
+export const trendingMoviesQuery = (timeWindow: 'day' | 'week' = 'day', limit?: number | undefined) => ({
   queryKey: trendingMoviesQueryKey(timeWindow),
   queryFn: () => getTrendingMovies(timeWindow),
+  select: createResultsLimitSelect<Movie, MovieResponse>(limit),
   ...queryConfig.movies,
 });
 
@@ -51,14 +54,7 @@ export const moviesByGenresQuery = (genreIds: number[], page: number = 1, limit?
         sort_by: 'primary_release_date.desc',
         page,
       }),
-    select: (data: MovieResponse) => {
-      if (Number.isInteger(limit)) {
-        return {
-          ...data,
-          results: data.results.slice(0, limit),
-        };
-      } else return data;
-    },
+    select: createResultsLimitSelect<Movie, MovieResponse>(limit),
     ...queryConfig.movies,
     enabled: !!genreId,
   }));
@@ -76,9 +72,15 @@ export const searchMoviesQuery = (query: string) => ({
   enabled: query.length > 0,
 });
 
-export const similarMoviesQuery = (id: number, page: number = 1, enabled: boolean = true) => ({
+export const similarMoviesQuery = (
+  id: number,
+  page: number = 1,
+  enabled: boolean = true,
+  limit?: number | undefined,
+) => ({
   queryKey: similarMoviesQueryKey(id, page),
   queryFn: () => getSimilarMovies(id, page),
+  select: createResultsLimitSelect<Movie, MovieResponse>(limit),
   ...queryConfig.movies,
   enabled: enabled && !!id,
 });

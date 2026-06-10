@@ -1,16 +1,13 @@
-import { useImageUrls } from '@/hooks/useImageUrls';
 import type { Collection } from '@/types/tmdb';
 import styles from './CollectionCard.module.css';
 
 interface CollectionCardProps {
   collection: Collection;
+  backdropUrl: string;
   onClick?: () => void;
 }
 
-const CollectionCard: React.FC<CollectionCardProps> = ({ collection, onClick }) => {
-  const { getBackdropUrl } = useImageUrls();
-  const backdropUrl = getBackdropUrl(collection.backdrop_path, 'w780');
-
+const CollectionCard: React.FC<CollectionCardProps> = ({ collection, backdropUrl, onClick }) => {
   return (
     <div className={styles.collectionCard} onClick={onClick} role="button" tabIndex={0}>
       <div className={styles.imageWrapper}>

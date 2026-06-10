@@ -1,38 +1,28 @@
 import { Link, useParams } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { similarMoviesQuery } from '@/services/tmdb/queries/moviesQueries';
-import { useImageUrls } from '@/hooks/useImageUrls';
 import styles from '../MovieDetailPage.module.css';
-import { useMemo } from 'react';
+import { getPosterUrl } from '@/services/tmdb/imageUrls';
+import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
 
 export const RelatedContentTab = () => {
   const { id } = useParams<{ id: string }>();
   const movieId = id ? Number.parseInt(id, 10) : 0;
 
-  const { data: similarMoviesData } = useSuspenseQuery(similarMoviesQuery(movieId, 1, true));
-  const similarMovies = useMemo(() => {
-    return similarMoviesData.results.slice(0, 16);
-  }, [similarMoviesData]);
+  const { data: config } = useSuspenseQuery(configurationQueryObj);
+  const {
+    data: { results: similarMovies },
+  } = useSuspenseQuery(similarMoviesQuery(movieId, 1, true, 16));
 
-  const { getImageUrl } = useImageUrls();
-
-  return (
-    <>
-      {similarMovies.length > 0 ? (
-        <div className={styles.similarMoviesGrid}>
-          {similarMovies.map((similarMovie) => (
-            <Link key={similarMovie.id} to={`/movie/${similarMovie.id}`} className={styles.similarMovieItem}>
-              <img
-                src={getImageUrl(similarMovie.poster_path, 'poster', 'w500')}
-                alt={similarMovie.title}
-                className={styles.similarMoviePoster}
-              />
-            </Link>
-          ))}
-        </div>
-      ) : (
-        <p className={styles.emptyState}>관련 영화가 없습니다.</p>
-      )}
-    </>
+  return similarMovies.length > 0 ? (
+    <div className={styles.similarMoviesGrid}>
+      {similarMovies.map(({ id, poster_path, title }) => (
+        <Link key={id} to={`/movie/${id}`} className={styles.similarMovieItem}>
+          <img src={getPosterUrl(poster_path, config, 'w500')} alt={title} className={styles.similarMoviePoster} />
+        </Link>
+      ))}
+    </div>
+  ) : (
+    <p className={styles.emptyState}>관련 영화가 없습니다.</p>
   );
 };

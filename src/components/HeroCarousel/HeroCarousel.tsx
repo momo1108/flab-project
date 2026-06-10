@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { useImageUrls } from '@/hooks/useImageUrls';
+import { getBackdropUrl } from '@/services/tmdb/imageUrls';
 import type { Movie } from '@/types/tmdb';
+import type { TMDBConfiguration } from '@/types/tmdb';
 import styles from './HeroCarousel.module.css';
 
 interface HeroCarouselProps {
   movies: Movie[];
+  config: TMDBConfiguration;
 }
 
-const HeroCarousel: React.FC<HeroCarouselProps> = ({ movies }) => {
+const HeroCarousel: React.FC<HeroCarouselProps> = ({ movies, config }) => {
   const navigate = useNavigate();
-  const { getBackdropUrl } = useImageUrls();
 
   // displayIndex: 1 = 첫 번째 실제 슬라이드 (0은 마지막 클론, movies.length+1은 첫 클론)
   const [displayIndex, setDisplayIndex] = useState(1);
@@ -75,11 +76,11 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ movies }) => {
             }}
             onTransitionEnd={handleTransitionEnd}
           >
-            {extendedMovies.map((movie, i) => {
-              const url = getBackdropUrl(movie.backdrop_path, 'original');
+            {extendedMovies.map(({ id, backdrop_path, title }, i) => {
+              const url = getBackdropUrl(backdrop_path, config, 'original');
               return (
-                <div key={`${movie.id}-${i}`} className={styles.slide} onClick={() => navigate(`/movie/${movie.id}`)}>
-                  <img src={url} alt={movie.title} className={styles.backdrop} />
+                <div key={`${id}-${i}`} className={styles.slide} onClick={() => navigate(`/movie/${id}`)}>
+                  <img src={url} alt={title} className={styles.backdrop} />
                   <div className={styles.overlay} />
                 </div>
               );

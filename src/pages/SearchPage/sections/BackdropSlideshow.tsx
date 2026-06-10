@@ -1,15 +1,15 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { popularMoviesQuery } from '@/services/tmdb/queries/moviesQueries';
-import { useImageUrls } from '@/hooks/useImageUrls';
 import styles from '../SearchPage.module.css';
+import { getBackdropUrl } from '@/services/tmdb/imageUrls';
+import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
 
 export const BackdropSlideshow: React.FC = () => {
-  const { getImageUrl } = useImageUrls();
-  const { data: popularData } = useSuspenseQuery(popularMoviesQuery(1));
-  const popularMovies = useMemo(() => {
-    return popularData.results.slice(0, 10);
-  }, [popularData]);
+  const { data: config } = useSuspenseQuery(configurationQueryObj);
+  const {
+    data: { results: popularMovies },
+  } = useSuspenseQuery(popularMoviesQuery(1, 10));
   const [currentBackdropIndex, setCurrentBackdropIndex] = useState(0);
 
   if (popularMovies.length === 0) {
@@ -30,11 +30,11 @@ export const BackdropSlideshow: React.FC = () => {
   return (
     <div className={styles.backdropSection}>
       <div className={styles.backdropWrapper}>
-        {popularMovies.map((movie, index) => (
+        {popularMovies.map(({ id, backdrop_path, title }, index) => (
           <img
-            key={movie.id}
-            src={getImageUrl(movie.backdrop_path, 'backdrop', 'w780')}
-            alt={movie.title}
+            key={id}
+            src={getBackdropUrl(backdrop_path, config, 'w780')}
+            alt={title}
             className={`${styles.backdropImage} ${index === currentBackdropIndex ? '' : styles.fading}`}
             style={{ display: index === currentBackdropIndex ? 'block' : 'none' }}
           />

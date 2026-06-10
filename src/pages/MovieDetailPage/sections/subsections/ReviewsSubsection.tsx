@@ -1,10 +1,11 @@
 import { useRef, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router';
-import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { useSuspenseInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { movieReviewsQuery } from '@/services/tmdb/queries/movieQueries';
-import { useImageUrls } from '@/hooks/useImageUrls';
 import styles from '../../MovieDetailPage.module.css';
 import type { MovieReview } from '@/types/tmdb';
+import { getProfileUrl } from '@/services/tmdb/imageUrls';
+import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
 
 const renderStars = (rating: number | null): React.ReactElement[] => {
   if (rating === null) return [];
@@ -30,9 +31,9 @@ const renderStars = (rating: number | null): React.ReactElement[] => {
 export const ReviewsSubsection = () => {
   const { id } = useParams<{ id: string }>();
   const movieId = id ? Number.parseInt(id, 10) : 0;
-  const { getImageUrl } = useImageUrls();
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
+  const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
     data: reviewsData,
     hasNextPage,
@@ -84,7 +85,7 @@ export const ReviewsSubsection = () => {
             <img
               src={
                 review.author_details.avatar_path
-                  ? getImageUrl(review.author_details.avatar_path, 'profile', 'w185')
+                  ? getProfileUrl(review.author_details.avatar_path, config, 'w185')
                   : '/default-avatar.png'
               }
               alt={review.author}
