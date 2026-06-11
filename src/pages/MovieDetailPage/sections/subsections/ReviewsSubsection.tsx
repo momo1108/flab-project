@@ -1,11 +1,26 @@
-import { useRef, useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useParams } from 'react-router';
-import { useSuspenseInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { movieReviewsQuery } from '@/services/tmdb/queries/movieQueries';
 import styles from '../../MovieDetailPage.module.css';
 import type { MovieReview } from '@/types/tmdb';
 import { getProfileUrl } from '@/services/tmdb/imageUrls';
 import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
+import SectionWrapper from '@/components/SectionWrapper';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+
+export const ReviewsSubsection = () => {
+  const { id } = useParams<{ id: string }>();
+
+  return (
+    <div className={styles.subsection}>
+      <h2 className={styles.sectionTitle}>사용자 평</h2>
+      <SectionWrapper resetKeys={[id]}>
+        <ReviewsSubsectionContent />
+      </SectionWrapper>
+    </div>
+  );
+};
 
 const renderStars = (rating: number | null): React.ReactElement[] => {
   if (rating === null) return [];
@@ -28,46 +43,22 @@ const renderStars = (rating: number | null): React.ReactElement[] => {
   ));
 };
 
-export const ReviewsSubsection = () => {
+const ReviewsSubsectionContent = () => {
   const { id } = useParams<{ id: string }>();
   const movieId = id ? Number.parseInt(id, 10) : 0;
-  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
     data: reviewsData,
     hasNextPage,
-    fetchNextPage,
     isFetchingNextPage,
-  } = useSuspenseInfiniteQuery(movieReviewsQuery(movieId, true));
+    loadMoreRef,
+  } = useInfiniteScroll(movieReviewsQuery(movieId, true), { rootMargin: '200px' });
 
   const allReviews = useMemo(() => {
     return reviewsData.pages.reduce<MovieReview[]>((acc, page) => [...acc, ...page.results], []);
   }, [reviewsData.pages]);
   const reviewCount = reviewsData.pages[0]?.total_results ?? 0;
-
-  // Intersection Observer for infinite scroll
-  useEffect(() => {
-    if (!hasNextPage || isFetchingNextPage) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      { rootMargin: '200px', threshold: 0.1 },
-    );
-
-    const target = loadMoreRef.current;
-    if (target) {
-      observer.observe(target);
-    }
-
-    return () => {
-      if (target) observer.unobserve(target);
-    };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   if (allReviews.length === 0) {
     return <p className={styles.emptyState}>리뷰가 없습니다.</p>;

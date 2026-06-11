@@ -33,7 +33,7 @@ export const discoverMoviesQuery = (params: Record<string, string | number>) => 
   ...queryConfig.movies,
 });
 
-export const moviesByGenreQuery = (genreId: number, page: number = 1) => ({
+export const moviesByGenreQuery = (genreId: number, page: number = 1, limit?: number | undefined) => ({
   queryKey: moviesByGenreQueryKey(genreId, page),
   queryFn: () =>
     discoverMovies({
@@ -41,6 +41,7 @@ export const moviesByGenreQuery = (genreId: number, page: number = 1) => ({
       sort_by: 'popularity.desc',
       page,
     }),
+  select: createResultsLimitSelect<Movie, MovieResponse>(limit),
   ...queryConfig.movies,
   enabled: !!genreId,
 });

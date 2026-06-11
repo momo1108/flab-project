@@ -2,8 +2,22 @@ import { useParams } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { movieVideosQuery } from '@/services/tmdb/queries/movieQueries';
 import styles from '../../MovieDetailPage.module.css';
+import SectionWrapper from '@/components/SectionWrapper';
 
 export const VideosSubsection = () => {
+  const { id } = useParams<{ id: string }>();
+
+  return (
+    <div className={styles.subsection}>
+      <h2 className={styles.sectionTitle}>관련 동영상</h2>
+      <SectionWrapper resetKeys={[id]}>
+        <VideosSubsectionContent />
+      </SectionWrapper>
+    </div>
+  );
+};
+
+const VideosSubsectionContent = () => {
   const { id } = useParams<{ id: string }>();
   const movieId = id ? Number.parseInt(id, 10) : 0;
 

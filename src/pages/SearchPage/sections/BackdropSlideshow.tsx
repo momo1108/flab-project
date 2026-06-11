@@ -4,8 +4,17 @@ import { popularMoviesQuery } from '@/services/tmdb/queries/moviesQueries';
 import styles from '../SearchPage.module.css';
 import { getBackdropUrl } from '@/services/tmdb/imageUrls';
 import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
+import SectionWrapper from '@/components/SectionWrapper';
 
 export const BackdropSlideshow: React.FC = () => {
+  return (
+    <SectionWrapper>
+      <BackdropSlideshowContent />
+    </SectionWrapper>
+  );
+};
+
+const BackdropSlideshowContent: React.FC = () => {
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
     data: { results: popularMovies },

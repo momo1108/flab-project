@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef } from 'react';
-import { useSuspenseInfiniteQuery, useSuspenseQueries, useSuspenseQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
+import { useSuspenseQueries, useSuspenseQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
 import { movieCreditsQuery } from '@/services/tmdb/queries/movieQueries';
 import { searchMoviesQuery } from '@/services/tmdb/queries/moviesQueries';
@@ -7,49 +7,33 @@ import type { Movie } from '@/types/tmdb';
 import styles from '../SearchPage.module.css';
 import { getPosterUrl } from '@/services/tmdb/imageUrls';
 import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
+import SectionWrapper from '@/components/SectionWrapper';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 
 interface SearchResultsProps {
   searchQuery: string;
 }
 
 export const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => {
+  return (
+    <SectionWrapper resetKeys={[searchQuery]}>
+      <SearchResultsContent searchQuery={searchQuery} />
+    </SectionWrapper>
+  );
+};
+
+const SearchResultsContent: React.FC<SearchResultsProps> = ({ searchQuery }) => {
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
     data: searchMoviesData,
+    loadMoreRef,
     hasNextPage,
-    fetchNextPage,
     isFetchingNextPage,
-  } = useSuspenseInfiniteQuery(searchMoviesQuery(searchQuery));
+  } = useInfiniteScroll(searchMoviesQuery(searchQuery));
 
   const searchResults = useMemo(() => {
     return searchMoviesData.pages.reduce<Movie[]>((acc, page) => [...acc, ...page.results], []);
   }, [searchMoviesData.pages]);
-
-  const loadMoreRef = useRef<HTMLDivElement>(null);
-  const observerRef = useRef<IntersectionObserver | null>(null);
-
-  useEffect(() => {
-    if (!loadMoreRef.current || !hasNextPage) return;
-
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
-
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      { threshold: 0.1 },
-    );
-
-    observerRef.current.observe(loadMoreRef.current);
-
-    return () => {
-      observerRef.current?.disconnect();
-    };
-  }, [hasNextPage, fetchNextPage, isFetchingNextPage]);
 
   const movieCreditsQueries = useSuspenseQueries({
     queries: searchResults.map((movie) => movieCreditsQuery(movie.id)),
