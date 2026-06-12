@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useParams } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { movieDetailQuery, movieImagesQuery } from '@/services/tmdb/queries/movieQueries';
@@ -36,7 +35,7 @@ const MovieHeroContent = () => {
   const { data: images } = useSuspenseQuery(movieImagesQuery(movieId));
 
   const logo = images.logos?.[0];
-  const releaseYear = useMemo(() => release_date?.split('-')[0] ?? '', [release_date]);
+  const releaseYear = release_date?.split('-')[0] ?? '';
 
   return (
     <div className={styles.hero}>

@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useSuspenseQueries, useSuspenseQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
 import { moviesByGenresQuery } from '@/services/tmdb/queries/moviesQueries';
@@ -7,6 +6,8 @@ import SectionWrapper from '@/components/SectionWrapper';
 import { getPosterUrl } from '@/services/tmdb/imageUrls';
 import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
 import { genresQueryObj } from '@/services/tmdb/queries/genreQueries';
+import { shuffleArray } from '@/utils/random';
+import type { Genre } from '@/types/tmdb';
 
 export const GenreSections: React.FC = () => {
   return (
@@ -22,10 +23,7 @@ const GenreSectionsContent: React.FC = () => {
     data: { genres: genresData },
   } = useSuspenseQuery(genresQueryObj);
 
-  const randomGenres = useMemo(() => {
-    const shuffled = [...genresData].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 3);
-  }, [genresData]);
+  const randomGenres = shuffleArray<Genre>(genresData).slice(0, 3);
 
   // Fetch movies for each random genre using useSuspenseQueries
   const randomGenreIds = randomGenres.map((genre) => genre.id);

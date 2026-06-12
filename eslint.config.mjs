@@ -5,6 +5,7 @@ import pluginReact from 'eslint-plugin-react';
 import { defineConfig } from 'eslint/config';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import pluginQuery from '@tanstack/eslint-plugin-query';
+import reactHooks from 'eslint-plugin-react-hooks';
 
 export default defineConfig([
   {
@@ -28,6 +29,7 @@ export default defineConfig([
   // React 관련 코드에서 발생할 수 있는 문제를 방지하는 규칙들이 포함
   // flat 구조를 사용하여 최신 방식으로 설정을 가져옴
   pluginReact.configs.flat.recommended,
+  reactHooks.configs.flat.recommended, // React Compiler 플러그인
   eslintPluginPrettierRecommended,
   pluginQuery.configs['flat/recommended'],
   {

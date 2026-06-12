@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useParams } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { movieReviewsQuery } from '@/services/tmdb/queries/movieQueries';
@@ -55,9 +54,7 @@ const ReviewsSubsectionContent = () => {
     loadMoreRef,
   } = useInfiniteScroll(movieReviewsQuery(movieId, true), { rootMargin: '200px' });
 
-  const allReviews = useMemo(() => {
-    return reviewsData.pages.reduce<MovieReview[]>((acc, page) => [...acc, ...page.results], []);
-  }, [reviewsData.pages]);
+  const allReviews = reviewsData.pages.reduce<MovieReview[]>((acc, page) => [...acc, ...page.results], []);
   const reviewCount = reviewsData.pages[0]?.total_results ?? 0;
 
   if (allReviews.length === 0) {
