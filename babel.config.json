@@ -11,10 +11,48 @@
   ],
   "plugins": [
     [
+      "babel-plugin-react-compiler",
+      {
+        "validation": true,
+        "noProfile": false
+      }
+    ],
+    [
       "@babel/plugin-transform-runtime",
       {
         "corejs": 3
       }
     ]
   ]
+  // uncomment to apply react-compiler plugin only to specific directories
+  // "overrides": [
+  //   {
+  //     "test": [
+  //       "./src/components/**/*.js",
+  //       "./src/components/**/*.jsx",
+  //       "./src/components/**/*.ts",
+  //       "./src/components/**/*.tsx",
+  //       "./src/pages/**/*.js",
+  //       "./src/pages/**/*.jsx",
+  //       "./src/pages/**/*.ts",
+  //       "./src/pages/**/*.tsx",
+  //       "./src/hooks/**/*.js",
+  //       "./src/hooks/**/*.jsx",
+  //       "./src/hooks/**/*.ts",
+  //       "./src/hooks/**/*.tsx"
+  //     ],
+  //     "plugins": [
+  //       [
+  //         "babel-plugin-react-compiler",
+  //         {
+  //           "validation": true,
+  //           "noProfile": false
+  //           // uncomment to enable annotation mode
+  //           // (requires adding "use memo" annotation to top of each component)
+  //           // "compilationMode": "annotation",
+  //         }
+  //       ]
+  //     ]
+  //   }
+  // ]
 }

@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useSuspenseQueries, useSuspenseQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
 import { movieCreditsQuery } from '@/services/tmdb/queries/movieQueries';
@@ -31,9 +30,7 @@ const SearchResultsContent: React.FC<SearchResultsProps> = ({ searchQuery }) => 
     isFetchingNextPage,
   } = useInfiniteScroll(searchMoviesQuery(searchQuery));
 
-  const searchResults = useMemo(() => {
-    return searchMoviesData.pages.reduce<Movie[]>((acc, page) => [...acc, ...page.results], []);
-  }, [searchMoviesData.pages]);
+  const searchResults = searchMoviesData.pages.reduce<Movie[]>((acc, page) => [...acc, ...page.results], []);
 
   const movieCreditsQueries = useSuspenseQueries({
     queries: searchResults.map((movie) => movieCreditsQuery(movie.id)),
@@ -41,22 +38,19 @@ const SearchResultsContent: React.FC<SearchResultsProps> = ({ searchQuery }) => 
 
   const creditsData = movieCreditsQueries.map((q) => q.data);
 
-  const directorNameCache = useMemo(() => {
-    const cache = new Map<number, string>();
-    creditsData.forEach((credits, index) => {
-      const movie = searchResults[index];
-      if (!movie) return;
+  const directorNameCache = new Map<number, string>();
+  creditsData.forEach((credits, index) => {
+    const movie = searchResults[index];
+    if (!movie) return;
 
-      if (!credits) {
-        cache.set(movie.id, '');
-        return;
-      }
+    if (!credits) {
+      directorNameCache.set(movie.id, '');
+      return;
+    }
 
-      const director = credits.producer;
-      cache.set(movie.id, director?.name ?? '');
-    });
-    return cache;
-  }, [creditsData, searchResults]);
+    const director = credits.producer;
+    directorNameCache.set(movie.id, director?.name ?? '');
+  });
 
   const renderMetaText = (id: number, release_date: string) => {
     const director = directorNameCache.get(id) ?? '';

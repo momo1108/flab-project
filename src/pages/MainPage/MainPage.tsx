@@ -6,6 +6,7 @@ import { ArtistsSection } from './sections/ArtistsSection';
 import styles from './MainPage.module.css';
 
 const MainPage: React.FC = () => {
+  'use memo';
   return (
     <main className={styles.mainPage}>
       <HeroSection />
