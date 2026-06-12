@@ -6,8 +6,17 @@ import CarouselRow from '@/components/CarouselRow/CarouselRow';
 import styles from '../MainPage.module.css';
 import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
 import { getPosterUrl } from '@/services/tmdb/imageUrls';
+import SectionWrapper from '@/components/SectionWrapper';
 
 export const Top20Section = () => {
+  return (
+    <SectionWrapper>
+      <Top20SectionContent />
+    </SectionWrapper>
+  );
+};
+
+const Top20SectionContent = () => {
   const navigate = useNavigate();
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
@@ -16,7 +25,7 @@ export const Top20Section = () => {
 
   return (
     <section className={styles.section}>
-      <CarouselRow title="왓챠 TOP 20" isLoading={false}>
+      <CarouselRow title="왓챠 TOP 20">
         {popularMovies.map(({ id, title, poster_path, vote_average, release_date }, index) => (
           <MovieCard
             key={id}

@@ -6,8 +6,17 @@ import CarouselRow from '@/components/CarouselRow/CarouselRow';
 import styles from '../MainPage.module.css';
 import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
 import { getProfileUrl } from '@/services/tmdb/imageUrls';
+import SectionWrapper from '@/components/SectionWrapper';
 
 export const ArtistsSection = () => {
+  return (
+    <SectionWrapper>
+      <ArtistsSectionContent />
+    </SectionWrapper>
+  );
+};
+
+const ArtistsSectionContent = () => {
   const navigate = useNavigate();
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
@@ -16,7 +25,7 @@ export const ArtistsSection = () => {
 
   return (
     <section className={styles.section}>
-      <CarouselRow title="아티스트" description="인기 배우 및 감독" isLoading={false} rowType="artist">
+      <CarouselRow title="아티스트" description="인기 배우 및 감독" rowType="artist">
         {popularPersons.map(({ id, name, profile_path, known_for }) => (
           <ArtistCard
             key={id}

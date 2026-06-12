@@ -5,6 +5,7 @@ import { movieDetailQuery, movieImagesQuery } from '@/services/tmdb/queries/movi
 import styles from '../MovieDetailPage.module.css';
 import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
 import { getBackdropUrl, getPosterUrl } from '@/services/tmdb/imageUrls';
+import SectionWrapper from '@/components/SectionWrapper';
 
 const formatRuntime = (minutes: number): string => {
   const hours = Math.floor(minutes / 60);
@@ -15,6 +16,16 @@ const formatRuntime = (minutes: number): string => {
 const formatVoteCount = (count: number): string => new Intl.NumberFormat('ko-KR').format(count);
 
 export const MovieHero = () => {
+  const { id } = useParams<{ id: string }>();
+
+  return (
+    <SectionWrapper resetKeys={[id]}>
+      <MovieHeroContent />
+    </SectionWrapper>
+  );
+};
+
+const MovieHeroContent = () => {
   const { id } = useParams<{ id: string }>();
   const movieId = id ? Number.parseInt(id, 10) : 0;
 

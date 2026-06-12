@@ -2,8 +2,19 @@ import { useParams } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { movieDetailQuery } from '@/services/tmdb/queries/movieQueries';
 import styles from '../MovieDetailPage.module.css';
+import SectionWrapper from '@/components/SectionWrapper';
 
 export const MovieDetailFooter = () => {
+  const { id } = useParams<{ id: string }>();
+
+  return (
+    <SectionWrapper resetKeys={[id]}>
+      <MovieDetailFooterContent />
+    </SectionWrapper>
+  );
+};
+
+const MovieDetailFooterContent = () => {
   const { id } = useParams<{ id: string }>();
   const movieId = id ? Number.parseInt(id, 10) : 0;
 

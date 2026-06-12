@@ -5,11 +5,9 @@ import { MovieContentTab } from './sections/MovieContentTab';
 import { RelatedContentTab } from './sections/RelatedContentTab';
 import { MovieDetailFooter } from './sections/MovieDetailFooter';
 import styles from './MovieDetailPage.module.css';
-import SectionWrapper from '@/components/SectionWrapper';
 
 const MovieDetailPage = () => {
   const { id } = useParams<{ id: string }>();
-  const movieId = id ? Number.parseInt(id, 10) : 0;
   const [activeTab, setActiveTab] = useState<'content' | 'related'>('content');
 
   useEffect(() => {
@@ -20,9 +18,7 @@ const MovieDetailPage = () => {
   return (
     <div className={styles.pageContainer}>
       <main className={styles.mainContainer}>
-        <SectionWrapper resetKeys={[movieId]}>
-          <MovieHero />
-        </SectionWrapper>
+        <MovieHero />
 
         <div className={styles.contentSection}>
           <div className={styles.tabs}>
@@ -41,19 +37,10 @@ const MovieDetailPage = () => {
           </div>
 
           {activeTab === 'content' && <MovieContentTab />}
-          {activeTab === 'related' && (
-            <div className={`${styles.tabContent} ${styles.active}`}>
-              <h2 className={styles.sectionTitle}>관련 콘텐츠</h2>
-              <SectionWrapper resetKeys={[movieId]}>
-                <RelatedContentTab />
-              </SectionWrapper>
-            </div>
-          )}
+          {activeTab === 'related' && <RelatedContentTab />}
         </div>
       </main>
-      <SectionWrapper resetKeys={[movieId]}>
-        <MovieDetailFooter />
-      </SectionWrapper>
+      <MovieDetailFooter />
     </div>
   );
 };

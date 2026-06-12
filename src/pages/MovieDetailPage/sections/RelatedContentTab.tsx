@@ -4,8 +4,22 @@ import { similarMoviesQuery } from '@/services/tmdb/queries/moviesQueries';
 import styles from '../MovieDetailPage.module.css';
 import { getPosterUrl } from '@/services/tmdb/imageUrls';
 import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
+import SectionWrapper from '@/components/SectionWrapper';
 
 export const RelatedContentTab = () => {
+  const { id } = useParams<{ id: string }>();
+
+  return (
+    <div className={`${styles.tabContent} ${styles.active}`}>
+      <h2 className={styles.sectionTitle}>관련 콘텐츠</h2>
+      <SectionWrapper resetKeys={[id]}>
+        <RelatedContentTabContent />
+      </SectionWrapper>
+    </div>
+  );
+};
+
+const RelatedContentTabContent = () => {
   const { id } = useParams<{ id: string }>();
   const movieId = id ? Number.parseInt(id, 10) : 0;
 

@@ -5,7 +5,6 @@ import { PopularTop10 } from './sections/PopularTop10';
 import { SearchResults } from './sections/SearchResults';
 import { BackdropSlideshow } from './sections/BackdropSlideshow';
 import { GenreSections } from './sections/GenreSections';
-import SectionWrapper from '@/components/SectionWrapper';
 
 const SearchPage: React.FC = () => {
   // Search state
@@ -41,32 +40,15 @@ const SearchPage: React.FC = () => {
       {/* Content Layout */}
       <div className={styles.contentLayout}>
         <div className={styles.contentMain}>
-          {!debouncedQuery ? (
-            <>
-              <h2 className={styles.sectionTitle}>인기 검색어 TOP 10</h2>
-              <SectionWrapper>
-                <PopularTop10 />
-              </SectionWrapper>
-            </>
-          ) : (
-            <SectionWrapper resetKeys={[debouncedQuery]}>
-              <SearchResults searchQuery={debouncedQuery} />
-            </SectionWrapper>
-          )}
+          {!debouncedQuery ? <PopularTop10 /> : <SearchResults searchQuery={debouncedQuery} />}
         </div>
 
         {/* Backdrop Slideshow (1280px+ only) */}
-        {!debouncedQuery && (
-          <SectionWrapper>
-            <BackdropSlideshow />
-          </SectionWrapper>
-        )}
+        {!debouncedQuery && <BackdropSlideshow />}
       </div>
 
       {/* Random Genre Sections */}
-      <SectionWrapper>
-        <GenreSections />
-      </SectionWrapper>
+      <GenreSections />
     </div>
   );
 };

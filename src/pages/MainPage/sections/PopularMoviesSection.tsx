@@ -6,8 +6,17 @@ import CarouselRow from '@/components/CarouselRow/CarouselRow';
 import styles from '../MainPage.module.css';
 import { getPosterUrl } from '@/services/tmdb/imageUrls';
 import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
+import SectionWrapper from '@/components/SectionWrapper';
 
 export const PopularMoviesSection = () => {
+  return (
+    <SectionWrapper>
+      <PopularMoviesSectionContent />
+    </SectionWrapper>
+  );
+};
+
+const PopularMoviesSectionContent = () => {
   const navigate = useNavigate();
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
@@ -16,7 +25,7 @@ export const PopularMoviesSection = () => {
 
   return (
     <section className={styles.section}>
-      <CarouselRow title="지금 뜨는 영화" isLoading={false}>
+      <CarouselRow title="지금 뜨는 영화">
         {popularMovies.map(({ id, title, poster_path, vote_average, release_date }) => (
           <MovieCard
             key={id}

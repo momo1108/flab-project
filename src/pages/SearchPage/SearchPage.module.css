@@ -358,15 +358,16 @@
 
 /* Genre Poster Grid */
 .genrePosterGrid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-rows: 1fr; /* 1줄만 보임 */
+  grid-auto-rows: 0; /* 두 번째 행부터의 높이 = 0 (안 보임) */
+  grid-template-columns: repeat(var(--poster-column-count), 1fr);
+  gap: 0; /* padding으로 간격 조정 */
   overflow: hidden;
 }
 
 .genrePosterItem {
-  box-sizing: border-box;
   padding: var(--poster-side-padding);
-  width: calc(100% / var(--poster-column-count));
 }
 
 .genrePoster {

@@ -5,8 +5,22 @@ import styles from '../../MovieDetailPage.module.css';
 import type { CastMember } from '@/types/tmdb';
 import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
 import { getProfileUrl } from '@/services/tmdb/imageUrls';
+import SectionWrapper from '@/components/SectionWrapper';
 
 export const CreditsSubsection = () => {
+  const { id } = useParams<{ id: string }>();
+
+  return (
+    <div className={styles.subsection}>
+      <h2 className={styles.sectionTitle}>감독/출연</h2>
+      <SectionWrapper resetKeys={[id]}>
+        <CreditsSubsectionContent />
+      </SectionWrapper>
+    </div>
+  );
+};
+
+const CreditsSubsectionContent = () => {
   const { id } = useParams<{ id: string }>();
   const movieId = id ? Number.parseInt(id, 10) : 0;
 

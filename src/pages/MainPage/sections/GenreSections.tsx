@@ -8,8 +8,17 @@ import styles from '../MainPage.module.css';
 import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
 import { getPosterUrl } from '@/services/tmdb/imageUrls';
 import { genresQueryObj } from '@/services/tmdb/queries/genreQueries';
+import SectionWrapper from '@/components/SectionWrapper';
 
 export const GenreSections = () => {
+  return (
+    <SectionWrapper>
+      <GenreSectionsContent />
+    </SectionWrapper>
+  );
+};
+
+const GenreSectionsContent = () => {
   const navigate = useNavigate();
 
   const { data: config } = useSuspenseQuery(configurationQueryObj);
@@ -36,11 +45,7 @@ export const GenreSections = () => {
 
     return (
       <section key={randomGenre.id} className={styles.section}>
-        <CarouselRow
-          title={`${randomGenre.name} 영화`}
-          description={`${randomGenre.name} 장르의 인기 영화들`}
-          isLoading={false}
-        >
+        <CarouselRow title={`${randomGenre.name} 영화`} description={`${randomGenre.name} 장르의 인기 영화들`}>
           {genreMovies.map(({ id, title, poster_path, vote_average, release_date }) => (
             <MovieCard
               key={id}
