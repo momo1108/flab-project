@@ -15,23 +15,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 환경변수 파일 생성
-      - name: Generate .env.production
-        env:
-          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
-          TMDB_BASE_URL: ${{ secrets.TMDB_BASE_URL }}
-          TMDB_IMAGE_BASE_URL: ${{ secrets.TMDB_IMAGE_BASE_URL }}
-        run: |
-          cat <<EOF > .env.production
-          TMDB_API_KEY=$TMDB_API_KEY
-          TMDB_BASE_URL=$TMDB_BASE_URL
-          TMDB_IMAGE_BASE_URL=$TMDB_IMAGE_BASE_URL
-          APP_PHASE=production
-          EOF
-
       # 빌드
       - name: Build
         run: npm run build:production
+        env:
+          VITE_TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+          VITE_TMDB_BASE_URL: ${{ secrets.TMDB_BASE_URL }}
+          VITE_TMDB_IMAGE_BASE_URL: ${{ secrets.TMDB_IMAGE_BASE_URL }}
 
       # 배포 (JS/CSS: 1주 캐시)
       - name: S3 Deploy JS CSS

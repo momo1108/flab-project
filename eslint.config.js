@@ -66,7 +66,7 @@ export default defineConfig([
   {
     // Node.js 환경에서 실행되는 설정 파일은 CJS(require/module.exports)가 정상이므로
     // 브라우저/TS 규칙 대신 Node.js 환경으로 별도 처리
-    files: ['webpack.*.js', 'babel.config.json'],
+    files: ['webpack.*.js', 'babel.config.json', 'vite.config.*'],
     languageOptions: {
       globals: globals.node,
     },
