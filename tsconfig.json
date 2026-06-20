@@ -15,7 +15,7 @@
     "moduleResolution": "bundler",
     "target": "es2017",
     "ignoreDeprecations": "6.0",
-    "types": ["webpack-env"],
+    "types": ["vite/client"],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],

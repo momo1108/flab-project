@@ -1,8 +1,8 @@
-const BASE_URL = process.env.TMDB_BASE_URL || 'https://api.themoviedb.org/3';
-const ACCESS_TOKEN = process.env.TMDB_API_KEY;
+const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL || 'https://api.themoviedb.org/3';
+const ACCESS_TOKEN = import.meta.env.VITE_TMDB_API_KEY;
 
 if (!ACCESS_TOKEN) {
-  throw new Error('TMDB_API_KEY is not defined in environment variables');
+  throw new Error('VITE_TMDB_API_KEY is not defined in environment variables');
 }
 
 class TMDBClient {
