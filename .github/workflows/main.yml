@@ -3,6 +3,13 @@ name: AWS_CICD
 on:
   push:
     branches: [main]
+    paths:
+      - 'apps/web/**'
+      - 'packages/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - '.github/workflows/main.yml'
 
 jobs:
   build:
@@ -10,14 +17,25 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+          cache: pnpm
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.8.0
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install --frozen-lockfile
 
       # 빌드
       - name: Build
-        run: npm run build:production
+        run: pnpm run build:production
         env:
           VITE_TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
           VITE_TMDB_BASE_URL: ${{ secrets.TMDB_BASE_URL }}
@@ -26,7 +44,7 @@ jobs:
       # 배포 (JS/CSS: 1주 캐시)
       - name: S3 Deploy JS CSS
         run: |
-          aws s3 sync ./dist s3://watcha-clone-prod-244892142287-ap-northeast-2-an/ \
+          aws s3 sync ./apps/web/dist s3://watcha-clone-prod-244892142287-ap-northeast-2-an/ \
             --exclude "*" \
             --include "*.js" \
             --include "*.css" \
@@ -40,7 +58,7 @@ jobs:
       # 배포 (기타 에셋: 1년 캐시)
       - name: S3 Deploy Other Assets
         run: |
-          aws s3 sync ./dist s3://watcha-clone-prod-244892142287-ap-northeast-2-an/ \
+          aws s3 sync ./apps/web/dist s3://watcha-clone-prod-244892142287-ap-northeast-2-an/ \
             --exclude "index.html" \
             --exclude "*.js" \
             --exclude "*.css" \
@@ -54,7 +72,7 @@ jobs:
       # 배포 (HTML: 항상 최신 확인)
       - name: S3 Deploy HTML
         run: |
-          aws s3 cp ./dist/index.html s3://watcha-clone-prod-244892142287-ap-northeast-2-an/index.html \
+          aws s3 cp ./apps/web/dist/index.html s3://watcha-clone-prod-244892142287-ap-northeast-2-an/index.html \
             --cache-control "max-age=0, s-maxage=31536000" \
             --content-type "text/html; charset=utf-8" \
             --acl bucket-owner-full-control
