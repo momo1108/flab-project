@@ -1,4 +1,6 @@
-const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL || 'https://api.themoviedb.org/3';
+const isLocalHost = typeof window !== 'undefined' && ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+const BASE_URL = isLocalHost ? '/api/tmdb' : import.meta.env.VITE_TMDB_BASE_URL || 'https://api.themoviedb.org/3';
 const ACCESS_TOKEN = import.meta.env.VITE_TMDB_API_KEY;
 
 if (!ACCESS_TOKEN) {

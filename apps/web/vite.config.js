@@ -18,6 +18,13 @@ const second = pad2(now.getSeconds());
 
 const buildTimeStamp = `${year}${month}${day}-${hour}${minute}${second}`;
 
+const tmdbProxy = {
+  target: 'https://api.themoviedb.org',
+  changeOrigin: true,
+  secure: true,
+  rewrite: (requestPath) => requestPath.replace(/^\/api\/tmdb/, '/3'),
+};
+
 export default defineConfig(({ mode }) => {
   return {
     plugins: [
@@ -64,10 +71,16 @@ export default defineConfig(({ mode }) => {
       host: 'localhost',
       port: 3000,
       open: true,
+      proxy: {
+        '/api/tmdb': tmdbProxy,
+      },
     },
     preview: {
       host: 'localhost',
       port: 4173,
+      proxy: {
+        '/api/tmdb': tmdbProxy,
+      },
     },
   };
 });

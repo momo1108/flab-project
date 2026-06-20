@@ -6,7 +6,7 @@ import { useState, type PropsWithChildren } from 'react';
 // TypeScript only:
 declare global {
   interface Window {
-    __TANSTACK_QUERY_CLIENT__: import('@tanstack/query-core').QueryClient;
+    __TANSTACK_QUERY_CLIENT__: import('@tanstack/react-query').QueryClient;
   }
 }
 

@@ -1,0 +1,57 @@
+{
+  "name": "@flab/web",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "vite --mode development --host localhost --port 3000",
+    "build:staging": "vite build --mode staging",
+    "build:production": "vite build --mode production",
+    "preview": "vite preview --mode production --host localhost --port 4173",
+    "type-check": "tsc -p ./tsconfig.build.json",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src"
+  },
+  "sideEffects": [
+    "*.css",
+    "*.scss"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "웹 어플리케이션 기능을 구현하기 위한 레퍼지터리입니다.",
+  "dependencies": {
+    "@tanstack/react-query": "^5.100.3",
+    "@tanstack/react-query-devtools": "^5.100.6",
+    "core-js": "^3.49.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "react-error-boundary": "^6.1.2",
+    "react-router": "^7.14.2"
+  },
+  "devDependencies": {
+    "@flab/typescript-config": "workspace:*",
+    "@flab/eslint-config": "workspace:*",
+    "@babel/cli": "^7.28.6",
+    "@babel/core": "^7.29.0",
+    "@babel/plugin-transform-runtime": "^7.29.0",
+    "@babel/preset-env": "^7.29.2",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
+    "@babel/runtime-corejs3": "^7.29.2",
+    "@rolldown/plugin-babel": "^0.2.3",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/webpack-env": "^1.18.8",
+    "@vitejs/plugin-react": "^6.0.2",
+    "babel-plugin-polyfill-corejs3": "^1.0.0",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "browserslist": "^4.28.2",
+    "browserslist-to-esbuild": "^2.1.1",
+    "postcss": "^8.5.10",
+    "postcss-preset-env": "^11.2.1",
+    "rollup-plugin-visualizer": "^7.0.1",
+    "vite": "^8.0.16"
+  }
+}
