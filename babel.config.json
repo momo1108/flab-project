@@ -13,16 +13,16 @@
     [
       "babel-plugin-react-compiler",
       {
-        "validation": true,
-        "noProfile": false
+        "validation": true, // 개발 모드에서 컴포넌트 최적화를 런타임에 검증 활성화 여부
+        "noProfile": true // 프로파일링 정보 포함 여부
       }
     ],
-    [
-      "@babel/plugin-transform-runtime",
-      {
-        "corejs": 3
-      }
-    ]
+    // transform-runtime은 Babel helper 중복 제거만 담당
+    // 전역 polyfill 주입은 맡기지 않고, polyfill 전용 플러그인에 역할을 분리
+    "@babel/plugin-transform-runtime",
+    // Babel 8 방향에 맞춰 core-js polyfill 주입은 polyfill-corejs3가 전담
+    // .browserslistrc 타깃과 실제 코드 사용량을 기준으로 polyfill
+    ["polyfill-corejs3", { "method": "usage-global", "version": "3.49" }]
   ]
   // uncomment to apply react-compiler plugin only to specific directories
   // "overrides": [

@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
 import visualizer from 'rollup-plugin-visualizer';
+import browserslistToEsbuild from 'browserslist-to-esbuild';
 
 // 번들 분석 보고서 파일명에 타임스탬프 추가
 const pad2 = (value) => String(value).padStart(2, '0');
@@ -46,6 +47,19 @@ export default defineConfig(({ mode }) => {
           ]
         : []),
     ],
+    // postcss 설정 파일은 기본적으로 프로젝트 루트의 postcss.config.js 를 참조
+    build: {
+      outDir: 'dist',
+      sourcemap: false,
+      // .browserlistrc 에 정의된 브라우저 타겟을 esbuild 의 target 옵션으로 변환하여 적용
+      target: browserslistToEsbuild(),
+      cssTarget: browserslistToEsbuild(),
+    },
+    resolve: {
+      alias: { '@': path.resolve(__dirname, 'src') },
+    },
+    assetsInclude: [/\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i],
+    // assetsInlineLimit: 4096, // 4KB 가 기본값
     server: {
       host: 'localhost',
       port: 3000,
@@ -55,14 +69,5 @@ export default defineConfig(({ mode }) => {
       host: 'localhost',
       port: 4173,
     },
-    build: {
-      outDir: 'dist',
-      sourcemap: false,
-    },
-    resolve: {
-      alias: { '@': path.resolve(__dirname, 'src') },
-    },
-    assetsInclude: [/\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i],
-    // assetsInlineLimit: 4096, // 4KB 가 기본값
   };
 });
