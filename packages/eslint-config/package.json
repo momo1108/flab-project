@@ -1,0 +1,21 @@
+{
+  "name": "@flab/eslint-config",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "ESLint 공용 설정 패키지입니다.",
+  "private": true,
+  "exports": {
+    ".": "./index.js"
+  },
+  "peerDependencies": {
+    "@eslint/js": "^9.39.4",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "@tanstack/eslint-plugin-query": "^5.100.3",
+    "globals": "^17.5.0",
+    "typescript-eslint": "^8.59.0"
+  }
+}

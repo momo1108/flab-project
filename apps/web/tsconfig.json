@@ -1,0 +1,13 @@
+{
+  "extends": "@flab/typescript-config/tsconfig.react.json",
+  "compilerOptions": {
+    // File Layout
+    "rootDir": "./",
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "types": ["vite/client"]
+  }
+}
