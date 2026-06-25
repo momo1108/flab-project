@@ -1,8 +1,8 @@
 import { useParams } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { movieDetailQuery, movieImagesQuery } from '@/services/tmdb/queries/movieQueries';
+import { movieDetailQuery, movieImagesQuery } from '@/services/tmdb/queries/movie';
 import styles from '../MovieDetailPage.module.css';
-import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
+import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import { getBackdropUrl, getPosterUrl } from '@/services/tmdb/imageUrls';
 import SectionWrapper from '@/components/SectionWrapper';
 

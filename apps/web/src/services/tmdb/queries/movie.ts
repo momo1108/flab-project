@@ -6,33 +6,27 @@ import type {
   MovieVideosResponse,
 } from '@/types/tmdb';
 import { queryConfig } from '../queryConfig';
-import {
-  movieCreditsQueryKey,
-  movieDetailQueryKey,
-  movieImagesQueryKey,
-  movieReviewsQueryKey,
-  movieVideosQueryKey,
-} from '../queryKeys/movieQueryKeys';
-import { getMovieCredits, getMovieDetail, getMovieImages, getMovieReviews, getMovieVideos } from '../api/movieApi';
+import { movieKeys } from '../queryKeys/movie';
+import { getMovieCredits, getMovieDetail, getMovieImages, getMovieReviews, getMovieVideos } from '../api/movie';
 
 // ===== Query Options =====
 
 export const movieDetailQuery = (id: number) => ({
-  queryKey: movieDetailQueryKey(id),
+  queryKey: movieKeys.detail(id),
   queryFn: () => getMovieDetail(id),
   ...queryConfig.movieDetail,
   enabled: !!id,
 });
 
 export const movieImagesQuery = (id: number) => ({
-  queryKey: movieImagesQueryKey(id),
+  queryKey: movieKeys.image(id),
   queryFn: () => getMovieImages(id),
   ...queryConfig.movieDetail,
   enabled: !!id,
 });
 
 export const movieVideosQuery = (id: number) => ({
-  queryKey: movieVideosQueryKey(id),
+  queryKey: movieKeys.video(id),
   queryFn: () => getMovieVideos(id),
   select: (data: MovieVideosResponse) => {
     const youtubeVideos = data.results.filter((v) => v.site === 'YouTube').slice(0, 4);
@@ -44,7 +38,7 @@ export const movieVideosQuery = (id: number) => ({
 });
 
 export const movieCreditsQuery = (id: number) => ({
-  queryKey: movieCreditsQueryKey(id),
+  queryKey: movieKeys.credit(id),
   queryFn: () => getMovieCredits(id),
   select: (data: MovieCreditsResponse) => {
     const { crew, cast } = data;
@@ -65,7 +59,7 @@ export const movieCreditsQuery = (id: number) => ({
 });
 
 export const movieReviewsQuery = (id: number, enabled: boolean = true) => ({
-  queryKey: movieReviewsQueryKey(id),
+  queryKey: movieKeys.review(id),
   queryFn: ({ pageParam = 1 }: { pageParam?: number }) => getMovieReviews(id, pageParam),
   initialPageParam: 1,
   getNextPageParam: (lastPage: MovieReviewsResponse) => {

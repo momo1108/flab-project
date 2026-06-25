@@ -34,11 +34,6 @@ export interface Person {
   known_for: Array<{ title: string }>;
 }
 
-export interface PersonCredits {
-  cast: Movie[];
-  crew: Movie[];
-}
-
 export interface Genre {
   id: number;
   name: string;

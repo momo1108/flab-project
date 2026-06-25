@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { trendingMoviesQuery } from '@/services/tmdb/queries/moviesQueries';
-import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
+import { trendingMoviesQuery } from '@/services/tmdb/queries/movies';
+import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import HeroCarousel from '@/components/HeroCarousel/HeroCarousel';
 import styles from '../MainPage.module.css';
 import SectionWrapper from '@/components/SectionWrapper';

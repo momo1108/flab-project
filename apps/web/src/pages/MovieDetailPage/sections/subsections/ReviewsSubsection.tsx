@@ -1,10 +1,10 @@
 import { useParams } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { movieReviewsQuery } from '@/services/tmdb/queries/movieQueries';
+import { movieReviewsQuery } from '@/services/tmdb/queries/movie';
 import styles from '../../MovieDetailPage.module.css';
 import type { MovieReview } from '@/types/tmdb';
 import { getProfileUrl } from '@/services/tmdb/imageUrls';
-import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
+import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import SectionWrapper from '@/components/SectionWrapper';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 

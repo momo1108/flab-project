@@ -1,17 +1,17 @@
 import { queryConfig } from '../queryConfig';
-import { genresQueryKey } from '../queryKeys/genreQueryKeys';
-import { getGenreMap, getMovieGenres } from '../api/genreApi';
+import { genreKeys } from '../queryKeys/genre';
+import { getGenreMap, getMovieGenres } from '../api/genre';
 
 // ===== Query Options =====
 
 export const genresQueryObj = {
-  queryKey: genresQueryKey,
+  queryKey: genreKeys.all,
   queryFn: () => getMovieGenres(),
   ...queryConfig.genres,
 };
 
 export const genreMapQueryObj = {
-  queryKey: genresQueryKey,
+  queryKey: genreKeys.all,
   queryFn: () => getGenreMap(),
   ...queryConfig.genres,
 };

@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
-import { popularMoviesQuery } from '@/services/tmdb/queries/moviesQueries';
+import { popularMoviesQuery } from '@/services/tmdb/queries/movies';
 import styles from '../SearchPage.module.css';
 import SectionWrapper from '@/components/SectionWrapper';
 

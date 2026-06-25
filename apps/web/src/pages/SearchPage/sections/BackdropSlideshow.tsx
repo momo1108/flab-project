@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { popularMoviesQuery } from '@/services/tmdb/queries/moviesQueries';
+import { popularMoviesQuery } from '@/services/tmdb/queries/movies';
 import styles from '../SearchPage.module.css';
 import { getBackdropUrl } from '@/services/tmdb/imageUrls';
-import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
+import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import SectionWrapper from '@/components/SectionWrapper';
 
 export const BackdropSlideshow: React.FC = () => {
