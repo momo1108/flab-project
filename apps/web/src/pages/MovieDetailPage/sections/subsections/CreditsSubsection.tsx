@@ -1,9 +1,9 @@
 import { useParams } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { movieCreditsQuery } from '@/services/tmdb/queries/movieQueries';
+import { movieCreditsQuery } from '@/services/tmdb/queries/movie';
 import styles from '../../MovieDetailPage.module.css';
 import type { CastMember } from '@/types/tmdb';
-import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
+import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import { getProfileUrl } from '@/services/tmdb/imageUrls';
 import SectionWrapper from '@/components/SectionWrapper';
 

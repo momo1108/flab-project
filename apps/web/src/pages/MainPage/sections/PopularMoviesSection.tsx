@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { popularMoviesQuery } from '@/services/tmdb/queries/moviesQueries';
+import { popularMoviesQuery } from '@/services/tmdb/queries/movies';
 import MovieCard from '@/components/MovieCard/MovieCard';
 import CarouselRow from '@/components/CarouselRow/CarouselRow';
 import styles from '../MainPage.module.css';
 import { getPosterUrl } from '@/services/tmdb/imageUrls';
-import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
+import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import SectionWrapper from '@/components/SectionWrapper';
 
 export const PopularMoviesSection = () => {

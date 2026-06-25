@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { popularPersonsQuery } from '@/services/tmdb/queries/personQueries';
+import { popularPersonsQuery } from '@/services/tmdb/queries/person';
 import ArtistCard from '@/components/ArtistCard/ArtistCard';
 import CarouselRow from '@/components/CarouselRow/CarouselRow';
 import styles from '../MainPage.module.css';
-import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
+import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import { getProfileUrl } from '@/services/tmdb/imageUrls';
 import SectionWrapper from '@/components/SectionWrapper';
 

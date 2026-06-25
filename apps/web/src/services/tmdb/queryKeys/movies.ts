@@ -1,0 +1,15 @@
+export const moviesKeys = {
+  all: ['movies'] as const,
+  popularLists: () => [...moviesKeys.all, 'popular'] as const,
+  popularList: (page: number) => [...moviesKeys.popularLists(), page] as const,
+  trendingLists: () => [...moviesKeys.all, 'trending'] as const,
+  trendingList: (timeWindow: 'day' | 'week') => [...moviesKeys.trendingLists(), timeWindow] as const,
+  discoveredLists: () => [...moviesKeys.all, 'discover'] as const,
+  discoveredList: (params: Record<string, string | number>) => [...moviesKeys.discoveredLists(), params] as const,
+  similarLists: () => [...moviesKeys.all, 'similarList'] as const,
+  similarList: (movieId: number, page: number) => [...moviesKeys.similarLists(), movieId, page] as const,
+  searchedLists: () => [...moviesKeys.all, 'searchedList'] as const,
+  searchedList: (query: string) => [...moviesKeys.searchedLists(), query] as const,
+  byGenreLists: () => [...moviesKeys.all, 'genre'] as const,
+  byGenreList: (genreId: number, page: number) => [...moviesKeys.byGenreLists(), genreId, page] as const,
+};

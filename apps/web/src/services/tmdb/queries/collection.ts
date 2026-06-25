@@ -1,11 +1,11 @@
 import { queryConfig } from '../queryConfig';
-import { getCollectionDetail } from '../api/collectionApi';
-import { collectionDetailQueryKey } from '../queryKeys/collectionQueryKeys';
+import { getCollectionDetail } from '../api/collection';
+import { collectionKeys } from '../queryKeys/collection';
 
 // ===== Query Options =====
 
 export const collectionDetailQuery = (id: number) => ({
-  queryKey: collectionDetailQueryKey(id),
+  queryKey: collectionKeys.detail(id),
   queryFn: () => getCollectionDetail(id),
   ...queryConfig.movies,
   enabled: !!id,

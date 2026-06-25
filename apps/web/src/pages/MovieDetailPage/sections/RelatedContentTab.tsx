@@ -1,9 +1,9 @@
 import { Link, useParams } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { similarMoviesQuery } from '@/services/tmdb/queries/moviesQueries';
+import { similarMoviesQuery } from '@/services/tmdb/queries/movies';
 import styles from '../MovieDetailPage.module.css';
 import { getPosterUrl } from '@/services/tmdb/imageUrls';
-import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
+import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import SectionWrapper from '@/components/SectionWrapper';
 
 export const RelatedContentTab = () => {

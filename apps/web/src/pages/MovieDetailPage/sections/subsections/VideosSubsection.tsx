@@ -1,6 +1,6 @@
 import { useParams } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { movieVideosQuery } from '@/services/tmdb/queries/movieQueries';
+import { movieVideosQuery } from '@/services/tmdb/queries/movie';
 import styles from '../../MovieDetailPage.module.css';
 import SectionWrapper from '@/components/SectionWrapper';
 

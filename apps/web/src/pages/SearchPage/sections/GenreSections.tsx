@@ -1,11 +1,11 @@
 import { useSuspenseQueries, useSuspenseQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
-import { moviesByGenresQuery } from '@/services/tmdb/queries/moviesQueries';
+import { moviesByGenresQuery } from '@/services/tmdb/queries/movies';
 import styles from '../SearchPage.module.css';
 import SectionWrapper from '@/components/SectionWrapper';
 import { getPosterUrl } from '@/services/tmdb/imageUrls';
-import { configurationQueryObj } from '@/services/tmdb/queries/configurationQueries';
-import { genresQueryObj } from '@/services/tmdb/queries/genreQueries';
+import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
+import { genresQueryObj } from '@/services/tmdb/queries/genre';
 import { shuffleArray } from '@/utils/random';
 import type { Genre } from '@/types/tmdb';
 

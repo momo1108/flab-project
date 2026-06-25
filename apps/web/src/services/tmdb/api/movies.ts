@@ -4,13 +4,11 @@ import { getLocalDateString } from '@/utils/format';
 
 // ===== API Functions =====
 
-export const getPopularMovies = (page: number = 1): Promise<MovieResponse> => {
-  return tmdbClient.request<MovieResponse>(`/movie/popular?page=${page}`);
-};
+export const getPopularMovies = (page: number = 1): Promise<MovieResponse> =>
+  tmdbClient.request<MovieResponse>(`/movie/popular?page=${page}`);
 
-export const getTrendingMovies = (timeWindow: 'day' | 'week' = 'day'): Promise<MovieResponse> => {
-  return tmdbClient.request<MovieResponse>(`/trending/movie/${timeWindow}`);
-};
+export const getTrendingMovies = (timeWindow: 'day' | 'week' = 'day'): Promise<MovieResponse> =>
+  tmdbClient.request<MovieResponse>(`/trending/movie/${timeWindow}`);
 
 export const discoverMovies = (params: {
   page?: number;
@@ -35,10 +33,8 @@ export const discoverMovies = (params: {
   return tmdbClient.request<MovieResponse>(`/discover/movie?${queryParams.toString()}`);
 };
 
-export const searchMovies = (query: string, page: number = 1): Promise<SearchResponse> => {
-  return tmdbClient.request<SearchResponse>(`/search/movie?query=${encodeURIComponent(query)}&page=${page}`);
-};
+export const searchMovies = (query: string, page: number = 1): Promise<SearchResponse> =>
+  tmdbClient.request<SearchResponse>(`/search/movie?query=${encodeURIComponent(query)}&page=${page}`);
 
-export const getSimilarMovies = (id: number, page: number = 1): Promise<SimilarMoviesResponse> => {
-  return tmdbClient.request<SimilarMoviesResponse>(`/movie/${id}/similar?page=${page}`);
-};
+export const getSimilarMovies = (id: number, page: number = 1): Promise<SimilarMoviesResponse> =>
+  tmdbClient.request<SimilarMoviesResponse>(`/movie/${id}/similar?page=${page}`);
