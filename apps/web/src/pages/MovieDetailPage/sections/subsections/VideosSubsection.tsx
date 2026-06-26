@@ -3,6 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { movieVideosQuery } from '@/services/tmdb/queries/movie';
 import styles from '../../MovieDetailPage.module.css';
 import SectionWrapper from '@/components/SectionWrapper';
+import Image from '@/components/Image';
 
 export const VideosSubsection = () => {
   const { id } = useParams<{ id: string }>();
@@ -37,7 +38,12 @@ const VideosSubsectionContent = () => {
           rel="noopener noreferrer"
           className={styles.videoCard}
         >
-          <img src={`https://img.youtube.com/vi/${key}/hqdefault.jpg`} alt={name} className={styles.videoThumbnail} />
+          <Image
+            src={`https://img.youtube.com/vi/${key}/hqdefault.jpg`}
+            alt={name}
+            className={styles.videoThumbnail}
+            fallbackSrc="/placeholder.png"
+          />
           <div className={styles.playOverlay}>
             <svg
               width="16"

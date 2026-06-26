@@ -7,6 +7,7 @@ import { getProfileUrl } from '@/services/tmdb/imageUrls';
 import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import SectionWrapper from '@/components/SectionWrapper';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import Image from '@/components/Image';
 
 export const ReviewsSubsection = () => {
   const { id } = useParams<{ id: string }>();
@@ -70,14 +71,11 @@ const ReviewsSubsectionContent = () => {
       <div className={styles.reviewsList}>
         {allReviews.map((review) => (
           <div key={review.id} className={styles.reviewCard}>
-            <img
-              src={
-                review.author_details.avatar_path
-                  ? getProfileUrl(review.author_details.avatar_path, config, 'w185')
-                  : '/default-avatar.png'
-              }
+            <Image
+              src={getProfileUrl(review.author_details.avatar_path, config, 'w185', 'default-avatar.png')}
               alt={review.author}
               className={styles.reviewAvatar}
+              fallbackSrc="/default-avatar.png"
             />
             <div className={styles.reviewInfo}>
               <div className={styles.reviewHeader}>

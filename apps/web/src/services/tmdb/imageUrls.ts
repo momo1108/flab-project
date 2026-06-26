@@ -5,9 +5,14 @@ export const getImageUrl = (
   config: TMDBConfiguration | undefined,
   size: 'poster' | 'backdrop' | 'profile' = 'poster',
   defaultSize: string = 'w500',
+  fallbackUrl: string,
 ): string => {
   if (!path) {
-    return '/placeholder.png';
+    return fallbackUrl;
+  }
+
+  if (!path.startsWith('/')) {
+    path = `/${path}`;
   }
 
   if (!config?.images) {
@@ -43,22 +48,25 @@ export const getPosterUrl = (
   path: string | null,
   config: TMDBConfiguration | undefined,
   size: string = 'w500',
+  fallbackUrl: string = '/placeholder.png',
 ): string => {
-  return getImageUrl(path, config, 'poster', size);
+  return getImageUrl(path, config, 'poster', size, fallbackUrl);
 };
 
 export const getBackdropUrl = (
   path: string | null,
   config: TMDBConfiguration | undefined,
   size: string = 'w780',
+  fallbackUrl: string = '/placeholder.png',
 ): string => {
-  return getImageUrl(path, config, 'backdrop', size);
+  return getImageUrl(path, config, 'backdrop', size, fallbackUrl);
 };
 
 export const getProfileUrl = (
   path: string | null,
   config: TMDBConfiguration | undefined,
   size: string = 'w185',
+  fallbackUrl: string = '/default-avatar.png',
 ): string => {
-  return getImageUrl(path, config, 'profile', size);
+  return getImageUrl(path, config, 'profile', size, fallbackUrl);
 };

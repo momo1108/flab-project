@@ -5,6 +5,7 @@ import styles from '../MovieDetailPage.module.css';
 import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import { getBackdropUrl, getPosterUrl } from '@/services/tmdb/imageUrls';
 import SectionWrapper from '@/components/SectionWrapper';
+import Image from '@/components/Image';
 
 const formatRuntime = (minutes: number): string => {
   const hours = Math.floor(minutes / 60);
@@ -41,7 +42,12 @@ const MovieHeroContent = () => {
     <div className={styles.hero}>
       <section className={styles.movieInfoSection}>
         {logo && (
-          <img src={getPosterUrl(logo.file_path, config, 'w500')} alt={`${title} 로고`} className={styles.logo} />
+          <Image
+            src={getPosterUrl(logo.file_path, config, 'w500')}
+            alt={`${title} 로고`}
+            className={styles.logo}
+            fallbackSrc="/placeholder.png"
+          />
         )}
         <h1 className={styles.movieTitle}>{title}</h1>
         <div className={styles.movieInfoBar}>
@@ -80,10 +86,11 @@ const MovieHeroContent = () => {
       <section className={styles.backdropSection}>
         <div className={styles.backdropOverlay} />
         {backdrop_path && (
-          <img
+          <Image
             src={getBackdropUrl(backdrop_path, config, 'w1280')}
             alt={`${title} 배경`}
             className={styles.backdropImage}
+            fallbackSrc="/placeholder.png"
           />
         )}
         <div className={styles.backdropStats}>

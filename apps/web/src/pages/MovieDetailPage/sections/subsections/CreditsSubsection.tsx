@@ -6,6 +6,7 @@ import type { CastMember } from '@/types/tmdb';
 import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import { getProfileUrl } from '@/services/tmdb/imageUrls';
 import SectionWrapper from '@/components/SectionWrapper';
+import Image from '@/components/Image';
 
 export const CreditsSubsection = () => {
   const { id } = useParams<{ id: string }>();
@@ -37,13 +38,11 @@ const CreditsSubsectionContent = () => {
     <div className={styles.castGrid}>
       {producer && (
         <div className={styles.castCard}>
-          <img
+          <Image
             src={getProfileUrl(producer.profile_path, config, 'w185')}
-            onError={(e) => {
-              e.currentTarget.src = '/default-avatar.png';
-            }}
             alt={producer.name}
             className={styles.castProfileImage}
+            fallbackSrc="/default-avatar.png"
           />
           <div className={styles.castInfo}>
             <span className={styles.castName}>{producer.name}</span>
@@ -53,13 +52,11 @@ const CreditsSubsectionContent = () => {
       )}
       {top10Cast.map(({ id, profile_path, name, character }: CastMember) => (
         <div key={id} className={styles.castCard}>
-          <img
+          <Image
             src={getProfileUrl(profile_path, config, 'w185')}
-            onError={(e) => {
-              e.currentTarget.src = '/default-avatar.png';
-            }}
             alt={name}
             className={styles.castProfileImage}
+            fallbackSrc="/default-avatar.png"
           />
           <div className={styles.castInfo}>
             <span className={styles.castName}>{name}</span>

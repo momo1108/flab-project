@@ -5,6 +5,7 @@ import styles from '../SearchPage.module.css';
 import { getBackdropUrl } from '@/services/tmdb/imageUrls';
 import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import SectionWrapper from '@/components/SectionWrapper';
+import Image from '@/components/Image';
 
 export const BackdropSlideshow: React.FC = () => {
   return (
@@ -21,26 +22,27 @@ const BackdropSlideshowContent: React.FC = () => {
   } = useSuspenseQuery(popularMoviesQuery(1, 10));
   const [currentBackdropIndex, setCurrentBackdropIndex] = useState(0);
 
-  if (popularMovies.length === 0) {
-    return null;
-  }
-
   useEffect(() => {
     if (popularMovies.length === 0) return;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCurrentBackdropIndex(0);
     const interval = setInterval(() => {
       setCurrentBackdropIndex((prev) => (prev + 1) % popularMovies.length);
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [popularMovies.length]);
+  }, [popularMovies]);
+
+  if (popularMovies.length === 0) {
+    return null;
+  }
 
   return (
     <div className={styles.backdropSection}>
       <div className={styles.backdropWrapper}>
         {popularMovies.map(({ id, backdrop_path, title }, index) => (
-          <img
+          <Image
             key={id}
             src={getBackdropUrl(backdrop_path, config, 'w780')}
             alt={title}

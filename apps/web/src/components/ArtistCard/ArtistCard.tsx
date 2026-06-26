@@ -1,3 +1,4 @@
+import Image from '../Image';
 import styles from './ArtistCard.module.css';
 
 interface ArtistCardProps {
@@ -12,7 +13,13 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ name, profileUrl, knownFor, onC
     <div className={styles.artistCard} onClick={onClick} role="button" tabIndex={0}>
       <div className={styles.imageWrapper}>
         {profileUrl ? (
-          <img src={profileUrl} alt={name} className={styles.image} loading="lazy" />
+          <Image
+            src={profileUrl}
+            alt={name}
+            className={styles.image}
+            fallbackSrc="/default-avatar.png"
+            loading="lazy"
+          />
         ) : (
           <div className={styles.placeholder}>
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

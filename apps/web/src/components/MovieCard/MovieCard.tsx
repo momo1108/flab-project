@@ -1,5 +1,6 @@
 import { formatRating } from '@/utils/format';
 import styles from './MovieCard.module.css';
+import Image from '../Image';
 
 interface MovieCardProps {
   title: string;
@@ -7,24 +8,15 @@ interface MovieCardProps {
   voteAverage: number;
   releaseDate: string;
   onClick?: () => void;
-  showRank?: boolean;
-  rank?: number;
+  rank?: number | undefined;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({
-  title,
-  posterUrl,
-  voteAverage,
-  releaseDate,
-  onClick,
-  showRank = false,
-  rank,
-}) => {
+const MovieCard: React.FC<MovieCardProps> = ({ title, posterUrl, voteAverage, releaseDate, onClick, rank }) => {
   return (
     <div className={styles.movieCard} onClick={onClick} role="button" tabIndex={0}>
       <div className={styles.posterWrapper}>
-        {showRank && rank && <div className={styles.rank}>{rank}</div>}
-        <img src={posterUrl} alt={title} className={styles.poster} loading="lazy" />
+        {rank !== undefined && <div className={styles.rank}>{rank}</div>}
+        <Image src={posterUrl} alt={title} className={styles.poster} fallbackSrc="/placeholder.png" loading="lazy" />
         <div className={styles.overlay}>
           <div className={styles.rating}>
             <span className={styles.star}>★</span>

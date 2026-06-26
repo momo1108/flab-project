@@ -4,6 +4,7 @@ import { getBackdropUrl } from '@/services/tmdb/imageUrls';
 import type { Movie } from '@/types/tmdb';
 import type { TMDBConfiguration } from '@/types/tmdb';
 import styles from './HeroCarousel.module.css';
+import Image from '../Image';
 
 interface HeroCarouselProps {
   movies: Movie[];
@@ -80,7 +81,7 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ movies, config }) => {
               const url = getBackdropUrl(backdrop_path, config, 'original');
               return (
                 <div key={`${id}-${i}`} className={styles.slide} onClick={() => navigate(`/movie/${id}`)}>
-                  <img src={url} alt={title} className={styles.backdrop} />
+                  <Image src={url} alt={title} className={styles.backdrop} fallbackSrc="/placeholder.png" />
                   <div className={styles.overlay} />
                 </div>
               );
