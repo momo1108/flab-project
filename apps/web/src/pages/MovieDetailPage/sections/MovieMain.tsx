@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import styles from './MovieDetailPage.module.css';
+import styles from '../MovieDetailPage.module.css';
 import { MovieContentTab } from './MovieContentTab';
 import { RelatedContentTab } from './RelatedContentTab';
 import { useParams } from 'react-router';
