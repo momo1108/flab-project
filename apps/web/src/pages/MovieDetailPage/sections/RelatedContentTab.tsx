@@ -5,6 +5,7 @@ import styles from '../MovieDetailPage.module.css';
 import { getPosterUrl } from '@/services/tmdb/imageUrls';
 import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import SectionWrapper from '@/components/SectionWrapper';
+import Image from '@/components/Image';
 
 export const RelatedContentTab = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,7 +33,12 @@ const RelatedContentTabContent = () => {
     <div className={styles.similarMoviesGrid}>
       {similarMovies.map(({ id, poster_path, title }) => (
         <Link key={id} to={`/movie/${id}`} className={styles.similarMovieItem}>
-          <img src={getPosterUrl(poster_path, config, 'w500')} alt={title} className={styles.similarMoviePoster} />
+          <Image
+            src={getPosterUrl(poster_path, config, 'w500')}
+            alt={title}
+            className={styles.similarMoviePoster}
+            fallbackSrc="/placeholder.png"
+          />
         </Link>
       ))}
     </div>

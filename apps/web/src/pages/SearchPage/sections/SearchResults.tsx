@@ -8,6 +8,7 @@ import { getPosterUrl } from '@/services/tmdb/imageUrls';
 import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import SectionWrapper from '@/components/SectionWrapper';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import Image from '@/components/Image';
 
 interface SearchResultsProps {
   searchQuery: string;
@@ -70,7 +71,12 @@ const SearchResultsContent: React.FC<SearchResultsProps> = ({ searchQuery }) => 
       {searchResults.map(({ id, poster_path, title, release_date }) => (
         <Link key={id} to={`/movie/${id}`} className={styles.searchResultCard}>
           {poster_path ? (
-            <img src={getPosterUrl(poster_path, config, 'w200')} alt={title} className={styles.searchResultPoster} />
+            <Image
+              src={getPosterUrl(poster_path, config, 'w200')}
+              alt={title}
+              className={styles.searchResultPoster}
+              fallbackSrc="/placeholder.png"
+            />
           ) : (
             <div className={styles.searchResultPosterPlaceholder}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">

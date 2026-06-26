@@ -34,7 +34,6 @@ const Top20SectionContent = () => {
             voteAverage={vote_average}
             releaseDate={release_date}
             onClick={() => navigate(`/movie/${id}`)}
-            showRank={true}
             rank={index + 1}
           />
         ))}

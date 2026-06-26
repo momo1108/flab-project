@@ -8,6 +8,7 @@ import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import { genresQueryObj } from '@/services/tmdb/queries/genre';
 import { shuffleArray } from '@/utils/random';
 import type { Genre } from '@/types/tmdb';
+import Image from '@/components/Image';
 
 export const GenreSections: React.FC = () => {
   return (
@@ -41,7 +42,13 @@ const GenreSectionsContent: React.FC = () => {
           {genreMovies.map(({ id, poster_path, title }) => (
             <Link key={id} to={`/movie/${id}`} className={styles.genrePosterItem}>
               {poster_path ? (
-                <img src={getPosterUrl(poster_path, config, 'w500')} alt={title} className={styles.genrePoster} />
+                <Image
+                  src={getPosterUrl(poster_path, config, 'w500')}
+                  alt={title}
+                  className={styles.genrePoster}
+                  fallbackSrc="/placeholder.png"
+                  loading="lazy"
+                />
               ) : (
                 <div className={styles.genrePosterPlaceholder}>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
