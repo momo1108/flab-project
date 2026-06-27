@@ -8,7 +8,7 @@ import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import { genresQueryObj } from '@/services/tmdb/queries/genre';
 import { shuffleArray } from '@/utils/random';
 import type { Genre } from '@/types/tmdb';
-import Image from '@/components/Image';
+import { Image } from '@flab/ui';
 
 export const GenreSections: React.FC = () => {
   return (

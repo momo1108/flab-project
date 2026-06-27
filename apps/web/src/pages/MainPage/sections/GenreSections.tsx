@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router';
 import { useSuspenseQuery, useSuspenseQueries } from '@tanstack/react-query';
 import { moviesByGenresQuery } from '@/services/tmdb/queries/movies';
-import MovieCard from '@/components/MovieCard/MovieCard';
 import CarouselRow from '@/components/CarouselRow/CarouselRow';
 import styles from '../MainPage.module.css';
 import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
@@ -10,6 +9,7 @@ import { genresQueryObj } from '@/services/tmdb/queries/genre';
 import SectionWrapper from '@/components/SectionWrapper';
 import type { Genre } from '@/types/tmdb';
 import { shuffleArray } from '@/utils/random';
+import { MovieCard } from '@flab/ui';
 
 export const GenreSections = () => {
   return (

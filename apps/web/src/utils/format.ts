@@ -18,10 +18,6 @@ export const formatRuntime = (minutes: number): string => {
   return `${hours}시간 ${mins}분`;
 };
 
-export const formatRating = (rating: number): string => {
-  return (rating * 10).toFixed(1);
-};
-
 export const getYearFromDate = (dateString: string): string => {
   const date = new Date(dateString);
   return date.getFullYear().toString();

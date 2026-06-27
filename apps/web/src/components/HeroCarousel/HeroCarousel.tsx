@@ -4,7 +4,7 @@ import { getBackdropUrl } from '@/services/tmdb/imageUrls';
 import type { Movie } from '@/types/tmdb';
 import type { TMDBConfiguration } from '@/types/tmdb';
 import styles from './HeroCarousel.module.css';
-import Image from '../Image';
+import { Image } from '@flab/ui';
 
 interface HeroCarouselProps {
   movies: Movie[];

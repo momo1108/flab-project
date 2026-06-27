@@ -1,6 +1,6 @@
 import type { Collection } from '@/types/tmdb';
 import styles from './CollectionCard.module.css';
-import Image from '../Image';
+import { Image } from '@flab/ui';
 
 interface CollectionCardProps {
   collection: Collection;

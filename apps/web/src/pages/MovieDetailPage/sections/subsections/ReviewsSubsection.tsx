@@ -7,7 +7,7 @@ import { getProfileUrl } from '@/services/tmdb/imageUrls';
 import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import SectionWrapper from '@/components/SectionWrapper';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import Image from '@/components/Image';
+import { Image } from '@flab/ui';
 
 export const ReviewsSubsection = () => {
   const { id } = useParams<{ id: string }>();

@@ -5,7 +5,7 @@ import styles from '../MovieDetailPage.module.css';
 import { getPosterUrl } from '@/services/tmdb/imageUrls';
 import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import SectionWrapper from '@/components/SectionWrapper';
-import Image from '@/components/Image';
+import { Image } from '@flab/ui';
 
 export const RelatedContentTab = () => {
   const { id } = useParams<{ id: string }>();

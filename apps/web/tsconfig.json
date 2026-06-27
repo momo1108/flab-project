@@ -1,5 +1,5 @@
 {
-  "extends": "@flab/typescript-config/tsconfig.react.json",
+  "extends": "@flab/typescript-config/react",
   "compilerOptions": {
     // File Layout
     "rootDir": "./",

@@ -1,4 +1,4 @@
-import Image from '../Image';
+import { Image } from '@flab/ui';
 import styles from './ArtistCard.module.css';
 
 interface ArtistCardProps {
