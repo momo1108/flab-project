@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { popularMoviesQuery } from '@/services/tmdb/queries/movies';
-import MovieCard from '@/components/MovieCard/MovieCard';
+import { MovieCard } from '@flab/ui';
 import CarouselRow from '@/components/CarouselRow/CarouselRow';
 import styles from '../MainPage.module.css';
 import { getPosterUrl } from '@/services/tmdb/imageUrls';

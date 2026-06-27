@@ -1,0 +1,14 @@
+{
+  "extends": "@flab/typescript-config/react",
+  "compilerOptions": {
+    // File Layout
+    "rootDir": "./",
+    "outDir": "./dist",
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"]
+    },
+    // tsdown 이 .d.ts 파일 생성에 최적화된 oxc-transform 을 활용하여 빠른 생성을 보장합니다.
+    "isolatedDeclarations": true
+  }
+}

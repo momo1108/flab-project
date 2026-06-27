@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { popularMoviesQuery } from '@/services/tmdb/queries/movies';
-import MovieCard from '@/components/MovieCard/MovieCard';
 import CarouselRow from '@/components/CarouselRow/CarouselRow';
 import styles from '../MainPage.module.css';
 import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import { getPosterUrl } from '@/services/tmdb/imageUrls';
 import SectionWrapper from '@/components/SectionWrapper';
+import { MovieCard } from '@flab/ui';
 
 export const Top20Section = () => {
   return (

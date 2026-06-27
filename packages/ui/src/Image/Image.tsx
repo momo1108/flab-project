@@ -1,8 +1,14 @@
-interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+export interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallbackSrc?: string;
 }
 
-const Image: React.FC<ImageProps> = ({ src, alt, className, fallbackSrc = '/placeholder.png', ...props }) => {
+const Image: React.FC<ImageProps> = ({
+  src,
+  alt,
+  className,
+  fallbackSrc = "/placeholder.png",
+  ...props
+}) => {
   return (
     <img
       src={src}

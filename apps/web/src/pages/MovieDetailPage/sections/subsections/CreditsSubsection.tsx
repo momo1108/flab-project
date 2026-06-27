@@ -6,7 +6,7 @@ import type { CastMember } from '@/types/tmdb';
 import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import { getProfileUrl } from '@/services/tmdb/imageUrls';
 import SectionWrapper from '@/components/SectionWrapper';
-import Image from '@/components/Image';
+import { Image } from '@flab/ui';
 
 export const CreditsSubsection = () => {
   const { id } = useParams<{ id: string }>();

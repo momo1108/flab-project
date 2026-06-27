@@ -3,11 +3,8 @@
   "version": "1.0.0",
   "description": "TypeScript 공용 설정 패키지입니다.",
   "private": true,
-  "files": [
-    "tsconfig.base.json",
-    "tsconfig.react.json"
-  ],
-  "peerDependencies": {
-    "typescript": "^6.0.3"
+  "exports": {
+    "./base": "./tsconfig.base.json",
+    "./react": "./tsconfig.react.json"
   }
 }

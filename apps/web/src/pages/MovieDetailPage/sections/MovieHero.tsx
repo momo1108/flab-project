@@ -5,7 +5,7 @@ import styles from '../MovieDetailPage.module.css';
 import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import { getBackdropUrl, getPosterUrl } from '@/services/tmdb/imageUrls';
 import SectionWrapper from '@/components/SectionWrapper';
-import Image from '@/components/Image';
+import { Image } from '@flab/ui';
 
 const formatRuntime = (minutes: number): string => {
   const hours = Math.floor(minutes / 60);

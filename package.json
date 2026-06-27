@@ -10,11 +10,10 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "pnpm --filter @flab/web start",
-    "dev": "pnpm --filter @flab/web start",
-    "build": "pnpm --filter @flab/web build:production",
-    "build:staging": "pnpm --filter @flab/web build:staging",
-    "build:production": "pnpm --filter @flab/web build:production",
+    "dev": "pnpm --recursive --filter @flab/web... dev",
+    "build": "pnpm --recursive --filter @flab/web... build:production",
+    "build:staging": "pnpm --recursive --filter @flab/web... build:staging",
+    "build:production": "pnpm --recursive --filter @flab/web... build:production",
     "preview": "pnpm --filter @flab/web preview",
     "type-check": "pnpm --filter @flab/web type-check",
     "lint": "pnpm --filter @flab/web lint",
@@ -32,10 +31,11 @@
     "pnpm": ">=11.8.0"
   },
   "devDependencies": {
+    "@flab/eslint-config": "workspace:*",
     "husky": "^8.0.0",
     "lint-staged": "^16.4.0",
-    "eslint": "^9.39.4",
-    "@flab/eslint-config": "workspace:*",
-    "prettier": "^3.8.3"
+    "typescript": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:"
   }
 }

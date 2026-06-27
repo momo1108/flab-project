@@ -1,0 +1,8 @@
+{
+  "name": "@flab/prettier-config",
+  "version": "1.0.0",
+  "description": "Prettier 공용 설정 패키지입니다.",
+  "private": true,
+  "type": "module",
+  "main": "index.js"
+}

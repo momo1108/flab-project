@@ -3,7 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { movieVideosQuery } from '@/services/tmdb/queries/movie';
 import styles from '../../MovieDetailPage.module.css';
 import SectionWrapper from '@/components/SectionWrapper';
-import Image from '@/components/Image';
+import { Image } from '@flab/ui';
 
 export const VideosSubsection = () => {
   const { id } = useParams<{ id: string }>();

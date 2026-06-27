@@ -1,0 +1,51 @@
+{
+  "name": "@flab/ui",
+  "version": "1.0.0",
+  "description": "UI 공용 설정 패키지입니다.",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./style.css": "./dist/style.css",
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./*": {
+      "import": {
+        "types": "./dist/*/index.d.mts",
+        "default": "./dist/*/index.mjs"
+      },
+      "require": {
+        "types": "./dist/*/index.d.cts",
+        "default": "./dist/*/index.cjs"
+      }
+    }
+  },
+  "scripts": {
+    "dev": "tsdown",
+    "build": "tsdown",
+    "build:staging": "tsdown",
+    "build:production": "tsdown",
+    "preview": "tsdown",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@flab/typescript-config": "workspace:*",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "tsdown": "^0.22.3",
+    "@tsdown/css": "^0.22.3"
+  }
+}
