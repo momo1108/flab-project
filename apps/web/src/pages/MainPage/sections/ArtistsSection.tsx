@@ -17,7 +17,7 @@ export const ArtistsSection = () => {
 };
 
 const ArtistsSectionContent = () => {
-  const navigate = useNavigate({ from: '/' });
+  const navigate = useNavigate();
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
     data: { results: popularPersons },

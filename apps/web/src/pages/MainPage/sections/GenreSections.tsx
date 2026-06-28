@@ -20,7 +20,7 @@ export const GenreSections = () => {
 };
 
 const GenreSectionsContent = () => {
-  const navigate = useNavigate({ from: '/' });
+  const navigate = useNavigate();
 
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {

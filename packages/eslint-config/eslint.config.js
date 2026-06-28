@@ -1,24 +1,29 @@
-import js from '@eslint/js';
-import globals from 'globals';
-import tseslint from 'typescript-eslint';
-import pluginReact from 'eslint-plugin-react';
-import { defineConfig } from 'eslint/config';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-import pluginQuery from '@tanstack/eslint-plugin-query';
-import reactHooks from 'eslint-plugin-react-hooks';
+import js from "@eslint/js";
+import globals from "globals";
+import tseslint from "typescript-eslint";
+import pluginReact from "eslint-plugin-react";
+import { defineConfig } from "eslint/config";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+import pluginQuery from "@tanstack/eslint-plugin-query";
+import reactHooks from "eslint-plugin-react-hooks";
 
 export default defineConfig([
   {
     // Flat Config에서는 .eslintignore 대신 ignores를 사용
-    ignores: ['dist/**', 'node_modules/**'],
+    ignores: [
+      "dist/**",
+      "node_modules/**",
+      "eslint.config.js",
+      "prettier.config.js",
+    ],
   },
   {
     // 검사할 파일 패턴 지정
-    files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     // ESLint의 JavaScript 관련 기본 권장 규칙을 적용
     // (기본적인 문법 오류와 잠재적인 문제를 방지하는 규칙들이 포함)
     plugins: { js },
-    extends: ['js/recommended'],
+    extends: ["js/recommended"],
     // 브라우저 환경의 전역 변수를 인식하도록 설정 (window, document 등)
     languageOptions: { globals: globals.browser },
   },
@@ -31,32 +36,32 @@ export default defineConfig([
   pluginReact.configs.flat.recommended,
   reactHooks.configs.flat.recommended, // React Compiler 플러그인
   eslintPluginPrettierRecommended,
-  pluginQuery.configs['flat/recommended'],
+  pluginQuery.configs["flat/recommended"],
   {
     settings: {
       react: {
-        version: 'detect', // React 버전 자동 감지
+        version: "detect", // React 버전 자동 감지
       },
     },
     rules: {
       // TypeScript 코드에서는 base rule 대신 @typescript-eslint rule을 사용해야
       // 타입 위치의 식별자(예: 함수 타입 인자명)에서 오탐을 줄일 수 있음
-      'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': [
-        'error',
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
         {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-          caughtErrorsIgnorePattern: '^_',
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
           ignoreRestSiblings: true,
         },
       ],
-      'react/prop-types': 'off', // Typescript 로 props 의 타입 검증을 할 수 있으니 비활성화
+      "react/prop-types": "off", // Typescript 로 props 의 타입 검증을 할 수 있으니 비활성화
 
       // pluginReact.configs.flat.recommended 에서 활성화된 옵션을 비활성화
       // 현재 프로젝트의 babel 설정에 react preset 옵션으로 runtime: automatic 을 설정했기 때문에
       // 불필요한 옵션임
-      'react/react-in-jsx-scope': 'off',
+      "react/react-in-jsx-scope": "off",
 
       // 'no-undef': 'error' // 정의되지 않은 변수 사용 시 에러
       // no-undef 사용 시 import React from 'react' 안하면 React 를 인식 못하기 때문에
@@ -66,12 +71,12 @@ export default defineConfig([
   {
     // Node.js 환경에서 실행되는 설정 파일은 CJS(require/module.exports)가 정상이므로
     // 브라우저/TS 규칙 대신 Node.js 환경으로 별도 처리
-    files: ['**/*.config.*'],
+    files: ["**/*.config.*"],
     languageOptions: {
       globals: globals.node,
     },
     rules: {
-      '@typescript-eslint/no-require-imports': 'off',
+      "@typescript-eslint/no-require-imports": "off",
     },
   },
 ]);

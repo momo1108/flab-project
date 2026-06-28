@@ -5,6 +5,7 @@ import { createRootRouteWithContext, HeadContent } from '@tanstack/react-router'
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 import { TanStackDevtools } from '@tanstack/react-devtools';
+import '@flab/ui/style.css';
 import '../styles.css';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';

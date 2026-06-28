@@ -33,7 +33,7 @@ const PopularMoviesSectionContent = () => {
             posterUrl={getPosterUrl(poster_path, config)}
             voteAverage={vote_average}
             releaseDate={release_date}
-            onClick={() => navigate({ to: `/movie/${id}` })}
+            onClick={() => navigate({ to: '/movie/$movieId', params: { movieId: id.toString() } })}
           />
         ))}
       </CarouselRow>

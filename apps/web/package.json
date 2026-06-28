@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode development --host localhost --port 3000",
+    "generate-routes": "tsr generate",
     "build:staging": "vite build --mode staging",
     "build:production": "vite build --mode production",
     "preview": "vite preview --mode production --host localhost --port 4173",

@@ -17,7 +17,7 @@ export const Top20Section = () => {
 };
 
 const Top20SectionContent = () => {
-  const navigate = useNavigate({ from: '/' });
+  const navigate = useNavigate();
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
     data: { results: popularMovies },

@@ -5,6 +5,7 @@ packages:
 allowBuilds:
   core-js: false
   core-js-pure: false
+  unrs-resolver: true
 
 catalog:
   react: "^19.2.5"
