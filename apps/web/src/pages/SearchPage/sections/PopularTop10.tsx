@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { Link } from 'react-router';
+import { Link } from '@tanstack/react-router';
 import { popularMoviesQuery } from '@/services/tmdb/queries/movies';
 import styles from '../SearchPage.module.css';
 import SectionWrapper from '@/components/SectionWrapper';
@@ -23,7 +23,7 @@ export const PopularTop10Content: React.FC = () => {
   return (
     <div className={styles.popularGrid}>
       {popularMovies.map(({ id, title }, index) => (
-        <Link key={id} to={`/movie/${id}`} className={styles.popularItem}>
+        <Link key={id} to={`/movie/$movieId`} params={{ movieId: id.toString() }} className={styles.popularItem}>
           <span className={styles.popularRank}>{index + 1}</span>
           <span className={styles.popularTitle}>{title}</span>
         </Link>

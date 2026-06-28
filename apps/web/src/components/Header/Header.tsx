@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from '@tanstack/react-router';
 import styles from './Header.module.css';
 
 const Header: React.FC = () => {

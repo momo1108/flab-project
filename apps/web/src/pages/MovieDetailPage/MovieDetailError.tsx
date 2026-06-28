@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from '@tanstack/react-router';
 import type { FallbackProps } from 'react-error-boundary';
 
 export const MovieDetailError = ({ error, resetErrorBoundary }: FallbackProps) => {
