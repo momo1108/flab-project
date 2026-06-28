@@ -1,5 +1,5 @@
 import { useSuspenseQueries, useSuspenseQuery } from '@tanstack/react-query';
-import { Link } from 'react-router';
+import { Link } from '@tanstack/react-router';
 import { moviesByGenresQuery } from '@/services/tmdb/queries/movies';
 import styles from '../SearchPage.module.css';
 import SectionWrapper from '@/components/SectionWrapper';
@@ -40,7 +40,12 @@ const GenreSectionsContent: React.FC = () => {
         <h2 className={styles.sectionTitle}>{`${name} 영화`}</h2>
         <div className={styles.genrePosterGrid}>
           {genreMovies.map(({ id, poster_path, title }) => (
-            <Link key={id} to={`/movie/${id}`} className={styles.genrePosterItem}>
+            <Link
+              key={id}
+              to={`/movie/$movieId`}
+              params={{ movieId: id.toString() }}
+              className={styles.genrePosterItem}
+            >
               {poster_path ? (
                 <Image
                   src={getPosterUrl(poster_path, config, 'w500')}

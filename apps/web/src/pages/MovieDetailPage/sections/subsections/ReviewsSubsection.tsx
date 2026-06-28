@@ -1,4 +1,4 @@
-import { useParams } from 'react-router';
+import { useParams } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { movieReviewsQuery } from '@/services/tmdb/queries/movie';
 import styles from '../../MovieDetailPage.module.css';
@@ -10,7 +10,7 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { Image } from '@flab/ui';
 
 export const ReviewsSubsection = () => {
-  const { id } = useParams<{ id: string }>();
+  const { movieId: id } = useParams({ from: '/movie/$movieId' });
 
   return (
     <div className={styles.subsection}>
@@ -44,7 +44,7 @@ const renderStars = (rating: number | null): React.ReactElement[] => {
 };
 
 const ReviewsSubsectionContent = () => {
-  const { id } = useParams<{ id: string }>();
+  const { movieId: id } = useParams({ from: '/movie/$movieId' });
   const movieId = id ? Number.parseInt(id, 10) : 0;
 
   const { data: config } = useSuspenseQuery(configurationQueryObj);

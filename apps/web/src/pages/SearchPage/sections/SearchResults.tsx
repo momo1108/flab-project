@@ -1,5 +1,5 @@
 import { useSuspenseQueries, useSuspenseQuery } from '@tanstack/react-query';
-import { Link } from 'react-router';
+import { Link } from '@tanstack/react-router';
 import { movieCreditsQuery } from '@/services/tmdb/queries/movie';
 import { searchMoviesQuery } from '@/services/tmdb/queries/movies';
 import type { Movie } from '@/types/tmdb';
@@ -69,7 +69,7 @@ const SearchResultsContent: React.FC<SearchResultsProps> = ({ searchQuery }) => 
   return searchResults.length > 0 ? (
     <div className={styles.searchResultsContainer}>
       {searchResults.map(({ id, poster_path, title, release_date }) => (
-        <Link key={id} to={`/movie/${id}`} className={styles.searchResultCard}>
+        <Link key={id} to={`/movie/$movieId`} params={{ movieId: id.toString() }} className={styles.searchResultCard}>
           {poster_path ? (
             <Image
               src={getPosterUrl(poster_path, config, 'w200')}

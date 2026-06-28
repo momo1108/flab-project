@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import styles from '../MovieDetailPage.module.css';
 import { MovieContentTab } from './MovieContentTab';
 import { RelatedContentTab } from './RelatedContentTab';
-import { useParams } from 'react-router';
+import { useParams } from '@tanstack/react-router';
 
 export const MovieMain = () => {
-  const { id } = useParams<{ id: string }>();
+  const { movieId: id } = useParams({ from: '/movie/$movieId' });
   const [activeTab, setActiveTab] = useState<'content' | 'related'>('content');
 
   useEffect(() => {

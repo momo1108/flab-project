@@ -1,4 +1,4 @@
-import { useParams } from 'react-router';
+import { useParams } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { movieVideosQuery } from '@/services/tmdb/queries/movie';
 import styles from '../../MovieDetailPage.module.css';
@@ -6,7 +6,7 @@ import SectionWrapper from '@/components/SectionWrapper';
 import { Image } from '@flab/ui';
 
 export const VideosSubsection = () => {
-  const { id } = useParams<{ id: string }>();
+  const { movieId: id } = useParams({ from: '/movie/$movieId' });
 
   return (
     <div className={styles.subsection}>
@@ -19,7 +19,7 @@ export const VideosSubsection = () => {
 };
 
 const VideosSubsectionContent = () => {
-  const { id } = useParams<{ id: string }>();
+  const { movieId: id } = useParams({ from: '/movie/$movieId' });
   const movieId = id ? Number.parseInt(id, 10) : 0;
 
   const {

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useNavigate } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { popularMoviesQuery } from '@/services/tmdb/queries/movies';
 import { MovieCard } from '@flab/ui';
@@ -17,7 +17,7 @@ export const PopularMoviesSection = () => {
 };
 
 const PopularMoviesSectionContent = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate({ from: '/' });
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
     data: { results: popularMovies },
@@ -33,7 +33,7 @@ const PopularMoviesSectionContent = () => {
             posterUrl={getPosterUrl(poster_path, config)}
             voteAverage={vote_average}
             releaseDate={release_date}
-            onClick={() => navigate(`/movie/${id}`)}
+            onClick={() => navigate({ to: `/movie/${id}` })}
           />
         ))}
       </CarouselRow>

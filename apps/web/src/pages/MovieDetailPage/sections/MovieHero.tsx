@@ -1,4 +1,4 @@
-import { useParams } from 'react-router';
+import { useParams } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { movieDetailQuery, movieImagesQuery } from '@/services/tmdb/queries/movie';
 import styles from '../MovieDetailPage.module.css';
@@ -16,7 +16,7 @@ const formatRuntime = (minutes: number): string => {
 const formatVoteCount = (count: number): string => new Intl.NumberFormat('ko-KR').format(count);
 
 export const MovieHero = () => {
-  const { id } = useParams<{ id: string }>();
+  const { movieId: id } = useParams({ from: '/movie/$movieId' });
 
   return (
     <SectionWrapper resetKeys={[id]}>
@@ -26,7 +26,7 @@ export const MovieHero = () => {
 };
 
 const MovieHeroContent = () => {
-  const { id } = useParams<{ id: string }>();
+  const { movieId: id } = useParams({ from: '/movie/$movieId' });
   const movieId = id ? Number.parseInt(id, 10) : 0;
 
   const { data: config } = useSuspenseQuery(configurationQueryObj);

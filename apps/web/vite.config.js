@@ -4,6 +4,8 @@ import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
 import visualizer from 'rollup-plugin-visualizer';
 import browserslistToEsbuild from 'browserslist-to-esbuild';
+import { tanstackStart } from '@tanstack/react-start/plugin/vite';
+import { devtools } from '@tanstack/devtools-vite';
 
 // 번들 분석 보고서 파일명에 타임스탬프 추가
 const pad2 = (value) => String(value).padStart(2, '0');
@@ -28,14 +30,11 @@ const tmdbProxy = {
 export default defineConfig(({ mode }) => {
   return {
     plugins: [
+      devtools(),
+      tanstackStart(),
       react(),
       babel({
-        presets: [
-          reactCompilerPreset({
-            validation: true,
-            noProfile: false,
-          }),
-        ],
+        presets: [reactCompilerPreset()],
       }),
       ...(mode === 'staging'
         ? [
@@ -64,6 +63,7 @@ export default defineConfig(({ mode }) => {
     },
     resolve: {
       alias: { '@': path.resolve(__dirname, 'src') },
+      tsconfigPaths: true,
     },
     assetsInclude: [/\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i],
     // assetsInlineLimit: 4096, // 4KB 가 기본값

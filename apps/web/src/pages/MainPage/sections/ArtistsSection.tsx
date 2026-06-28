@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useNavigate } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { popularPersonsQuery } from '@/services/tmdb/queries/person';
 import ArtistCard from '@/components/ArtistCard/ArtistCard';
@@ -17,7 +17,7 @@ export const ArtistsSection = () => {
 };
 
 const ArtistsSectionContent = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate({ from: '/' });
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
     data: { results: popularPersons },
@@ -32,7 +32,7 @@ const ArtistsSectionContent = () => {
             name={name}
             profileUrl={getProfileUrl(profile_path, config, 'w185')}
             knownFor={known_for}
-            onClick={() => navigate(`/artist/${id}`)}
+            onClick={() => navigate({ to: `/artist/${id}` })}
           />
         ))}
       </CarouselRow>

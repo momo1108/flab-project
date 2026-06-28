@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useNavigate } from '@tanstack/react-router';
 import { useSuspenseQuery, useSuspenseQueries } from '@tanstack/react-query';
 import { moviesByGenresQuery } from '@/services/tmdb/queries/movies';
 import CarouselRow from '@/components/CarouselRow/CarouselRow';
@@ -20,7 +20,7 @@ export const GenreSections = () => {
 };
 
 const GenreSectionsContent = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate({ from: '/' });
 
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
@@ -51,7 +51,7 @@ const GenreSectionsContent = () => {
               posterUrl={getPosterUrl(poster_path, config)}
               voteAverage={vote_average}
               releaseDate={release_date}
-              onClick={() => navigate(`/movie/${id}`)}
+              onClick={() => navigate({ to: `/movie/${id}` })}
             />
           ))}
         </CarouselRow>
