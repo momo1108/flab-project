@@ -1,11 +1,10 @@
 import styles from "./MovieCard.module.css";
 
-export interface MovieCardProps {
+export interface MovieCardProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   posterUrl: string;
   voteAverage: number;
   releaseDate: string;
-  onClick?: () => void;
   rank?: number | undefined;
 }
 
@@ -18,16 +17,11 @@ const MovieCard: React.FC<MovieCardProps> = ({
   posterUrl,
   voteAverage,
   releaseDate,
-  onClick,
   rank,
+  ...rest
 }) => {
   return (
-    <div
-      className={styles.movieCard}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-    >
+    <div className={styles.movieCard} role="button" tabIndex={0} {...rest}>
       <div className={styles.posterWrapper}>
         {rank !== undefined && <div className={styles.rank}>{rank}</div>}
         <img

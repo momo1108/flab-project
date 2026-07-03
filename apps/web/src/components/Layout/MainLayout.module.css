@@ -1,9 +1,19 @@
-.mainContent {
-  padding-top: 72px; /* Header height */
+.mainLayout {
+  --padding-top: 72px; /* Header height */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 @media (max-width: 768px) {
-  .mainContent {
-    padding-top: 64px;
+  .mainLayout {
+    --padding-top: 64px; /* Header height */
   }
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--padding-top);
+  min-height: calc(100vh - var(--padding-top));
 }

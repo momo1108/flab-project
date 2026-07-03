@@ -1,4 +1,3 @@
-import { useNavigate } from '@tanstack/react-router';
 import { useSuspenseQuery, useSuspenseQueries } from '@tanstack/react-query';
 import { moviesByGenresQuery } from '@/services/tmdb/queries/movies';
 import CarouselRow from '@/components/CarouselRow/CarouselRow';
@@ -9,6 +8,7 @@ import { genresQueryObj } from '@/services/tmdb/queries/genre';
 import SectionWrapper from '@/components/SectionWrapper';
 import type { Genre } from '@/types/tmdb';
 import { shuffleArray } from '@/utils/random';
+import { usePreloadNavigate } from '@/hooks/usePreloadNavigate';
 import { MovieCard } from '@flab/ui';
 
 export const GenreSections = () => {
@@ -20,7 +20,7 @@ export const GenreSections = () => {
 };
 
 const GenreSectionsContent = () => {
-  const navigate = useNavigate();
+  const { getRoutingEventHandlerObject } = usePreloadNavigate();
 
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
@@ -51,7 +51,7 @@ const GenreSectionsContent = () => {
               posterUrl={getPosterUrl(poster_path, config)}
               voteAverage={vote_average}
               releaseDate={release_date}
-              onClick={() => navigate({ to: `/movie/${id}` })}
+              {...getRoutingEventHandlerObject({ to: `/movie/${id}` })}
             />
           ))}
         </CarouselRow>

@@ -31,6 +31,7 @@
     "@tanstack/react-router-devtools": "^1.167.0",
     "@tanstack/react-router-ssr-query": "^1.167.1",
     "@tanstack/react-start": "^1.168.26",
+    "@tanstack/router-plugin": "^1.168.18",
     "core-js": "^3.49.0",
     "react": "catalog:",
     "react-dom": "catalog:",

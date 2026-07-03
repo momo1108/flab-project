@@ -72,7 +72,7 @@ const ReviewsSubsectionContent = () => {
         {allReviews.map((review) => (
           <div key={review.id} className={styles.reviewCard}>
             <Image
-              src={getProfileUrl(review.author_details.avatar_path, config, 'w185', 'default-avatar.png')}
+              src={getProfileUrl(review.author_details.avatar_path, config, 'w185', '/default-avatar.png')}
               alt={review.author}
               className={styles.reviewAvatar}
               fallbackSrc="/default-avatar.png"

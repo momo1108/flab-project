@@ -23,11 +23,19 @@ export function getRouter() {
     routeTree,
     context: { queryClient },
     scrollRestoration: true,
+    // 프리로딩 설정 옵션 : https://tanstack.com/router/latest/docs/guide/preloading
+    // <Link> 컴포넌트의 hover, touch start 이벤트 발생 시 해당 route 관련 스크립트를 preloading
     defaultPreload: 'intent',
+    // preload 된 리소스의 stale time 을 정할 수 있다.
+    // react query 같은 외부 라이브러리가 데이터 로딩, 캐싱을 담당하게 하려면
+    // 0 으로 설정하여 페이지의 loader 함수가 항상 실행되도록 하면 된다.
     defaultPreloadStaleTime: 0,
   });
 
-  setupRouterSsrQueryIntegration({ router, queryClient });
+  setupRouterSsrQueryIntegration({
+    router,
+    queryClient,
+  });
 
   return router;
 }

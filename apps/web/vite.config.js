@@ -1,6 +1,6 @@
 import path from 'path';
 import { defineConfig } from 'vite';
-import react, { reactCompilerPreset } from '@vitejs/plugin-react';
+import viteReact, { reactCompilerPreset } from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
 import visualizer from 'rollup-plugin-visualizer';
 import browserslistToEsbuild from 'browserslist-to-esbuild';
@@ -31,8 +31,13 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       devtools(),
-      tanstackStart(),
-      react(),
+      tanstackStart({
+        spa: {
+          enabled: true,
+        },
+      }),
+      // react's vite plugin must come after tanstack start's vite plugin
+      viteReact(),
       babel({
         presets: [reactCompilerPreset()],
       }),

@@ -4,7 +4,7 @@ import type { Movie } from '@/types/tmdb';
 import type { TMDBConfiguration } from '@/types/tmdb';
 import styles from './HeroCarousel.module.css';
 import { Image } from '@flab/ui';
-import { useNavigate } from '@tanstack/react-router';
+import { usePreloadNavigate } from '@/hooks/usePreloadNavigate';
 
 interface HeroCarouselProps {
   movies: Movie[];
@@ -12,7 +12,7 @@ interface HeroCarouselProps {
 }
 
 const HeroCarousel: React.FC<HeroCarouselProps> = ({ movies, config }) => {
-  const navigate = useNavigate();
+  const { getRoutingEventHandlerObject } = usePreloadNavigate();
 
   // displayIndex: 1 = 첫 번째 실제 슬라이드 (0은 마지막 클론, movies.length+1은 첫 클론)
   const [displayIndex, setDisplayIndex] = useState(1);
@@ -80,7 +80,11 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ movies, config }) => {
             {extendedMovies.map(({ id, backdrop_path, title }, i) => {
               const url = getBackdropUrl(backdrop_path, config, 'original');
               return (
-                <div key={`${id}-${i}`} className={styles.slide} onClick={() => navigate({ to: `/movie/${id}` })}>
+                <div
+                  key={`${id}-${i}`}
+                  className={styles.slide}
+                  {...getRoutingEventHandlerObject({ to: `/movie/${id}` })}
+                >
                   <Image src={url} alt={title} className={styles.backdrop} fallbackSrc="/placeholder.png" />
                   <div className={styles.overlay} />
                 </div>
@@ -92,7 +96,7 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ movies, config }) => {
           <div className={styles.textContent}>
             <h1 className={styles.title}>{currentMovie.title}</h1>
             <p className={styles.overview}>{currentMovie.overview}</p>
-            <button className={styles.ctaButton} onClick={() => navigate({ to: `/movie/${currentMovie.id}` })}>
+            <button className={styles.ctaButton} {...getRoutingEventHandlerObject({ to: `/movie/${currentMovie.id}` })}>
               감상하기
             </button>
           </div>

@@ -1,10 +1,10 @@
 import styles from './PageLoadingFallback.module.css';
 
-export const PageLoadingFallback = () => {
+export const PageLoadingFallback = ({ msg = '로딩 중입니다...' }: { msg?: string }) => {
   return (
     <div className={styles.pageLoading}>
       <div className="spinner" />
-      <p className={styles.loadingText}>페이지를 불러오는 중...</p>
+      <p className={styles.loadingText}>{msg}</p>
     </div>
   );
 };
