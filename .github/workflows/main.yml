@@ -4,12 +4,12 @@ on:
   push:
     branches: [main]
     paths:
-      - 'apps/web/**'
-      - 'packages/**'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
-      - '.github/workflows/main.yml'
+      - "apps/web/**"
+      - "packages/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - ".github/workflows/main.yml"
 
 jobs:
   build:
@@ -42,7 +42,7 @@ jobs:
       # 배포 (JS/CSS: 1주 캐시)
       - name: S3 Deploy JS CSS
         run: |
-          aws s3 sync ./apps/web/dist s3://watcha-clone-prod-244892142287-ap-northeast-2-an/ \
+          aws s3 sync ./apps/web/dist/client s3://watcha-clone-prod-244892142287-ap-northeast-2-an/ \
             --exclude "*" \
             --include "*.js" \
             --include "*.css" \
@@ -56,8 +56,8 @@ jobs:
       # 배포 (기타 에셋: 1년 캐시)
       - name: S3 Deploy Other Assets
         run: |
-          aws s3 sync ./apps/web/dist s3://watcha-clone-prod-244892142287-ap-northeast-2-an/ \
-            --exclude "index.html" \
+          aws s3 sync ./apps/web/dist/client s3://watcha-clone-prod-244892142287-ap-northeast-2-an/ \
+            --exclude "*.html" \
             --exclude "*.js" \
             --exclude "*.css" \
             --cache-control "public, max-age=31536000, immutable" \
@@ -70,7 +70,7 @@ jobs:
       # 배포 (HTML: 항상 최신 확인)
       - name: S3 Deploy HTML
         run: |
-          aws s3 cp ./apps/web/dist/index.html s3://watcha-clone-prod-244892142287-ap-northeast-2-an/index.html \
+          aws s3 cp ./apps/web/dist/client/_shell.html s3://watcha-clone-prod-244892142287-ap-northeast-2-an/index.html \
             --cache-control "max-age=0, s-maxage=31536000" \
             --content-type "text/html; charset=utf-8" \
             --acl bucket-owner-full-control
@@ -90,4 +90,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ap-northeast-2
           AWS_DISTRIBUTION: ${{ secrets.AWS_DISTRIBUTION_ID }}
-          PATHS: '/index.html /'
+          PATHS: "/index.html /"

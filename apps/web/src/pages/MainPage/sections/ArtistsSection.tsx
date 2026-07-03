@@ -1,4 +1,3 @@
-import { useNavigate } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { popularPersonsQuery } from '@/services/tmdb/queries/person';
 import ArtistCard from '@/components/ArtistCard/ArtistCard';
@@ -7,6 +6,7 @@ import styles from '../MainPage.module.css';
 import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import { getProfileUrl } from '@/services/tmdb/imageUrls';
 import SectionWrapper from '@/components/SectionWrapper';
+import { usePreloadNavigate } from '@/hooks/usePreloadNavigate';
 
 export const ArtistsSection = () => {
   return (
@@ -17,7 +17,7 @@ export const ArtistsSection = () => {
 };
 
 const ArtistsSectionContent = () => {
-  const navigate = useNavigate({ from: '/' });
+  const { getRoutingEventHandlerObject } = usePreloadNavigate();
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
     data: { results: popularPersons },
@@ -32,7 +32,7 @@ const ArtistsSectionContent = () => {
             name={name}
             profileUrl={getProfileUrl(profile_path, config, 'w185')}
             knownFor={known_for}
-            onClick={() => navigate({ to: `/artist/${id}` })}
+            {...getRoutingEventHandlerObject({ to: `/artist/${id}` })}
           />
         ))}
       </CarouselRow>

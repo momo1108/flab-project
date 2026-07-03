@@ -14,7 +14,7 @@
     "build": "pnpm --recursive --filter @flab/web... build:production",
     "build:staging": "pnpm --recursive --filter @flab/web... build:staging",
     "build:production": "pnpm --recursive --filter @flab/web... build:production",
-    "preview": "pnpm --filter @flab/web preview",
+    "preview": "pnpm --recursive --filter @flab/web... preview",
     "type-check": "pnpm --filter @flab/web type-check",
     "lint": "pnpm --filter @flab/web lint",
     "lint:fix": "pnpm --filter @flab/web lint:fix",

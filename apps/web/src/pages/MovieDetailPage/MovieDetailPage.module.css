@@ -1,7 +1,8 @@
 .pageContainer {
   background-color: var(--color-background);
+  width: 100%;
   max-width: calc(var(--page-side-margin) * 2 + 1600px);
-  margin: auto;
+  margin: 0 auto;
   min-height: 100vh;
 }
 

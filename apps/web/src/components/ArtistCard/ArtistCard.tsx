@@ -1,16 +1,15 @@
 import { Image } from '@flab/ui';
 import styles from './ArtistCard.module.css';
 
-interface ArtistCardProps {
+interface ArtistCardProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
   profileUrl: string;
   knownFor: Array<{ title: string }>;
-  onClick?: () => void;
 }
 
-const ArtistCard: React.FC<ArtistCardProps> = ({ name, profileUrl, knownFor, onClick }) => {
+const ArtistCard: React.FC<ArtistCardProps> = ({ name, profileUrl, knownFor, ...rest }) => {
   return (
-    <div className={styles.artistCard} onClick={onClick} role="button" tabIndex={0}>
+    <div className={styles.artistCard} role="button" tabIndex={0} {...rest}>
       <div className={styles.imageWrapper}>
         {profileUrl ? (
           <Image
@@ -31,7 +30,11 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ name, profileUrl, knownFor, onC
       </div>
       <div className={styles.info}>
         <h3 className={styles.name}>{name}</h3>
-        {knownFor.length && <p className={styles.latestMovie}>{knownFor[0]!.title}</p>}
+        {knownFor.length > 0 ? (
+          <p className={styles.latestMovie}>{knownFor[0]!.title}</p>
+        ) : (
+          <p className={styles.latestMovie}>정보 없음</p>
+        )}
       </div>
     </div>
   );

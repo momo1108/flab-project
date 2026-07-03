@@ -1,4 +1,3 @@
-import { useNavigate } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { popularMoviesQuery } from '@/services/tmdb/queries/movies';
 import CarouselRow from '@/components/CarouselRow/CarouselRow';
@@ -7,6 +6,7 @@ import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import { getPosterUrl } from '@/services/tmdb/imageUrls';
 import SectionWrapper from '@/components/SectionWrapper';
 import { MovieCard } from '@flab/ui';
+import { usePreloadNavigate } from '@/hooks/usePreloadNavigate';
 
 export const Top20Section = () => {
   return (
@@ -17,7 +17,7 @@ export const Top20Section = () => {
 };
 
 const Top20SectionContent = () => {
-  const navigate = useNavigate({ from: '/' });
+  const { getRoutingEventHandlerObject } = usePreloadNavigate();
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
     data: { results: popularMovies },
@@ -33,8 +33,8 @@ const Top20SectionContent = () => {
             posterUrl={getPosterUrl(poster_path, config)}
             voteAverage={vote_average}
             releaseDate={release_date}
-            onClick={() => navigate({ to: `/movie/${id}` })}
             rank={index + 1}
+            {...getRoutingEventHandlerObject({ to: `/movie/${id}` })}
           />
         ))}
       </CarouselRow>
