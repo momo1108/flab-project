@@ -6,7 +6,7 @@ import styles from '../MainPage.module.css';
 import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import { getProfileUrl } from '@/services/tmdb/imageUrls';
 import SectionWrapper from '@/components/SectionWrapper';
-import { usePreloadNavigate } from '@/hooks/usePreloadNavigate';
+import { Link } from '@tanstack/react-router';
 
 export const ArtistsSection = () => {
   return (
@@ -17,7 +17,6 @@ export const ArtistsSection = () => {
 };
 
 const ArtistsSectionContent = () => {
-  const { getRoutingEventHandlerObject } = usePreloadNavigate();
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
     data: { results: popularPersons },
@@ -27,13 +26,9 @@ const ArtistsSectionContent = () => {
     <section className={styles.section}>
       <CarouselRow title="아티스트" description="인기 배우 및 감독" rowType="artist">
         {popularPersons.map(({ id, name, profile_path, known_for }) => (
-          <ArtistCard
-            key={id}
-            name={name}
-            profileUrl={getProfileUrl(profile_path, config, 'w185')}
-            knownFor={known_for}
-            {...getRoutingEventHandlerObject({ to: `/artist/${id}` })}
-          />
+          <Link key={id} to="/artist/$artistId" params={{ artistId: id }}>
+            <ArtistCard name={name} profileUrl={getProfileUrl(profile_path, config, 'w185')} knownFor={known_for} />
+          </Link>
         ))}
       </CarouselRow>
     </section>

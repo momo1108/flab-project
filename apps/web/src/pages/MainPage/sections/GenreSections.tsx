@@ -8,8 +8,8 @@ import { genresQueryObj } from '@/services/tmdb/queries/genre';
 import SectionWrapper from '@/components/SectionWrapper';
 import type { Genre } from '@/types/tmdb';
 import { shuffleArray } from '@/utils/random';
-import { usePreloadNavigate } from '@/hooks/usePreloadNavigate';
 import { MovieCard } from '@flab/ui';
+import { Link } from '@tanstack/react-router';
 
 export const GenreSections = () => {
   return (
@@ -20,8 +20,6 @@ export const GenreSections = () => {
 };
 
 const GenreSectionsContent = () => {
-  const { getRoutingEventHandlerObject } = usePreloadNavigate();
-
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
     data: { genres: genresData },
@@ -45,14 +43,14 @@ const GenreSectionsContent = () => {
       <section key={randomGenre.id} className={styles.section}>
         <CarouselRow title={`${randomGenre.name} 영화`} description={`${randomGenre.name} 장르의 인기 영화들`}>
           {genreMovies.map(({ id, title, poster_path, vote_average, release_date }) => (
-            <MovieCard
-              key={id}
-              title={title}
-              posterUrl={getPosterUrl(poster_path, config)}
-              voteAverage={vote_average}
-              releaseDate={release_date}
-              {...getRoutingEventHandlerObject({ to: `/movie/${id}` })}
-            />
+            <Link key={id} to="/movie/$movieId" params={{ movieId: id }}>
+              <MovieCard
+                title={title}
+                posterUrl={getPosterUrl(poster_path, config)}
+                voteAverage={vote_average}
+                releaseDate={release_date}
+              />
+            </Link>
           ))}
         </CarouselRow>
       </section>

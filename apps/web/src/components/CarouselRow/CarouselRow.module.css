@@ -107,6 +107,12 @@
   margin: 0 -10px;
 }
 
+.content > * {
+  flex-shrink: 0;
+  width: calc(100% / var(--carousel-column-count));
+  padding: 0 10px;
+}
+
 .scrollButton {
   position: absolute;
   top: 0;

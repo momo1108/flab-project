@@ -1,7 +1,6 @@
 .movieCard {
   flex-shrink: 0;
-  width: calc(100% / var(--carousel-column-count));
-  padding: 0 10px;
+  width: 100%;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
