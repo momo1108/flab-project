@@ -35,6 +35,8 @@
     "preview": "tsdown",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
@@ -43,6 +45,8 @@
   },
   "devDependencies": {
     "@flab/typescript-config": "workspace:*",
+    "@flab/eslint-config": "workspace:*",
+    "@flab/prettier-config": "workspace:*",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "tsdown": "^0.22.3",

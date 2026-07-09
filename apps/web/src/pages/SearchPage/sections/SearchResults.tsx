@@ -25,13 +25,13 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ searchQuery }) => 
 const SearchResultsContent: React.FC<SearchResultsProps> = ({ searchQuery }) => {
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
-    data: searchMoviesData,
+    deferredData: deferredSearchMoviesData,
     loadMoreRef,
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteScroll(searchMoviesQuery(searchQuery));
 
-  const searchResults = searchMoviesData.pages.reduce<Movie[]>((acc, page) => [...acc, ...page.results], []);
+  const searchResults = deferredSearchMoviesData.pages.reduce<Movie[]>((acc, page) => [...acc, ...page.results], []);
 
   const movieCreditsQueries = useSuspenseQueries({
     queries: searchResults.map((movie) => movieCreditsQuery(movie.id)),
@@ -66,7 +66,14 @@ const SearchResultsContent: React.FC<SearchResultsProps> = ({ searchQuery }) => 
     return '';
   };
 
-  return searchResults.length > 0 ? (
+  if (searchResults.length <= 0)
+    return (
+      <div className={styles.emptyState}>
+        <p>검색 결과가 없습니다</p>
+      </div>
+    );
+
+  return (
     <div className={styles.searchResultsContainer}>
       {searchResults.map(({ id, poster_path, title, release_date }) => (
         <Link key={id} to={`/movie/$movieId`} params={{ movieId: id.toString() }} className={styles.searchResultCard}>
@@ -96,10 +103,6 @@ const SearchResultsContent: React.FC<SearchResultsProps> = ({ searchQuery }) => 
           {isFetchingNextPage && <div className={styles.loadingSpinner} style={{ width: 24, height: 24 }} />}
         </div>
       )}
-    </div>
-  ) : (
-    <div className={styles.emptyState}>
-      <p>검색 결과가 없습니다</p>
     </div>
   );
 };

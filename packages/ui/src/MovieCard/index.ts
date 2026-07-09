@@ -1,2 +1,2 @@
-export { default } from "./MovieCard";
-export type { MovieCardProps } from "./MovieCard";
+export { default } from './MovieCard';
+export type { MovieCardProps } from './MovieCard';

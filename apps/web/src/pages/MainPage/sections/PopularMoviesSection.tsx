@@ -6,7 +6,7 @@ import styles from '../MainPage.module.css';
 import { getPosterUrl } from '@/services/tmdb/imageUrls';
 import { configurationQueryObj } from '@/services/tmdb/queries/configuration';
 import SectionWrapper from '@/components/SectionWrapper';
-import { usePreloadNavigate } from '@/hooks/usePreloadNavigate';
+import { Link } from '@tanstack/react-router';
 
 export const PopularMoviesSection = () => {
   return (
@@ -17,7 +17,6 @@ export const PopularMoviesSection = () => {
 };
 
 const PopularMoviesSectionContent = () => {
-  const { getRoutingEventHandlerObject } = usePreloadNavigate();
   const { data: config } = useSuspenseQuery(configurationQueryObj);
   const {
     data: { results: popularMovies },
@@ -27,14 +26,14 @@ const PopularMoviesSectionContent = () => {
     <section className={styles.section}>
       <CarouselRow title="지금 뜨는 영화">
         {popularMovies.map(({ id, title, poster_path, vote_average, release_date }) => (
-          <MovieCard
-            key={id}
-            title={title}
-            posterUrl={getPosterUrl(poster_path, config)}
-            voteAverage={vote_average}
-            releaseDate={release_date}
-            {...getRoutingEventHandlerObject({ to: `/movie/${id}` })}
-          />
+          <Link key={id} to="/movie/$movieId" params={{ movieId: id }}>
+            <MovieCard
+              title={title}
+              posterUrl={getPosterUrl(poster_path, config)}
+              voteAverage={vote_average}
+              releaseDate={release_date}
+            />
+          </Link>
         ))}
       </CarouselRow>
     </section>

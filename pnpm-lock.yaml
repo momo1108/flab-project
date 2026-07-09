@@ -212,6 +212,12 @@ importers:
         specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
     devDependencies:
+      '@flab/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@flab/prettier-config':
+        specifier: workspace:*
+        version: link:../prettier-config
       '@flab/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config

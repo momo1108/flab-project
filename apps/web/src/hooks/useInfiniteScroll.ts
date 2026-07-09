@@ -3,7 +3,7 @@ import {
   type UseSuspenseInfiniteQueryOptions,
   type InfiniteData,
 } from '@tanstack/react-query';
-import { startTransition, useEffect, useRef } from 'react';
+import { startTransition, useDeferredValue, useEffect, useRef } from 'react';
 
 interface UseInfiniteScrollOptions {
   rootMargin?: string;
@@ -21,6 +21,7 @@ export const useInfiniteScroll = <
   options: UseInfiniteScrollOptions = {},
 ): {
   data: InfiniteData<TData>;
+  deferredData: InfiniteData<TData>;
   loadMoreRef: React.RefObject<HTMLDivElement | null>;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
@@ -34,6 +35,7 @@ export const useInfiniteScroll = <
     TQueryKey,
     TPageParam
   >(query);
+  const deferredData = useDeferredValue(data);
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -65,6 +67,7 @@ export const useInfiniteScroll = <
 
   return {
     data: data as InfiniteData<TData>,
+    deferredData: deferredData as InfiniteData<TData>,
     loadMoreRef,
     hasNextPage,
     isFetchingNextPage,

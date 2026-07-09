@@ -10,12 +10,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 export default defineConfig([
   {
     // Flat Config에서는 .eslintignore 대신 ignores를 사용
-    ignores: [
-      "dist/**",
-      "node_modules/**",
-      "eslint.config.js",
-      "prettier.config.js",
-    ],
+    ignores: ["dist/**", "node_modules/**", "*.config.{js,ts}"],
   },
   {
     // 검사할 파일 패턴 지정

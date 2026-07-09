@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs';
 import { defineConfig } from 'vite';
 import viteReact, { reactCompilerPreset } from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
@@ -27,9 +28,47 @@ const tmdbProxy = {
   rewrite: (requestPath) => requestPath.replace(/^\/api\/tmdb/, '/3'),
 };
 
+const previewStaticShell = () => {
+  const shellPath = path.resolve(__dirname, 'dist/client/_shell.html');
+
+  return {
+    name: 'preview-static-shell',
+    enforce: 'pre',
+    configurePreviewServer(server) {
+      const middleware = (req, res, next) => {
+        const requestUrl = req.url || '/';
+        const pathname = requestUrl.split('?')[0] || '/';
+        const accept = req.headers.accept || '';
+
+        const isHtmlRequest = accept.includes('text/html');
+        const isApiRequest = pathname.startsWith('/api/');
+        const isAssetRequest = pathname.startsWith('/assets/') || pathname.includes('.') || pathname.startsWith('/@');
+
+        if (!isHtmlRequest || isApiRequest || isAssetRequest) {
+          next();
+          return;
+        }
+
+        try {
+          const html = fs.readFileSync(shellPath, 'utf-8');
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'text/html; charset=utf-8');
+          res.end(html);
+        } catch {
+          next();
+        }
+      };
+
+      // Place middleware at the beginning so it runs before TanStack preview handlers.
+      server.middlewares.stack.unshift({ route: '', handle: middleware });
+    },
+  };
+};
+
 export default defineConfig(({ mode }) => {
   return {
     plugins: [
+      previewStaticShell(),
       devtools(),
       tanstackStart({
         spa: {
