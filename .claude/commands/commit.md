@@ -1,66 +1,95 @@
 ---
-allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*), Bash(git log:*), Bash(git branch:*), Bash(git diff:*)
-description: 컨벤션에 맞는 git 커밋 메세지를 생성하고 커밋을 진행
+allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*), Bash(git push:*), Bash(git log:*), Bash(git branch:*), Bash(git diff:*), Bash(find:*)
+description: Generate a convention-aligned git commit message with user confirmation and execute the commit
 ---
 
-## 실행 모드 (엄격 규칙)
+## Check Current State
 
-- 기본 동작: 실제 커밋 수행
-- 예외 동작: `/commit msg`로 실행한 경우에만 메시지 출력 전용 모드로 동작
+- Current branch: !`git branch --show-current`
+- Working tree changes: !`git diff --stat`
+- Unstaged diff (for message drafting): !`git diff`
 
-모드 판별 규칙:
+## Review Recent Commits
 
-- `msg` 옵션이 **명시적으로** 포함된 경우에만 메시지 출력 전용 모드로 전환한다.
-- 자연어 표현(예: "메시지만", "dry-run" 등)은 모드 전환 신호로 해석하지 않는다.
-- `msg` 옵션이 없으면 항상 실제 커밋을 수행한다.
+Use recent commit titles and bodies to match the tone and level of detail.
 
-## 현재 상태 확인
+- Inspect recent commits: !`git log -n 10 --pretty=format:"%h %s%n%b%n---"`
 
-- 현재 브랜치: !`git branch --show-current`
-- 변경 사항: !`git diff --stat`
-- 스테이지된 파일: !`git diff --cached --stat`
+## Index.lock Error Handling
 
-## 이전 커밋 참고 (메시지 작성용)
+Before any git operation, check for index.lock file:
 
-이전 커밋의 제목/본문을 참고해 이번 커밋 메시지의 톤과 디테일을 맞춘다.
+- Check: !`find .git -name "index.lock" -type f 2>/dev/null`
+- If index.lock exists:
+  - Inform the user that index.lock file exists (likely from a previous interrupted git operation)
+  - Ask for confirmation to remove it using vscode_askQuestions
+  - If confirmed: remove it using the cleanup-git-lock skill
+  - If declined: stop and explain the user must manually resolve it
 
-- 최근 커밋 제목 + 본문 확인: !`git log -n 10 --pretty=format:"%h %s%n%b%n---"`
+## Staging Policy
 
-## 스테이징 정책
+- Staging happens only after the commit message is accepted by the user.
+- Default after acceptance: stage all modified files before committing. !`git add -A`
+- Exception after acceptance: stage only the requested paths when the user explicitly limits the commit scope.
 
-- 기본값: 전체 변경 파일을 반영해서 커밋한다. !`git add -A`
-- 예외: 사용자가 특정 파일만 커밋하라고 명시한 경우에만 선택적으로 스테이징한다.
+## Commit Message Rules
 
-## 커밋 메시지 규칙
+Write commit messages using these types:
 
-다음 형식을 따라 커밋 메시지를 작성:
+- `feat`: add a new feature. Example: `feat(auth): add login flow`
+- `fix`: fix a bug. Example: `fix(api): resolve user lookup error`
+- `docs`: update documentation such as README or comments. Example: `docs(readme): add setup steps`
+- `refactor`: improve code structure without changing behavior. Example: `refactor(utils): extract shared helper`
+- `test`: add or update tests. Example: `test(login): add login unit tests`
+- `chore`: update project configuration or build-related settings. Example: `chore(webpack): add bundle config`
 
-| Type     | Description                                    | Example                              |
-| -------- | ---------------------------------------------- | ------------------------------------ |
-| feat     | 새로운 기능 추가                               | feat(auth): 로그인 기능 추가         |
-| fix      | 버그 수정                                      | fix(api): 사용자 정보 조회 오류 수정 |
-| docs     | 문서 수정 (README, 주석 등)                    | docs(readme): 설치 방법 추가         |
-| refactor | 코드 구조 개선 (동작 변화 없음)                | refactor(utils): 공통 함수 분리      |
-| test     | 테스트 코드 추가 또는 수정                     | test(login): 로그인 유닛 테스트 추가 |
-| chore    | 프로젝트 관련 설정 (초기화, 빌드 관련 설정 등) | chore(webpack): 번들 설정 추가       |
+## Workflow
 
-## 수행할 작업
+1. **Check index.lock**: Handle index.lock if it exists (see Index.lock Error Handling section)
 
-1. 변경 사항 분석
-2. 스테이징 범위를 결정한다.
+2. **Analyze Changes**:
+   - Get working tree changes: !`git diff --stat`
 
-- 사용자가 커밋 대상 파일/폴더를 명시한 경우: 해당 경로만 스테이징한다.
-- 사용자가 범위를 명시하지 않은 경우(기본값): 전체 스테이징한다. !`git add -A`
+- Review actual diff content without staging: !`git diff`
+- Determine the commit type(s) based on changes
+- Analyze files changed to understand the nature of changes
 
-1. 커밋 직전 스테이징 검증
-   - 스테이징 요약: !`git diff --cached --stat`
-   - 스테이징 목록: !`git status --short`
-2. 특정 파일/폴더 커밋 모드인 경우, 요청하지 않은 경로가 스테이징되면 커밋하지 않고 범위 재확인을 요청한다.
-3. 스테이징된 변경이 없으면 커밋하지 않고 이유를 안내한다.
-4. 적절한 커밋 메시지를 생성한다.
-5. 모드에 따라 동작한다.
-   - `/commit msg`:
-     - `git commit`을 실행하지 않는다.
-     - 최종 커밋 메시지(제목/본문)만 출력한다.
-   - `/commit` (또는 `msg` 옵션 없음):
-     - 생성한 메시지로 실제 커밋을 수행한다.
+3. **Generate Initial Commit Message**:
+   - Based on the changes, create a conventional commit message with subject and body
+   - Message format:
+
+     ```
+     <type>(<scope>): <subject>
+
+     <body>
+     ```
+
+4. **Commit Message Confirmation Loop**:
+   - Present the generated commit message to the user
+   - Offer three options using vscode_askQuestions:
+     - **✅ Accept**: Proceed to staging, commit, and push
+     - **❌ Reject**: Exit without staging or committing
+     - **✏️ Modify**: Provide modification guidance to regenerate the message
+   - **If Accept (✅)**:
+     - Decide staging scope:
+       - If the user specified files or folders, stage only those paths.
+       - If the user did not specify a scope, stage everything: !`git add -A`
+     - Verify staging:
+       - Staging summary: !`git diff --cached --stat`
+       - Staged items: !`git status --short`
+       - If the user requested a limited scope and unexpected paths are staged, stop and ask for scope confirmation.
+       - If nothing is staged, do not commit and explain why.
+     - Execute: !`git commit -m "<message>"`
+     - If successful, execute: !`git push`
+     - Confirm success to user
+   - **If Reject (❌)**:
+     - Inform user that commit has been cancelled before staging
+     - Exit without committing
+   - **If Modify (✏️)**:
+     - Ask the user for specific modification guidance (e.g., "make it more descriptive", "change type to docs")
+     - Regenerate commit message based on feedback
+     - Return to step 4 (present updated message for confirmation)
+
+5. **Error Handling**:
+   - If git commit fails due to index.lock, handle according to Index.lock Error Handling section
+   - If git push fails, inform user and suggest manual action
